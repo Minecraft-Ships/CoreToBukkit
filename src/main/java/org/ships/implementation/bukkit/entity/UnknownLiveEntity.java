@@ -16,6 +16,6 @@ public class UnknownLiveEntity<T extends org.bukkit.entity.Entity> extends BLive
 
     @Override
     public EntitySnapshot<? extends LiveEntity> createSnapshot() {
-        return new UnknownEntitySnapshot<>(this);
+        return new BSnapshotValueEntity<>(this);
     }
 }

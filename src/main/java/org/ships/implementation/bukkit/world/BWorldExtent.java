@@ -1,8 +1,11 @@
 package org.ships.implementation.bukkit.world;
 
+import org.bukkit.Chunk;
 import org.bukkit.block.BlockState;
 import org.core.CorePlugin;
 import org.core.entity.LiveEntity;
+import org.core.vector.type.Vector3;
+import org.core.world.ChunkExtent;
 import org.core.world.WorldExtent;
 import org.core.world.position.block.entity.LiveTileEntity;
 import org.core.world.position.impl.async.ASyncBlockPosition;
@@ -16,8 +19,11 @@ import org.ships.implementation.bukkit.world.position.impl.sync.BBlockPosition;
 import org.ships.implementation.bukkit.world.position.impl.sync.BExactPosition;
 
 import java.util.HashSet;
+import java.util.Optional;
 import java.util.Set;
 import java.util.UUID;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class BWorldExtent implements WorldExtent {
 
@@ -87,13 +93,34 @@ public class BWorldExtent implements WorldExtent {
     }
 
     @Override
-    public UUID getUniquieId() {
+    public UUID getUniqueId() {
         return this.world.getUID();
     }
 
     @Override
-    public String getPlatformUniquieId() {
+    public String getPlatformUniqueId() {
         return getName();
+    }
+
+    @Override
+    public Set<ChunkExtent> getChunks() {
+        return Stream.of(this.world.getLoadedChunks()).map(BChunkExtent::new).collect(Collectors.toSet());
+    }
+
+    @Override
+    public Optional<ChunkExtent> getChunk(Vector3<Integer> vector) {
+        Chunk chunk = this.world.getChunkAt(vector.getX(), vector.getZ());
+        if(chunk == null){
+            return Optional.empty();
+        }
+        return Optional.of(new BChunkExtent(chunk));
+    }
+
+    @Override
+    public ChunkExtent loadChunk(Vector3<Integer> vector) {
+        this.world.loadChunk(vector.getX(), vector.getZ());
+        Chunk chunk = this.world.getChunkAt(vector.getX(), vector.getZ());
+        return new BChunkExtent(chunk);
     }
 
     @Override

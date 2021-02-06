@@ -4,6 +4,7 @@ import org.core.entity.EntitySnapshot;
 import org.ships.implementation.bukkit.world.BWorldExtent;
 import org.ships.implementation.bukkit.world.position.impl.sync.BExactPosition;
 
+@Deprecated
 public class UnknownEntitySnapshot<T extends org.bukkit.entity.Entity> extends BEntitySnapshot<UnknownLiveEntity<T>> {
 
     protected BEntityType.UnknownType<T> type;

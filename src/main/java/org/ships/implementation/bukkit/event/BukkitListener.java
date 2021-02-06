@@ -6,6 +6,7 @@ import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockMultiPlaceEvent;
@@ -122,7 +123,7 @@ public class BukkitListener implements Listener {
         event2.getItems().forEach(is -> items.entrySet().stream().filter(e -> e.getValue().equals(is)).forEach(e -> event.getItems().remove(e.getKey())));
     }*/
 
-    @EventHandler
+    @EventHandler()
     public static void onPlayerKickedEvent(PlayerKickEvent event){
         LivePlayer player = (LivePlayer)((BukkitPlatform)CorePlugin.getPlatform()).createEntityInstance(event.getPlayer());
         Text message = CorePlugin.buildText(event.getLeaveMessage());
@@ -131,7 +132,7 @@ public class BukkitListener implements Listener {
         event.setLeaveMessage(((BText)message).toBukkitString());
     }
 
-    @EventHandler
+    @EventHandler()
     public static void onPlayerQuitEvent(PlayerQuitEvent event){
         LivePlayer player = (LivePlayer)((BukkitPlatform)CorePlugin.getPlatform()).createEntityInstance(event.getPlayer());
         Text message = CorePlugin.buildText(event.getQuitMessage());
