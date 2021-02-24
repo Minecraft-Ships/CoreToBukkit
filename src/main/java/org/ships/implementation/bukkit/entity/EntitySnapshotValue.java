@@ -8,7 +8,6 @@ import org.bukkit.projectiles.ProjectileSource;
 import org.bukkit.util.EulerAngle;
 import org.bukkit.util.Vector;
 import org.ships.implementation.bukkit.utils.entry.AbstractSnapshotValue;
-import org.ships.implementation.bukkit.utils.entry.SnapshotValue;
 
 import java.lang.reflect.Modifier;
 import java.util.Set;
