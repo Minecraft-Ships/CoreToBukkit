@@ -7,7 +7,7 @@ import org.bukkit.potion.PotionData;
 import org.bukkit.projectiles.ProjectileSource;
 import org.bukkit.util.EulerAngle;
 import org.bukkit.util.Vector;
-import org.core.utils.entry.AbstractSnapshotValue;
+import org.ships.implementation.bukkit.utils.entry.AbstractSnapshotValue;
 
 import java.lang.reflect.Modifier;
 import java.util.Set;
@@ -93,7 +93,7 @@ public class EntitySnapshotValue<E, O> extends AbstractSnapshotValue<E, O> {
     public static final EntitySnapshotValue<ArmorStand, Boolean> IS_VISIBLE = new EntitySnapshotValue<>(ArmorStand.class, ArmorStand::isVisible, ArmorStand::setVisible);
 
     public static final EntitySnapshotValue<Arrow, PotionData> ARROW_POTION_DATA = new EntitySnapshotValue<>(Arrow.class, Arrow::getBasePotionData, Arrow::setBasePotionData);
-    //public static final EntitySnapshotValue<Arrow, Color> ARROW_COLOR = new EntitySnapshotValue<>(Arrow.class, Arrow::getColor, Arrow::setColor);
+    public static final EntitySnapshotValue<Arrow, Color> ARROW_COLOR = new EntitySnapshotValue<>(Arrow.class, Arrow::getColor, Arrow::setColor);
 
     public static final EntitySnapshotValue<Bat, Boolean> IS_AWAKE = new EntitySnapshotValue<>(Bat.class, Bat::isAwake, Bat::setAwake);
 
@@ -171,16 +171,6 @@ public class EntitySnapshotValue<E, O> extends AbstractSnapshotValue<E, O> {
     @Override
     public boolean canApplyTo(Object obj) {
         return this.clazz.isInstance(obj);
-    }
-
-    @Override
-    public O storeValue(E obj) {
-        try {
-            return super.storeValue(obj);
-        }catch (Exception e){
-            System.out.println(this.id);
-            throw e;
-        }
     }
 
     @Override
