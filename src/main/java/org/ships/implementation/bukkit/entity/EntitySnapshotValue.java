@@ -7,7 +7,7 @@ import org.bukkit.potion.PotionData;
 import org.bukkit.projectiles.ProjectileSource;
 import org.bukkit.util.EulerAngle;
 import org.bukkit.util.Vector;
-import org.ships.implementation.bukkit.utils.entry.AbstractSnapshotValue;
+import org.core.utils.entry.AbstractSnapshotValue;
 
 import java.lang.reflect.Modifier;
 import java.util.Set;
@@ -28,7 +28,8 @@ public class EntitySnapshotValue<E, O> extends AbstractSnapshotValue<E, O> {
     public static final EntitySnapshotValue<Entity, Boolean> GLOWING = new EntitySnapshotValue<>(Entity::isGlowing, Entity::setGlowing);
     public static final EntitySnapshotValue<Entity, Boolean> SILENT = new EntitySnapshotValue<>(Entity::isSilent, Entity::setSilent);
     public static final EntitySnapshotValue<Entity, Boolean> INVULNERABLE = new EntitySnapshotValue<>(Entity::isInvulnerable, Entity::setInvulnerable);
-    public static final EntitySnapshotValue<Entity, Boolean> IS_ON_GROUND = new EntitySnapshotValue<>(Entity::isOnGround, (e, v) -> {});
+    public static final EntitySnapshotValue<Entity, Boolean> IS_ON_GROUND = new EntitySnapshotValue<>(Entity::isOnGround, (e, v) -> {
+    });
 
     public static final EntitySnapshotValue<Damageable, Double> HEALTH = new EntitySnapshotValue<>(Damageable.class, Damageable::getHealth, Damageable::setHealth);
     public static final EntitySnapshotValue<Damageable, Double> ABSORPTION = new EntitySnapshotValue<>(Damageable.class, Damageable::getAbsorptionAmount, Damageable::setAbsorptionAmount);
@@ -93,7 +94,7 @@ public class EntitySnapshotValue<E, O> extends AbstractSnapshotValue<E, O> {
     public static final EntitySnapshotValue<ArmorStand, Boolean> IS_VISIBLE = new EntitySnapshotValue<>(ArmorStand.class, ArmorStand::isVisible, ArmorStand::setVisible);
 
     public static final EntitySnapshotValue<Arrow, PotionData> ARROW_POTION_DATA = new EntitySnapshotValue<>(Arrow.class, Arrow::getBasePotionData, Arrow::setBasePotionData);
-    public static final EntitySnapshotValue<Arrow, Color> ARROW_COLOR = new EntitySnapshotValue<>(Arrow.class, Arrow::getColor, Arrow::setColor);
+    //public static final EntitySnapshotValue<Arrow, Color> ARROW_COLOR = new EntitySnapshotValue<>(Arrow.class, Arrow::getColor, Arrow::setColor);
 
     public static final EntitySnapshotValue<Bat, Boolean> IS_AWAKE = new EntitySnapshotValue<>(Bat.class, Bat::isAwake, Bat::setAwake);
 
@@ -157,14 +158,14 @@ public class EntitySnapshotValue<E, O> extends AbstractSnapshotValue<E, O> {
     }
 
     public EntitySnapshotValue(Function<E, O> getter, BiConsumer<E, O> setter) {
-        this((Class<E>)Entity.class, null, getter, setter);
+        this((Class<E>) Entity.class, null, getter, setter);
     }
 
-    public String getId(){
+    public String getId() {
         return this.id;
     }
 
-    public void setId(String id){
+    public void setId(String id) {
         this.id = id;
     }
 
@@ -178,16 +179,16 @@ public class EntitySnapshotValue<E, O> extends AbstractSnapshotValue<E, O> {
         return new EntitySnapshotValue<>(this.clazz, this.value, this.getter, this.setter);
     }
 
-    public static <E extends Entity> Set<EntitySnapshotValue<? super E, ?>> getSnapshotValues(E entity){
+    public static <E extends Entity> Set<EntitySnapshotValue<? super E, ?>> getSnapshotValues(E entity) {
         Set<EntitySnapshotValue<?, ?>> values = Stream.of(EntitySnapshotValue.class.getDeclaredFields()).parallel().filter(f -> Modifier.isStatic(f.getModifiers())).filter(f -> f.getType().isAssignableFrom(EntitySnapshotValue.class)).map(f -> {
             try {
-                EntitySnapshotValue<?, ?> snapshot =  (EntitySnapshotValue<?, ?>)f.get(null);
+                EntitySnapshotValue<?, ?> snapshot = (EntitySnapshotValue<?, ?>) f.get(null);
                 snapshot.setId(f.getName());
                 return snapshot;
             } catch (IllegalAccessException e) {
                 return null;
             }
         }).collect(Collectors.toSet());
-        return values.parallelStream().filter(v -> v.canApplyTo(entity)).map(e -> (EntitySnapshotValue<? super E, ?>)e).collect(Collectors.toSet());
+        return values.parallelStream().filter(v -> v.canApplyTo(entity)).map(e -> (EntitySnapshotValue<? super E, ?>) e).collect(Collectors.toSet());
     }
 }
