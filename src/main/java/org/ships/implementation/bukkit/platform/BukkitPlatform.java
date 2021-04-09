@@ -13,6 +13,7 @@ import org.core.entity.*;
 import org.core.entity.living.animal.parrot.ParrotType;
 import org.core.entity.living.animal.parrot.ParrotTypes;
 import org.core.event.CustomEvent;
+import org.core.event.EventPriority;
 import org.core.inventory.item.ItemType;
 import org.core.inventory.item.data.dye.DyeType;
 import org.core.inventory.item.data.dye.DyeTypes;
@@ -505,6 +506,6 @@ public class BukkitPlatform implements Platform {
 
     @Override
     public <E extends CustomEvent> E callEvent(E event) {
-        return BukkitListener.call(event);
+        return BukkitListener.call(EventPriority.IGNORE, event);
     }
 }
