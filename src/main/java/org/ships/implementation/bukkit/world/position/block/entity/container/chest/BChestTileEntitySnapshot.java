@@ -32,7 +32,7 @@ public class BChestTileEntitySnapshot implements ChestTileEntitySnapshot {
 
     @Override
     public Collection<BlockType> getSupportedBlocks() {
-        return Arrays.asList(BlockTypes.CHEST.get(), BlockTypes.TRAPPED_CHEST.get());
+        return Arrays.asList(BlockTypes.CHEST, BlockTypes.TRAPPED_CHEST);
     }
 
     @Override

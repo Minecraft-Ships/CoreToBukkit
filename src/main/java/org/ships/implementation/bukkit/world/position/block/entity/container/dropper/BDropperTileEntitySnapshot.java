@@ -9,18 +9,18 @@ import org.core.world.position.block.entity.container.dropper.DropperTileEntityS
 import org.core.world.position.block.entity.container.dropper.LiveDropperTileEntity;
 import org.ships.implementation.bukkit.inventory.inventories.snapshot.block.dispenser.BDropperInventorySnapshot;
 
-import java.util.Arrays;
 import java.util.Collection;
+import java.util.Collections;
 
 public class BDropperTileEntitySnapshot implements DropperTileEntitySnapshot {
 
     protected DropperInventorySnapshot inventory;
 
-    public BDropperTileEntitySnapshot(){
+    public BDropperTileEntitySnapshot() {
         inventory = new BDropperInventorySnapshot();
     }
 
-    public BDropperTileEntitySnapshot(DropperTileEntity dte){
+    public BDropperTileEntitySnapshot(DropperTileEntity dte) {
         this.inventory = dte.getInventory().createSnapshot();
     }
 
@@ -32,7 +32,7 @@ public class BDropperTileEntitySnapshot implements DropperTileEntitySnapshot {
 
     @Override
     public Collection<BlockType> getSupportedBlocks() {
-        return Arrays.asList(BlockTypes.DROPPER.get());
+        return Collections.singletonList(BlockTypes.DROPPER);
     }
 
     @Override

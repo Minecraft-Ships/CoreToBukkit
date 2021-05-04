@@ -32,7 +32,7 @@ public class BDispenserTileEntitySnapshot implements DispenserTileEntitySnapshot
 
     @Override
     public Collection<BlockType> getSupportedBlocks() {
-        return Collections.singletonList(BlockTypes.DISPENSER.get());
+        return Collections.singletonList(BlockTypes.DISPENSER);
     }
 
     @Override

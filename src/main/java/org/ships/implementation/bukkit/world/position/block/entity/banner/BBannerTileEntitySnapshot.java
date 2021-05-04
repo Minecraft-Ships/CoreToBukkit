@@ -30,7 +30,7 @@ public class BBannerTileEntitySnapshot implements BannerTileEntitySnapshot {
 
     @Override
     public Collection<BlockType> getSupportedBlocks() {
-        return BlockTypes1V13.BLACK_BANNER.get().getLike();
+        return BlockTypes1V13.BLACK_BANNER.getLike();
     }
 
     @Override

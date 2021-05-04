@@ -13,10 +13,11 @@ public class BSignEntitySnapshot implements SignTileEntitySnapshot {
 
     protected Text[] lines;
 
-    public BSignEntitySnapshot(SignTileEntity entity){
+    public BSignEntitySnapshot(SignTileEntity entity) {
         this(entity.getLines());
     }
 
+    @Deprecated
     public BSignEntitySnapshot(Text... lines) {
         this.lines = lines.clone();
     }
@@ -28,7 +29,7 @@ public class BSignEntitySnapshot implements SignTileEntitySnapshot {
 
     @Override
     public SignTileEntitySnapshot setLines(Text... lines) throws IndexOutOfBoundsException {
-        if(lines.length > 4){
+        if (lines.length > 4) {
             throw new IndexOutOfBoundsException();
         }
         this.lines = lines.clone();
@@ -43,7 +44,7 @@ public class BSignEntitySnapshot implements SignTileEntitySnapshot {
 
     @Override
     public Collection<BlockType> getSupportedBlocks() {
-        return BlockTypes.OAK_SIGN.get().getLike();
+        return BlockTypes.OAK_SIGN.getLike();
     }
 
     @Override

@@ -19,7 +19,7 @@ public class AbstractBlockChangeEvent implements BlockChangeEvent {
     protected BlockDetails before;
     protected BlockDetails after;
 
-    public AbstractBlockChangeEvent(SyncBlockPosition pos, BlockDetails before, BlockDetails after){
+    public AbstractBlockChangeEvent(SyncBlockPosition pos, BlockDetails before, BlockDetails after) {
         this.position = pos;
         this.before = before;
         this.after = after;
@@ -109,7 +109,7 @@ public class AbstractBlockChangeEvent implements BlockChangeEvent {
         protected Explosion explosion;
 
         public BreakBlockChangeExplode(SyncBlockPosition pos, Explosion explosion) {
-            super(pos, pos.getBlockDetails(), BlockTypes.AIR.get().getDefaultBlockDetails());
+            super(pos, pos.getBlockDetails(), BlockTypes.AIR.getDefaultBlockDetails());
             this.explosion = explosion;
         }
 
@@ -129,13 +129,13 @@ public class AbstractBlockChangeEvent implements BlockChangeEvent {
         }
     }
 
-    public static class BreakBlockChangeEventPlayer extends AbstractBlockChangeEvent implements BlockChangeEvent.Break.Pre.ByPlayer{
+    public static class BreakBlockChangeEventPlayer extends AbstractBlockChangeEvent implements BlockChangeEvent.Break.Pre.ByPlayer {
 
         protected LivePlayer player;
         protected boolean isCancelled;
 
         public BreakBlockChangeEventPlayer(SyncBlockPosition pos, LivePlayer player) {
-            super(pos, pos.getBlockDetails(), BlockTypes.AIR.get().getDefaultBlockDetails());
+            super(pos, pos.getBlockDetails(), BlockTypes.AIR.getDefaultBlockDetails());
             this.player = player;
         }
 

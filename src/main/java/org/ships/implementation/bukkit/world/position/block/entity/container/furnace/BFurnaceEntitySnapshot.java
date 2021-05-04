@@ -8,8 +8,8 @@ import org.core.world.position.block.entity.container.furnace.FurnaceTileEntityS
 import org.core.world.position.block.entity.container.furnace.LiveFurnaceTileEntity;
 import org.ships.implementation.bukkit.inventory.inventories.snapshot.block.BFurnaceInventorySnapshot;
 
-import java.util.Arrays;
 import java.util.Collection;
+import java.util.Collections;
 
 public class BFurnaceEntitySnapshot implements FurnaceTileEntitySnapshot {
 
@@ -31,7 +31,7 @@ public class BFurnaceEntitySnapshot implements FurnaceTileEntitySnapshot {
 
     @Override
     public Collection<BlockType> getSupportedBlocks() {
-        return Arrays.asList(BlockTypes.FURNACE.get());
+        return Collections.singletonList(BlockTypes.FURNACE);
     }
 
     @Override

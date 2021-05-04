@@ -8,6 +8,7 @@ import org.core.world.position.block.blocktypes.post.BlockTypes1V14;
 import org.ships.implementation.bukkit.world.position.block.details.blocks.data.keyed.BAttachableKeyedData;
 
 import java.lang.reflect.InvocationTargetException;
+import java.util.AbstractMap;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Map;
@@ -18,37 +19,29 @@ public enum AttachableWorkAround1D14 implements BAttachableKeyedData.AttachableB
 
     LANTERN(d -> {
         try {
-            return ((boolean)d.getClass().getMethod("isHanging").invoke(d)) ? FourFacingDirection.UP : FourFacingDirection.DOWN;
-        } catch (IllegalAccessException e) {
-            e.printStackTrace();
-        } catch (InvocationTargetException e) {
-            e.printStackTrace();
-        } catch (NoSuchMethodException e) {
+            return ((boolean) d.getClass().getMethod("isHanging").invoke(d)) ? FourFacingDirection.UP : FourFacingDirection.DOWN;
+        } catch (IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {
             e.printStackTrace();
         }
         return null;
     }, e -> {
-        boolean hanging = e.getValue().equals(FourFacingDirection.DOWN) ? false : true;
+        boolean hanging = !e.getValue().equals(FourFacingDirection.DOWN);
         try {
             e.getKey().getClass().getMethod("setHanging", boolean.class).invoke(e.getKey(), hanging);
-        } catch (IllegalAccessException ex) {
-            ex.printStackTrace();
-        } catch (InvocationTargetException ex) {
-            ex.printStackTrace();
-        } catch (NoSuchMethodException ex) {
+        } catch (IllegalAccessException | InvocationTargetException | NoSuchMethodException ex) {
             ex.printStackTrace();
         }
-    }, BlockTypes1V14.LANTERN.get());
+    }, BlockTypes1V14.LANTERN);
 
-    private Collection<BlockType> collection;
-    private Function<BlockData, Direction> functionDirection;
-    private Consumer<Map.Entry<BlockData, Direction>> consumer;
+    private final Collection<BlockType> collection;
+    private final Function<BlockData, Direction> functionDirection;
+    private final Consumer<Map.Entry<BlockData, Direction>> consumer;
 
-    AttachableWorkAround1D14(Function<BlockData, Direction> getDir, Consumer<Map.Entry<BlockData, Direction>> setDir, BlockType... types){
+    AttachableWorkAround1D14(Function<BlockData, Direction> getDir, Consumer<Map.Entry<BlockData, Direction>> setDir, BlockType... types) {
         this(getDir, setDir, Arrays.asList(types));
     }
 
-    AttachableWorkAround1D14(Function<BlockData, Direction> getDir, Consumer<Map.Entry<BlockData, Direction>> setDir, Collection<BlockType> blockTypes){
+    AttachableWorkAround1D14(Function<BlockData, Direction> getDir, Consumer<Map.Entry<BlockData, Direction>> setDir, Collection<BlockType> blockTypes) {
         this.consumer = setDir;
         this.functionDirection = getDir;
         this.collection = blockTypes;
@@ -66,24 +59,7 @@ public enum AttachableWorkAround1D14 implements BAttachableKeyedData.AttachableB
 
     @Override
     public BlockData setAttachedDirection(BlockData data, Direction direction) {
-        this.consumer.accept(new Map.Entry(){
-
-            @Override
-            public Object getKey() {
-                return data;
-            }
-
-            @Override
-            public Object getValue() {
-                return direction;
-            }
-
-            @Deprecated
-            @Override
-            public Object setValue(Object o) {
-                return o;
-            }
-        });
+        this.consumer.accept(new AbstractMap.SimpleImmutableEntry<>(data, direction));
         return data;
     }
 }

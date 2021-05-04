@@ -19,24 +19,24 @@ import java.util.stream.Collectors;
 
 public enum CommonAttachableWorkAround implements BAttachableKeyedData.AttachableBlockWorkAround {
 
-    CARPET(b -> FourFacingDirection.DOWN, e -> {}, BlockTypes1V13.BLACK_CARPET.get().getLike()),
-    FIRE(b -> FourFacingDirection.DOWN, e -> {}, BlockTypes.FIRE.get()),
-    REDSTONE(b -> FourFacingDirection.DOWN, e -> {}, BlockTypes.REDSTONE_WIRE.get()),
-    REPEATER(b -> FourFacingDirection.DOWN, e -> {}, BlockTypes1V13.REPEATER.get()),
-    SNOW(b -> FourFacingDirection.DOWN, e -> {}, BlockTypes.SNOW.get()),
+    CARPET(b -> FourFacingDirection.DOWN, e -> {}, BlockTypes1V13.BLACK_CARPET.getLike()),
+    FIRE(b -> FourFacingDirection.DOWN, e -> {}, BlockTypes.FIRE),
+    REDSTONE(b -> FourFacingDirection.DOWN, e -> {}, BlockTypes.REDSTONE_WIRE),
+    REPEATER(b -> FourFacingDirection.DOWN, e -> {}, BlockTypes1V13.REPEATER),
+    SNOW(b -> FourFacingDirection.DOWN, e -> {}, BlockTypes.SNOW),
     RAIL(b -> FourFacingDirection.DOWN,
-            e -> {}, BlockTypes.RAIL.get(),
-            BlockTypes.ACTIVATOR_RAIL.get(),
-            BlockTypes.DETECTOR_RAIL.get(),
-            BlockTypes1V13.POWERED_RAIL.get()),
+            e -> {}, BlockTypes.RAIL,
+            BlockTypes.ACTIVATOR_RAIL,
+            BlockTypes.DETECTOR_RAIL,
+            BlockTypes1V13.POWERED_RAIL),
     STANDING_TORCH(b -> FourFacingDirection.DOWN, e -> {},
             BlockGroups1V13.STANDING_TORCH.getGrouped()),
     LADDER(BAttachableKeyedData.AttachableBlockWorkAround.GET_DIRECTION_FROM_BLOOCK_DATA,
             BAttachableKeyedData.AttachableBlockWorkAround.SET_BLOCK_DATA_FROM_DIRECTION,
-            BlockTypes.LADDER.get()),
+            BlockTypes.LADDER),
     LEVER(BAttachableKeyedData.AttachableBlockWorkAround.GET_DIRECTION_FROM_BLOOCK_DATA,
             BAttachableKeyedData.AttachableBlockWorkAround.SET_BLOCK_DATA_FROM_DIRECTION,
-            BlockTypes.LEVER.get()),
+            BlockTypes.LEVER),
     WALL_TORCH(BAttachableKeyedData.AttachableBlockWorkAround.GET_DIRECTION_FROM_BLOOCK_DATA,
             BAttachableKeyedData.AttachableBlockWorkAround.SET_BLOCK_DATA_FROM_DIRECTION,
             BlockGroups1V13.WALL_TORCH.getGrouped()),
@@ -45,10 +45,10 @@ public enum CommonAttachableWorkAround implements BAttachableKeyedData.Attachabl
             BlockGroups1V13.BUTTON.getGrouped()),
     PISTON(BAttachableKeyedData.AttachableBlockWorkAround.GET_DIRECTION_FROM_BLOOCK_DATA,
             BAttachableKeyedData.AttachableBlockWorkAround.SET_BLOCK_DATA_FROM_DIRECTION,
-            BlockTypes.MOVING_PISTON.get(), BlockTypes.PISTON_HEAD.get()),
+            BlockTypes.MOVING_PISTON, BlockTypes.PISTON_HEAD),
     SIGN(BAttachableKeyedData.AttachableBlockWorkAround.GET_DIRECTION_FROM_BLOOCK_DATA,
             BAttachableKeyedData.AttachableBlockWorkAround.SET_BLOCK_DATA_FROM_DIRECTION,
-            BlockTypes.OAK_WALL_SIGN.get().getLike().stream()
+            BlockTypes.OAK_WALL_SIGN.getLike().stream()
                     .filter(st -> ((BBlockDetails)st.getDefaultBlockDetails()).getBukkitData() instanceof org.bukkit.block.data.Directional)
                     .collect(Collectors.toSet()));
 
