@@ -1,11 +1,19 @@
 package org.ships.implementation.bukkit.inventory.item.stack;
 
+import org.bukkit.Bukkit;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
+import org.core.adventureText.AText;
 import org.core.inventory.item.stack.ItemStackSnapshot;
+
+import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
+import java.util.stream.Collectors;
 
 public class BItemStackSnapshot extends BAbstractItemStack implements ItemStackSnapshot {
 
-    public BItemStackSnapshot(BAbstractItemStack stack){
+    public BItemStackSnapshot(BAbstractItemStack stack) {
         this(stack.getBukkitItem());
     }
 

@@ -3,6 +3,7 @@ package org.ships.implementation.bukkit.entity;
 import org.bukkit.Location;
 import org.bukkit.util.Vector;
 import org.core.CorePlugin;
+import org.core.adventureText.AText;
 import org.core.entity.Entity;
 import org.core.entity.EntitySnapshot;
 import org.core.entity.EntityType;
@@ -11,6 +12,7 @@ import org.core.text.Text;
 import org.core.vector.type.Vector3;
 import org.core.world.position.impl.sync.SyncExactPosition;
 import org.core.world.position.impl.sync.SyncPosition;
+import org.jetbrains.annotations.Nullable;
 import org.ships.implementation.bukkit.platform.BukkitPlatform;
 import org.ships.implementation.bukkit.text.BText;
 import org.ships.implementation.bukkit.world.BWorldExtent;
@@ -104,6 +106,16 @@ public class BSnapshotValueEntity<BE extends org.bukkit.entity.Entity, E extends
     }
 
     @Override
+    public Entity<EntitySnapshot<? extends LiveEntity>> setCustomName(@Nullable AText text) {
+        if(text == null){
+            this.<String>getSnapshotValue("CUSTOM_NAME").get().setValue(null);
+            return this;
+        }
+        this.<String>getSnapshotValue("CUSTOM_NAME").get().setValue(text.toLegacy());
+        return this;
+    }
+
+    @Override
     public Entity<EntitySnapshot<? extends LiveEntity>> setCustomNameVisible(boolean visible) {
         this.<Boolean>getSnapshotValue("CUSTOM_NAME_VISIBLE").get().setValue(visible);
         return this;
@@ -136,9 +148,9 @@ public class BSnapshotValueEntity<BE extends org.bukkit.entity.Entity, E extends
     }
 
     @Override
-    public Optional<Text> getCustomName() {
+    public Optional<AText> getCustomName() {
         Optional<EntitySnapshotValue<?, String>> opText = this.getSnapshotValue("CUSTOM_NAME");
-        return opText.map(stringEntitySnapshotValue -> new BText(stringEntitySnapshotValue.getValue()));
+        return opText.map(stringEntitySnapshotValue -> AText.ofLegacy(stringEntitySnapshotValue.getValue()));
     }
 
     @Override

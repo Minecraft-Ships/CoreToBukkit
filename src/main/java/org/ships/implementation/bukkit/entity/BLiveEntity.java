@@ -1,12 +1,15 @@
 package org.ships.implementation.bukkit.entity;
 
 import org.core.CorePlugin;
+import org.core.adventureText.AText;
+import org.core.entity.Entity;
 import org.core.entity.LiveEntity;
 import org.core.text.Text;
 import org.core.vector.type.Vector3;
 import org.core.world.position.impl.sync.SyncBlockPosition;
 import org.core.world.position.impl.sync.SyncExactPosition;
 import org.core.world.position.impl.sync.SyncPosition;
+import org.jetbrains.annotations.Nullable;
 import org.ships.implementation.bukkit.platform.BukkitPlatform;
 import org.ships.implementation.bukkit.text.BText;
 import org.ships.implementation.bukkit.world.position.impl.sync.BExactPosition;
@@ -20,7 +23,7 @@ public abstract class BLiveEntity<T extends org.bukkit.entity.Entity> implements
 
     protected T entity;
 
-    public BLiveEntity(T entity){
+    public BLiveEntity(T entity) {
         this.entity = entity;
     }
 
@@ -34,7 +37,7 @@ public abstract class BLiveEntity<T extends org.bukkit.entity.Entity> implements
         ((BEntitySnapshot<? extends LiveEntity>)snapshot).applyDefaults(this);
     }*/
 
-    public T getBukkitEntity(){
+    public T getBukkitEntity() {
         return this.entity;
     }
 
@@ -57,7 +60,7 @@ public abstract class BLiveEntity<T extends org.bukkit.entity.Entity> implements
     @Override
     public BLiveEntity<T> setPitch(double value) {
         org.bukkit.Location loc = this.entity.getLocation();
-        loc.setPitch((float)value);
+        loc.setPitch((float) value);
         entity.teleport(loc);
         return this;
     }
@@ -65,7 +68,7 @@ public abstract class BLiveEntity<T extends org.bukkit.entity.Entity> implements
     @Override
     public BLiveEntity<T> setYaw(double value) {
         org.bukkit.Location loc = this.entity.getLocation();
-        loc.setYaw((float)value);
+        loc.setYaw((float) value);
         entity.teleport(loc);
         return this;
     }
@@ -77,7 +80,7 @@ public abstract class BLiveEntity<T extends org.bukkit.entity.Entity> implements
 
     @Override
     public BLiveEntity<T> setPosition(SyncPosition<? extends Number> position) {
-        BExactPosition position1 = position instanceof BExactPosition ? (BExactPosition)position : (BExactPosition) ((SyncBlockPosition)position).toExactPosition();
+        BExactPosition position1 = position instanceof BExactPosition ? (BExactPosition) position : (BExactPosition) ((SyncBlockPosition) position).toExactPosition();
         this.entity.teleport(position1.getBukkitLocation());
         return this;
     }
@@ -99,7 +102,7 @@ public abstract class BLiveEntity<T extends org.bukkit.entity.Entity> implements
 
     @Override
     public Collection<LiveEntity> getPassengers() {
-        BukkitPlatform bukkitPlatform = (BukkitPlatform)CorePlugin.getPlatform();
+        BukkitPlatform bukkitPlatform = (BukkitPlatform) CorePlugin.getPlatform();
         Set<LiveEntity> set = new HashSet<>();
         this.entity.getPassengers().forEach(e -> set.add(bukkitPlatform.createEntityInstance(e)));
         return set;
@@ -121,40 +124,47 @@ public abstract class BLiveEntity<T extends org.bukkit.entity.Entity> implements
     }
 
     @Override
-    public LiveEntity setVelocity(Vector3<Double> velocity){
+    public LiveEntity setVelocity(Vector3<Double> velocity) {
         this.entity.setVelocity(new org.bukkit.util.Vector(velocity.getX(), velocity.getY(), velocity.getZ()));
         return this;
     }
 
     @Override
-    public Vector3<Double> getVelocity(){
+    public Vector3<Double> getVelocity() {
         org.bukkit.util.Vector vector = this.entity.getVelocity();
         return Vector3.valueOf(vector.getX(), vector.getY(), vector.getZ());
     }
 
     @Override
-    public LiveEntity setCustomName(Text text){
-        this.entity.setCustomName(((BText)text).toBukkitString());
+    @Deprecated
+    public LiveEntity setCustomName(Text text) {
+        this.entity.setCustomName(((BText) text).toBukkitString());
         return this;
     }
 
     @Override
-    public Optional<Text> getCustomName(){
+    public Optional<AText> getCustomName() {
         String customName = this.entity.getCustomName();
-        if(customName == null){
+        if (customName == null) {
             return Optional.empty();
         }
-        return Optional.of(CorePlugin.buildText(customName));
+        return Optional.of(AText.ofLegacy(customName));
     }
 
     @Override
-    public LiveEntity setCustomNameVisible(boolean visible){
+    public Entity<LiveEntity> setCustomName(@Nullable AText text) {
+        this.entity.setCustomName(text.toLegacy());
+        return this;
+    }
+
+    @Override
+    public LiveEntity setCustomNameVisible(boolean visible) {
         this.entity.setCustomNameVisible(visible);
         return this;
     }
 
     @Override
-    public boolean isCustomNameVisible(){
+    public boolean isCustomNameVisible() {
         return this.entity.isCustomNameVisible();
     }
 

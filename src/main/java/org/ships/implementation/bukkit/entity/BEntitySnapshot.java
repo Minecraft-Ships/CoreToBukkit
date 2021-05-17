@@ -1,5 +1,6 @@
 package org.ships.implementation.bukkit.entity;
 
+import org.core.adventureText.AText;
 import org.core.entity.EntitySnapshot;
 import org.core.entity.LiveEntity;
 import org.core.text.Text;
@@ -7,12 +8,13 @@ import org.core.vector.type.Vector3;
 import org.core.world.position.impl.sync.SyncBlockPosition;
 import org.core.world.position.impl.sync.SyncExactPosition;
 import org.core.world.position.impl.sync.SyncPosition;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Optional;
 
-public abstract class BEntitySnapshot <T extends LiveEntity> implements EntitySnapshot<T> {
+public abstract class BEntitySnapshot<T extends LiveEntity> implements EntitySnapshot<T> {
 
     protected double pitch;
     protected double yaw;
@@ -22,15 +24,15 @@ public abstract class BEntitySnapshot <T extends LiveEntity> implements EntitySn
     protected boolean hasGravity;
     protected boolean isOnGround;
     protected Vector3<Double> velocity;
-    protected Text customName;
+    protected AText customName;
     protected boolean isCustomNameVisible;
     protected T createdFrom;
 
-    public BEntitySnapshot(SyncExactPosition position){
+    public BEntitySnapshot(SyncExactPosition position) {
         this.position = position;
     }
 
-    public BEntitySnapshot(T entity){
+    public BEntitySnapshot(T entity) {
         this.hasGravity = entity.hasGravity();
         this.customName = entity.getCustomName().orElse(null);
         this.velocity = entity.getVelocity();
@@ -43,7 +45,7 @@ public abstract class BEntitySnapshot <T extends LiveEntity> implements EntitySn
         this.isOnGround = entity.isOnGround();
     }
 
-    public BEntitySnapshot(EntitySnapshot<T> entity){
+    public BEntitySnapshot(EntitySnapshot<T> entity) {
         this.hasGravity = entity.hasGravity();
         this.customName = entity.getCustomName().orElse(null);
         this.velocity = entity.getVelocity();
@@ -56,9 +58,9 @@ public abstract class BEntitySnapshot <T extends LiveEntity> implements EntitySn
         this.isOnGround = entity.isOnGround();
     }
 
-    protected <L extends LiveEntity> L applyDefaults(L entity){
+    protected <L extends LiveEntity> L applyDefaults(L entity) {
         entity.setCustomNameVisible(this.isCustomNameVisible);
-        if(this.customName != null) {
+        if (this.customName != null) {
             entity.setCustomName(this.customName);
         }
         entity.setGravity(this.hasGravity);
@@ -95,7 +97,7 @@ public abstract class BEntitySnapshot <T extends LiveEntity> implements EntitySn
 
     @Override
     public EntitySnapshot<T> setPosition(SyncPosition<? extends Number> position) {
-        this.position = position instanceof SyncExactPosition ? (SyncExactPosition)position : ((SyncBlockPosition)position).toExactPosition();
+        this.position = position instanceof SyncExactPosition ? (SyncExactPosition) position : ((SyncBlockPosition) position).toExactPosition();
         return this;
     }
 
@@ -148,40 +150,46 @@ public abstract class BEntitySnapshot <T extends LiveEntity> implements EntitySn
     }
 
     @Override
-    public EntitySnapshot<T> setVelocity(Vector3<Double> velocity){
+    public EntitySnapshot<T> setVelocity(Vector3<Double> velocity) {
         this.velocity = velocity;
         return this;
     }
 
     @Override
-    public Vector3<Double> getVelocity(){
+    public Vector3<Double> getVelocity() {
         return this.velocity;
     }
 
     @Override
-    public EntitySnapshot<T> setCustomName(Text text){
+    public EntitySnapshot<T> setCustomName(Text text) {
+        this.customName = text.toAdventure();
+        return this;
+    }
+
+    @Override
+    public EntitySnapshot<T> setCustomName(@Nullable AText text) {
         this.customName = text;
         return this;
     }
 
     @Override
-    public Optional<Text> getCustomName(){
+    public Optional<AText> getCustomName() {
         return Optional.ofNullable(this.customName);
     }
 
     @Override
-    public EntitySnapshot<T> setCustomNameVisible(boolean visible){
+    public EntitySnapshot<T> setCustomNameVisible(boolean visible) {
         this.isCustomNameVisible = visible;
         return this;
     }
 
     @Override
-    public boolean isCustomNameVisible(){
+    public boolean isCustomNameVisible() {
         return this.isCustomNameVisible;
     }
 
     @Override
-    public Optional<T> getCreatedFrom(){
+    public Optional<T> getCreatedFrom() {
         return Optional.ofNullable(this.createdFrom);
     }
 }

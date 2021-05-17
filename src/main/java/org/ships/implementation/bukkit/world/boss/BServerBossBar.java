@@ -3,6 +3,7 @@ package org.ships.implementation.bukkit.world.boss;
 import org.bukkit.Bukkit;
 import org.bukkit.boss.BarColor;
 import org.bukkit.boss.BarStyle;
+import org.core.adventureText.AText;
 import org.core.entity.living.human.player.LivePlayer;
 import org.core.text.Text;
 import org.core.world.boss.ServerBossBar;
@@ -19,11 +20,11 @@ public class BServerBossBar implements ServerBossBar {
 
     org.bukkit.boss.BossBar bossBar;
 
-    public BServerBossBar(){
+    public BServerBossBar() {
         this(Bukkit.createBossBar("<Unset Message>", BarColor.PURPLE, BarStyle.SOLID));
     }
 
-    public BServerBossBar(org.bukkit.boss.BossBar boss){
+    public BServerBossBar(org.bukkit.boss.BossBar boss) {
         this.bossBar = boss;
     }
 
@@ -36,7 +37,18 @@ public class BServerBossBar implements ServerBossBar {
     @Override
     @Deprecated
     public ServerBossBar setMessage(Text text) {
-        this.bossBar.setTitle(((BText)text).toBukkitString());
+        this.bossBar.setTitle(((BText) text).toBukkitString());
+        return this;
+    }
+
+    @Override
+    public AText getTitle() {
+        return AText.ofLegacy(this.bossBar.getTitle());
+    }
+
+    @Override
+    public ServerBossBar setTitle(AText text) {
+        this.bossBar.setTitle(text.toLegacy());
         return this;
     }
 
@@ -47,21 +59,21 @@ public class BServerBossBar implements ServerBossBar {
 
     @Override
     public ServerBossBar setColour(BossColour colour) {
-        this.bossBar.setColor(((BBossColour)colour).getBukkitColor());
+        this.bossBar.setColor(((BBossColour) colour).getBukkitColor());
         return this;
     }
 
     @Override
     public int getValue() {
-        return (int)(this.bossBar.getProgress() * 100);
+        return (int) (this.bossBar.getProgress() * 100);
     }
 
     @Override
     public ServerBossBar setValue(int value) {
-        if(value > 100){
+        if (value > 100) {
             throw new IllegalArgumentException("ServerBossBar.SetValue must be between 0 and 100 (" + value + ")");
         }
-        double percent = (value/100.0);
+        double percent = (value / 100.0);
         this.bossBar.setProgress(percent);
         return this;
     }
@@ -76,16 +88,16 @@ public class BServerBossBar implements ServerBossBar {
 
     @Override
     public ServerBossBar register(LivePlayer... players) {
-        for(LivePlayer player : players){
-            this.bossBar.addPlayer(((BLivePlayer)player).getBukkitEntity());
+        for (LivePlayer player : players) {
+            this.bossBar.addPlayer(((BLivePlayer) player).getBukkitEntity());
         }
         return this;
     }
 
     @Override
     public ServerBossBar deregister(LivePlayer... players) {
-        for(LivePlayer player : players){
-            this.bossBar.removePlayer(((BLivePlayer)player).getBukkitEntity());
+        for (LivePlayer player : players) {
+            this.bossBar.removePlayer(((BLivePlayer) player).getBukkitEntity());
         }
         return this;
     }

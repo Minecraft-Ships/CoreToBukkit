@@ -2,7 +2,7 @@ package org.ships.implementation.bukkit.world.position.block;
 
 import org.core.CorePlugin;
 import org.core.inventory.item.ItemType;
-import org.core.utils.Identifable;
+import org.core.utils.Identifiable;
 import org.core.world.position.block.BlockType;
 import org.core.world.position.block.details.BlockDetails;
 import org.core.world.position.block.grouptype.BlockGroup;
@@ -31,8 +31,8 @@ public class BBlockType implements BlockType {
 
     @Override
     public boolean equals(Object object){
-        if(object instanceof Identifable){
-            Identifable type = (Identifable)object;
+        if(object instanceof Identifiable){
+            Identifiable type = (Identifiable)object;
             return type.getId().equals(this.getId());
         }
         return false;

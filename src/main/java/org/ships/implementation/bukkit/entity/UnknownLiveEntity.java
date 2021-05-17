@@ -1,7 +1,10 @@
 package org.ships.implementation.bukkit.entity;
 
+import org.core.adventureText.AText;
+import org.core.entity.Entity;
 import org.core.entity.EntitySnapshot;
 import org.core.entity.LiveEntity;
+import org.jetbrains.annotations.Nullable;
 
 public class UnknownLiveEntity<T extends org.bukkit.entity.Entity> extends BLiveEntity<T> {
 
