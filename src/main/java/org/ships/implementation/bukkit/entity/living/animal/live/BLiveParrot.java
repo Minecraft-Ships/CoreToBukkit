@@ -53,7 +53,7 @@ public class BLiveParrot extends BLiveEntity<org.bukkit.entity.Parrot> implement
 
     @Override
     public EntityType<LiveParrot, ParrotSnapshot> getType() {
-        return EntityTypes.PARROT;
+        return EntityTypes.PARROT.get();
     }
 
     @Override

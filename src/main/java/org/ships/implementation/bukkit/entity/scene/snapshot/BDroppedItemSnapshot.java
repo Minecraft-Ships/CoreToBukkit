@@ -92,7 +92,7 @@ public class BDroppedItemSnapshot extends BEntitySnapshot<LiveDroppedItem> imple
 
     @Override
     public EntityType<LiveDroppedItem, DroppedItemSnapshot> getType() {
-        return EntityTypes.DROPPED_ITEM;
+        return EntityTypes.DROPPED_ITEM.get();
     }
 
     @Override

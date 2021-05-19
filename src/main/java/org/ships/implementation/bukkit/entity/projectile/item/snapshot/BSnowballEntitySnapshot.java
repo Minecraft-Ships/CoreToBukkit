@@ -46,7 +46,7 @@ public class BSnowballEntitySnapshot extends BEntitySnapshot<LiveSnowballEntity>
 
     @Override
     public EntityType<LiveSnowballEntity, SnowballEntitySnapshot> getType() {
-        return EntityTypes.SNOWBALL;
+        return EntityTypes.SNOWBALL.get();
     }
 
     @Override

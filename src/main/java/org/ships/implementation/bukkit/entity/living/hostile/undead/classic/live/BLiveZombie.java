@@ -39,7 +39,8 @@ public class BLiveZombie extends BLiveEntity<org.bukkit.entity.Zombie> implement
 
     @Override
     public EntityType<LiveClassicZombie, ClassicZombieSnapshot> getType() {
-        return EntityTypes.ZOMBIE;
+        return EntityTypes
+                .ZOMBIE.get();
     }
 
     @Override

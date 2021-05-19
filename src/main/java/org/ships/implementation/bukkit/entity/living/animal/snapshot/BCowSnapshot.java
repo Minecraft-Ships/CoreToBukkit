@@ -43,7 +43,7 @@ public class BCowSnapshot extends BEntitySnapshot<LiveCow> implements CowSnapsho
 
     @Override
     public EntityType<LiveCow, CowSnapshot> getType() {
-        return EntityTypes.COW;
+        return EntityTypes.COW.get();
     }
 
     @Override

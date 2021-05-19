@@ -50,7 +50,7 @@ public class BParrotSnapshot extends BEntitySnapshot<LiveParrot> implements Parr
 
     @Override
     public EntityType<LiveParrot, ParrotSnapshot> getType() {
-        return EntityTypes.PARROT;
+        return EntityTypes.PARROT.get();
     }
 
     @Override

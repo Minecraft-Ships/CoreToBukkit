@@ -81,7 +81,7 @@ public class BItemFrameSnapshot extends BEntitySnapshot<LiveItemFrame> implement
 
     @Override
     public EntityType<LiveItemFrame, ItemFrameSnapshot> getType() {
-        return EntityTypes.ITEM_FRAME;
+        return EntityTypes.ITEM_FRAME.get();
     }
 
     @Override

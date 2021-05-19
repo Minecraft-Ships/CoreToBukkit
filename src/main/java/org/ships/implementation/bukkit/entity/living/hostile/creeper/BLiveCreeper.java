@@ -33,7 +33,7 @@ public class BLiveCreeper extends BLiveEntity<org.bukkit.entity.Creeper> impleme
 
     @Override
     public EntityType<LiveCreeperEntity, CreeperEntitySnapshot> getType() {
-        return EntityTypes.CREEPER;
+        return EntityTypes.CREEPER.get();
     }
 
     @Override

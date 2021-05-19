@@ -74,7 +74,7 @@ public class BBlockPosition extends BAbstractPosition<Integer> implements SyncBl
 
     @Override
     public BBlockPosition setBlock(BlockDetails details, PositionFlag.SetFlag... flags) {
-        BApplyPhysicsFlag physicsFlag = (BApplyPhysicsFlag) Stream.of(flags).filter(b -> b instanceof ApplyPhysicsFlag).findAny().orElse(ApplyPhysicsFlags.NONE);
+        BApplyPhysicsFlag physicsFlag = (BApplyPhysicsFlag) Stream.of(flags).filter(b -> b instanceof ApplyPhysicsFlag).findAny().orElse(ApplyPhysicsFlags.NONE.get());
 
         this.block.setBlockData(((IBBlockDetails)details).getBukkitData(), physicsFlag.getBukitValue());
         Optional<TileEntitySnapshot<? extends TileEntity>> opTile = details.get(KeyedData.TILED_ENTITY);

@@ -45,7 +45,7 @@ public class BChickenSnapshot extends BEntitySnapshot<LiveChicken> implements Ch
 
     @Override
     public EntityType<LiveChicken, ChickenSnapshot> getType() {
-        return EntityTypes.CHICKEN;
+        return EntityTypes.CHICKEN.get();
     }
 
     @Override

@@ -54,7 +54,7 @@ public class BCreeperSnapshot extends BEntitySnapshot<LiveCreeperEntity> impleme
 
     @Override
     public EntityType<LiveCreeperEntity, CreeperEntitySnapshot> getType() {
-        return EntityTypes.CREEPER;
+        return EntityTypes.CREEPER.get();
     }
 
     @Override

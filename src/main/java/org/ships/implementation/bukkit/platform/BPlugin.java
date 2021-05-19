@@ -15,7 +15,7 @@ public class BPlugin implements Plugin {
 
     protected org.bukkit.plugin.Plugin plugin;
 
-    public BPlugin(org.bukkit.plugin.Plugin plugin){
+    public BPlugin(org.bukkit.plugin.Plugin plugin) {
         this.plugin = plugin;
     }
 
@@ -41,6 +41,16 @@ public class BPlugin implements Plugin {
     }
 
     @Override
+    public void registerPlugin() {
+
+    }
+
+    @Override
+    public void registerReady() {
+
+    }
+
+    @Override
     public org.bukkit.plugin.Plugin getLauncher() {
         return this.plugin;
     }
@@ -48,7 +58,7 @@ public class BPlugin implements Plugin {
     @Override
     public Optional<ConfigurationStream.ConfigurationFile> createConfig(String configName, File file) {
         InputStream stream = this.plugin.getResource(configName);
-        if(stream == null){
+        if (stream == null) {
             System.err.println("Request for '" + configName + "' could not be found");
             return Optional.empty();
         }

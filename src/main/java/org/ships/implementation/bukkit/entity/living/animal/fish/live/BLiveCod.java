@@ -11,8 +11,8 @@ import org.ships.implementation.bukkit.entity.living.animal.fish.snapshot.BCodSn
 public class BLiveCod extends BLiveEntity<org.bukkit.entity.Cod> implements LiveCod {
 
     @Deprecated
-    public BLiveCod(org.bukkit.entity.Entity entity){
-        super((org.bukkit.entity.Cod)entity);
+    public BLiveCod(org.bukkit.entity.Entity entity) {
+        super((org.bukkit.entity.Cod) entity);
     }
 
     public BLiveCod(org.bukkit.entity.Cod entity) {
@@ -21,7 +21,7 @@ public class BLiveCod extends BLiveEntity<org.bukkit.entity.Cod> implements Live
 
     @Override
     public EntityType<LiveCod, CodSnapshot> getType() {
-        return EntityTypes.COD;
+        return EntityTypes.COD.get();
     }
 
     @Override

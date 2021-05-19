@@ -44,7 +44,7 @@ public class BBatSnapshot extends BEntitySnapshot<LiveBat> implements BatSnapsho
 
     @Override
     public EntityType<LiveBat, BatSnapshot> getType() {
-        return EntityTypes.BAT;
+        return EntityTypes.BAT.get();
     }
 
     @Override

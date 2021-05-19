@@ -38,7 +38,7 @@ public class BLiveBat extends BLiveEntity<org.bukkit.entity.Bat> implements Live
 
     @Override
     public EntityType<LiveBat, BatSnapshot> getType() {
-        return EntityTypes.BAT;
+        return EntityTypes.BAT.get();
     }
 
     @Override
