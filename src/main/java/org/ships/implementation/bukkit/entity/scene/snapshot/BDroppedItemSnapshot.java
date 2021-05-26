@@ -37,7 +37,7 @@ public class BDroppedItemSnapshot extends BEntitySnapshot<LiveDroppedItem> imple
 
     @Override
     public LiveDroppedItem spawnEntity() {
-        org.bukkit.Location loc = ((BExactPosition)this.position).getBukkitLocation();
+        org.bukkit.Location loc = ((BExactPosition)this.position).toBukkitLocation();
         loc.setPitch((float)this.pitch);
         loc.setYaw((float)this.yaw);
         if(!this.slot.getItem().isPresent()){

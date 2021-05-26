@@ -22,7 +22,7 @@ public class UnknownEntitySnapshot<T extends org.bukkit.entity.Entity> extends B
     @Override
     public UnknownLiveEntity<T> spawnEntity() {
         BWorldExtent world = ((BWorldExtent)this.position.getWorld());
-        T entity = (T)world.getBukkitWorld().spawnEntity(((BExactPosition)this.position).getBukkitLocation(), this.type.type);
+        T entity = (T)world.getBukkitWorld().spawnEntity(((BExactPosition)this.position).toBukkitLocation(), this.type.type);
         UnknownLiveEntity<T> coreEntity = new UnknownLiveEntity<>(entity);
         applyDefaults(coreEntity);
         return coreEntity;

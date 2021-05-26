@@ -77,7 +77,8 @@ public class BukkitPlatform implements Platform {
     protected Map<Class<? extends org.bukkit.block.BlockState>, Class<? extends LiveTileEntity>> blockStateToTileEntity = new HashMap<>();
     protected Set<TileEntitySnapshot<? extends TileEntity>> defaultTileEntities = new HashSet<>();
     protected Set<BlockGroup> blockGroups = new HashSet<>();
-    protected Set<UnspecificParser<?>> parsers = new HashSet<>();
+    protected @Deprecated
+    Set<UnspecificParser<?>> parsers = new HashSet<>();
     protected Set<BlockType> blockTypes = new HashSet<>();
     protected Set<ItemType> itemTypes = new HashSet<>();
 
@@ -140,7 +141,7 @@ public class BukkitPlatform implements Platform {
 
     public org.bukkit.projectiles.ProjectileSource getBukkitProjectileSource(ProjectileSource source) {
         if (source instanceof LiveTileEntity) {
-            return (org.bukkit.projectiles.BlockProjectileSource) ((BBlockPosition) ((LiveTileEntity) source).getPosition()).getBukkitBlock();
+            return (org.bukkit.projectiles.BlockProjectileSource) ((BBlockPosition) ((LiveTileEntity) source).getPosition()).toBukkitBlock();
         } else if (source instanceof BLiveEntity) {
             return (org.bukkit.projectiles.ProjectileSource) ((BLiveEntity) source).getBukkitEntity();
         }
@@ -266,6 +267,7 @@ public class BukkitPlatform implements Platform {
     }
 
     @Override
+    @Deprecated
     public @NotNull TextColour get(TextColours id) {
         for (org.bukkit.ChatColor color : org.bukkit.ChatColor.values()) {
             if (id.getId().equals("minecraft:" + color.name().toLowerCase())) {
@@ -299,7 +301,7 @@ public class BukkitPlatform implements Platform {
                 .stream()
                 .filter(t -> t.getId().equals(entityId.getId()))
                 .findAny()
-                .map(e -> (EntityType<E, S>)e)
+                .map(e -> (EntityType<E, S>) e)
                 .orElseThrow(() -> new RuntimeException("Could not find entity of " + entityId.getId())));
     }
 
@@ -325,6 +327,7 @@ public class BukkitPlatform implements Platform {
     }
 
     @Override
+    @Deprecated
     public Optional<TextColour> getTextColour(String id) {
         for (org.bukkit.ChatColor color : org.bukkit.ChatColor.values()) {
             BTextColour colour = new BTextColour(color);
@@ -373,6 +376,7 @@ public class BukkitPlatform implements Platform {
     }
 
     @Override
+    @Deprecated
     public Optional<UnspecificParser<?>> getUnspecifiedParser(String id) {
         return this.parsers.stream().filter(p -> p.getId().equals(id)).findFirst();
     }
@@ -394,6 +398,7 @@ public class BukkitPlatform implements Platform {
     }
 
     @Override
+    @Deprecated
     public Collection<TextColour> getTextColours() {
         Set<TextColour> set = new HashSet<>();
         for (org.bukkit.ChatColor color : org.bukkit.ChatColor.values()) {
@@ -464,6 +469,7 @@ public class BukkitPlatform implements Platform {
 
 
     @Override
+    @Deprecated
     public Collection<UnspecificParser<?>> getUnspecifiedParsers() {
         return this.parsers;
     }

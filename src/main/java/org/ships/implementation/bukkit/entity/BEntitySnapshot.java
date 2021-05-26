@@ -5,9 +5,9 @@ import org.core.entity.EntitySnapshot;
 import org.core.entity.LiveEntity;
 import org.core.text.Text;
 import org.core.vector.type.Vector3;
+import org.core.world.position.impl.Position;
 import org.core.world.position.impl.sync.SyncBlockPosition;
 import org.core.world.position.impl.sync.SyncExactPosition;
-import org.core.world.position.impl.sync.SyncPosition;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Collection;
@@ -96,7 +96,7 @@ public abstract class BEntitySnapshot<T extends LiveEntity> implements EntitySna
     }
 
     @Override
-    public EntitySnapshot<T> setPosition(SyncPosition<? extends Number> position) {
+    public EntitySnapshot<T> setPosition(Position<? extends Number> position) {
         this.position = position instanceof SyncExactPosition ? (SyncExactPosition) position : ((SyncBlockPosition) position).toExactPosition();
         return this;
     }

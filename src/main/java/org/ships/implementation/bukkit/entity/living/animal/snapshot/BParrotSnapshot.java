@@ -37,7 +37,7 @@ public class BParrotSnapshot extends BEntitySnapshot<LiveParrot> implements Parr
 
     @Override
     public BLiveParrot spawnEntity() {
-        org.bukkit.Location loc = ((BExactPosition)this.position).getBukkitLocation();
+        org.bukkit.Location loc = ((BExactPosition)this.position).toBukkitLocation();
         loc.setPitch((float)this.pitch);
         loc.setYaw((float)this.yaw);
         org.bukkit.entity.Parrot parrot = (org.bukkit.entity.Parrot)loc.getWorld().spawnEntity(loc, org.bukkit.entity.EntityType.PARROT);

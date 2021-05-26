@@ -51,7 +51,7 @@ public class BItemFrameSnapshot extends BEntitySnapshot<LiveItemFrame> implement
 
     @Override
     public LiveItemFrame spawnEntity() {
-        org.bukkit.Location loc = ((BExactPosition) this.getPosition()).getBukkitLocation();
+        org.bukkit.Location loc = ((BExactPosition) this.getPosition()).toBukkitLocation();
         loc.setPitch((float) this.pitch);
         loc.setYaw((float) this.yaw);
         org.bukkit.entity.ItemFrame frame;

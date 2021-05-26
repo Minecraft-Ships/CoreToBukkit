@@ -36,7 +36,7 @@ public class BZombieSnapshot extends BEntitySnapshot<LiveClassicZombie> implemen
 
     @Override
     public LiveClassicZombie spawnEntity() {
-        org.bukkit.Location loc = ((BExactPosition)this.position).getBukkitLocation();
+        org.bukkit.Location loc = ((BExactPosition)this.position).toBukkitLocation();
         loc.setPitch((float)this.pitch);
         loc.setYaw((float)this.yaw);
         org.bukkit.entity.Zombie zombie = (Zombie)loc.getWorld().spawnEntity(loc, org.bukkit.entity.EntityType.ZOMBIE);

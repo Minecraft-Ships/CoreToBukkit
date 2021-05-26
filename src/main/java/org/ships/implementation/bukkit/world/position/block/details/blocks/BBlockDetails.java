@@ -25,7 +25,7 @@ import java.util.Optional;
 
 public class BBlockDetails implements BlockDetails, IBBlockDetails {
 
-    protected class BTileEntityKeyedData implements TileEntityKeyedData{
+    protected class BTileEntityKeyedData implements TileEntityKeyedData {
 
         @Override
         public Optional<TileEntitySnapshot<? extends TileEntity>> getData() {
@@ -42,36 +42,36 @@ public class BBlockDetails implements BlockDetails, IBBlockDetails {
     private TileEntitySnapshot<? extends TileEntity> tileEntitySnapshot;
     private final boolean async;
 
-    public BBlockDetails(org.bukkit.block.data.BlockData data, boolean async){
+    public BBlockDetails(org.bukkit.block.data.BlockData data, boolean async) {
         this.data = data;
         this.async = async;
-        if(!async) {
+        if (!async) {
             CorePlugin.getPlatform().getDefaultTileEntity(getType()).ifPresent(t -> tileEntitySnapshot = t);
         }
     }
 
-    public BBlockDetails(BAsyncBlockPosition position){
+    public BBlockDetails(BAsyncBlockPosition position) {
         this(new BBlockPosition(position.getBukkitBlock()), true);
     }
 
-    public BBlockDetails(BBlockPosition position){
-        this(new BBlockPosition(position.getBukkitBlock()), false);
+    public BBlockDetails(BBlockPosition position) {
+        this(new BBlockPosition(position.toBukkitBlock()), false);
     }
 
-    private BBlockDetails(BBlockPosition position, boolean async){
-        this(position.getBukkitBlock().getBlockData(), async);
-        if(!async && position.getTileEntity().isPresent()){
+    private BBlockDetails(BBlockPosition position, boolean async) {
+        this(position.toBukkitBlock().getBlockData(), async);
+        if (!async && position.getTileEntity().isPresent()) {
             this.tileEntitySnapshot = position.getTileEntity().get().getSnapshot();
         }
     }
 
     @Override
-    public org.bukkit.block.data.BlockData getBukkitData(){
+    public org.bukkit.block.data.BlockData getBukkitData() {
         return this.data;
     }
 
     @Override
-    public void setBukkitData(org.bukkit.block.data.BlockData data){
+    public void setBukkitData(org.bukkit.block.data.BlockData data) {
         this.data = data;
     }
 
@@ -82,7 +82,7 @@ public class BBlockDetails implements BlockDetails, IBBlockDetails {
 
     @Override
     public <T extends BlockPosition> BlockSnapshot<T> createSnapshot(T position) {
-        if(position instanceof SyncBlockPosition){
+        if (position instanceof SyncBlockPosition) {
             return (BlockSnapshot<T>) new BExtendedBlockSnapshot((SyncBlockPosition) position, this.getBukkitData());
         }
         return (BlockSnapshot<T>) new AsyncBlockStateSnapshot((ASyncBlockPosition) position, this.getBukkitData());
@@ -90,11 +90,11 @@ public class BBlockDetails implements BlockDetails, IBBlockDetails {
 
     @Override
     public Optional<DirectionalData> getDirectionalData() {
-        if(this.data instanceof org.bukkit.block.data.Directional){
-            return Optional.of(new BDirectionalData((org.bukkit.block.data.Directional)this.data));
+        if (this.data instanceof org.bukkit.block.data.Directional) {
+            return Optional.of(new BDirectionalData((org.bukkit.block.data.Directional) this.data));
         }
-        if(this.data instanceof org.bukkit.block.data.Rotatable){
-            return Optional.of(new BRotationalData((org.bukkit.block.data.Rotatable)this.data));
+        if (this.data instanceof org.bukkit.block.data.Rotatable) {
+            return Optional.of(new BRotationalData((org.bukkit.block.data.Rotatable) this.data));
         }
         return Optional.empty();
     }
@@ -102,7 +102,7 @@ public class BBlockDetails implements BlockDetails, IBBlockDetails {
     @Override
     public <T> Optional<T> get(Class<? extends KeyedData<T>> data) {
         Optional<KeyedData<T>> opKey = getKey(data);
-        if(opKey.isPresent()){
+        if (opKey.isPresent()) {
             return opKey.get().getData();
         }
         return Optional.empty();
@@ -116,24 +116,24 @@ public class BBlockDetails implements BlockDetails, IBBlockDetails {
     }
 
     @Override
-    public boolean equals(Object obj){
-        if(!(obj instanceof BBlockDetails)){
+    public boolean equals(Object obj) {
+        if (!(obj instanceof BBlockDetails)) {
             return false;
         }
         BBlockDetails details = (BBlockDetails) obj;
         return details.data.equals(this.data);
     }
 
-    protected <T> Optional<KeyedData<T>> getKey(Class<? extends KeyedData<T>> data){
+    protected <T> Optional<KeyedData<T>> getKey(Class<? extends KeyedData<T>> data) {
         KeyedData<T> key = null;
-        if(data.isAssignableFrom(WaterLoggedKeyedData.class) && this.data instanceof org.bukkit.block.data.Waterlogged){
-            key = (KeyedData<T>) new BWaterLoggedKeyedData((org.bukkit.block.data.Waterlogged)this.data);
-        }else if(data.isAssignableFrom(OpenableKeyedData.class) && (this.data instanceof org.bukkit.block.data.Openable)){
-            key = (KeyedData<T>) new BOpenableKeyedData((org.bukkit.block.data.Openable)this.data);
-        }else if(data.isAssignableFrom(AttachableKeyedData.class) && BAttachableKeyedData.getKeyedData(this).isPresent()){
+        if (data.isAssignableFrom(WaterLoggedKeyedData.class) && this.data instanceof org.bukkit.block.data.Waterlogged) {
+            key = (KeyedData<T>) new BWaterLoggedKeyedData((org.bukkit.block.data.Waterlogged) this.data);
+        } else if (data.isAssignableFrom(OpenableKeyedData.class) && (this.data instanceof org.bukkit.block.data.Openable)) {
+            key = (KeyedData<T>) new BOpenableKeyedData((org.bukkit.block.data.Openable) this.data);
+        } else if (data.isAssignableFrom(AttachableKeyedData.class) && BAttachableKeyedData.getKeyedData(this).isPresent()) {
             key = (KeyedData<T>) BAttachableKeyedData.getKeyedData(this).get();
-        }else if(data.isAssignableFrom(MultiDirectionalKeyedData.class) && this.data instanceof org.bukkit.block.data.MultipleFacing){
-            key = (KeyedData<T>) new BMultiDirectionalKeyedData((org.bukkit.block.data.MultipleFacing)this.data);
+        } else if (data.isAssignableFrom(MultiDirectionalKeyedData.class) && this.data instanceof org.bukkit.block.data.MultipleFacing) {
+            key = (KeyedData<T>) new BMultiDirectionalKeyedData((org.bukkit.block.data.MultipleFacing) this.data);
         }
         return Optional.ofNullable(key);
     }

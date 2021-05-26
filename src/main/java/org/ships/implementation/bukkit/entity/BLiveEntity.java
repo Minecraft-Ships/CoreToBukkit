@@ -6,9 +6,9 @@ import org.core.entity.Entity;
 import org.core.entity.LiveEntity;
 import org.core.text.Text;
 import org.core.vector.type.Vector3;
-import org.core.world.position.impl.sync.SyncBlockPosition;
+import org.core.world.position.impl.BlockPosition;
+import org.core.world.position.impl.Position;
 import org.core.world.position.impl.sync.SyncExactPosition;
-import org.core.world.position.impl.sync.SyncPosition;
 import org.jetbrains.annotations.Nullable;
 import org.ships.implementation.bukkit.platform.BukkitPlatform;
 import org.ships.implementation.bukkit.text.BText;
@@ -79,9 +79,9 @@ public abstract class BLiveEntity<T extends org.bukkit.entity.Entity> implements
     }
 
     @Override
-    public BLiveEntity<T> setPosition(SyncPosition<? extends Number> position) {
-        BExactPosition position1 = position instanceof BExactPosition ? (BExactPosition) position : (BExactPosition) ((SyncBlockPosition) position).toExactPosition();
-        this.entity.teleport(position1.getBukkitLocation());
+    public BLiveEntity<T> setPosition(Position<? extends Number> position) {
+        BExactPosition position1 = position instanceof BExactPosition ? (BExactPosition) position : (BExactPosition) ((BlockPosition) position).toExactPosition();
+        this.entity.teleport(position1.toBukkitLocation());
         return this;
     }
 
@@ -153,6 +153,10 @@ public abstract class BLiveEntity<T extends org.bukkit.entity.Entity> implements
 
     @Override
     public Entity<LiveEntity> setCustomName(@Nullable AText text) {
+        if (text == null) {
+            this.entity.setCustomName(null);
+            return this;
+        }
         this.entity.setCustomName(text.toLegacy());
         return this;
     }

@@ -10,8 +10,8 @@ import org.core.entity.EntityType;
 import org.core.entity.LiveEntity;
 import org.core.text.Text;
 import org.core.vector.type.Vector3;
+import org.core.world.position.impl.Position;
 import org.core.world.position.impl.sync.SyncExactPosition;
-import org.core.world.position.impl.sync.SyncPosition;
 import org.jetbrains.annotations.Nullable;
 import org.ships.implementation.bukkit.platform.BukkitPlatform;
 import org.ships.implementation.bukkit.text.BText;
@@ -77,7 +77,7 @@ public class BSnapshotValueEntity<BE extends org.bukkit.entity.Entity, E extends
     }
 
     @Override
-    public Entity<EntitySnapshot<? extends LiveEntity>> setPosition(SyncPosition<? extends Number> position) {
+    public Entity<EntitySnapshot<? extends LiveEntity>> setPosition(Position<? extends Number> position) {
         EntitySnapshotValue<?, Location> locValue = this.<Location>getSnapshotValue("LOCATION").get();
         Location oldLoc = locValue.getValue();
         Location loc = new Location(((BWorldExtent) position.getWorld()).getBukkitWorld(), position.getX().doubleValue(), position.getY().doubleValue(), position.getZ().doubleValue());
@@ -100,6 +100,7 @@ public class BSnapshotValueEntity<BE extends org.bukkit.entity.Entity, E extends
     }
 
     @Override
+    @Deprecated
     public Entity<EntitySnapshot<? extends LiveEntity>> setCustomName(Text text) {
         this.<String>getSnapshotValue("CUSTOM_NAME").get().setValue(((BText) text).toBukkitString());
         return this;
@@ -107,7 +108,7 @@ public class BSnapshotValueEntity<BE extends org.bukkit.entity.Entity, E extends
 
     @Override
     public Entity<EntitySnapshot<? extends LiveEntity>> setCustomName(@Nullable AText text) {
-        if(text == null){
+        if (text == null) {
             this.<String>getSnapshotValue("CUSTOM_NAME").get().setValue(null);
             return this;
         }

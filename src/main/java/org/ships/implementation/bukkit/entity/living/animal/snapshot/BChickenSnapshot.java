@@ -31,10 +31,10 @@ public class BChickenSnapshot extends BEntitySnapshot<LiveChicken> implements Ch
 
     @Override
     public LiveChicken spawnEntity() {
-        org.bukkit.Location loc = ((BExactPosition)this.position).getBukkitLocation();
-        loc.setPitch((float)this.pitch);
-        loc.setYaw((float)this.yaw);
-        org.bukkit.entity.Chicken chicken = (org.bukkit.entity.Chicken)loc.getWorld().spawnEntity(loc, org.bukkit.entity.EntityType.CHICKEN);
+        org.bukkit.Location loc = ((BExactPosition) this.position).toBukkitLocation();
+        loc.setPitch((float) this.pitch);
+        loc.setYaw((float) this.yaw);
+        org.bukkit.entity.Chicken chicken = (org.bukkit.entity.Chicken) loc.getWorld().spawnEntity(loc, org.bukkit.entity.EntityType.CHICKEN);
 
 
         LiveChicken coreChicken = new BLiveChicken(chicken);

@@ -33,10 +33,6 @@ public class BExactPosition extends BAbstractPosition<Double> implements SyncExa
         this.location = location;
     }
 
-    public org.bukkit.Location getBukkitLocation(){
-        return this.location;
-    }
-
     @Override
     public Vector3<Integer> getChunkPosition() {
         return Vector3.valueOf(this.location.getChunk().getX(), 0, this.location.getChunk().getZ());

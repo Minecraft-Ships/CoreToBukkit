@@ -16,13 +16,13 @@ import org.bukkit.event.entity.ItemSpawnEvent;
 import org.bukkit.event.player.*;
 import org.bukkit.inventory.EquipmentSlot;
 import org.core.CorePlugin;
+import org.core.adventureText.AText;
 import org.core.entity.Entity;
 import org.core.entity.living.human.player.LivePlayer;
 import org.core.event.Event;
 import org.core.event.EventPriority;
 import org.core.event.HEvent;
 import org.core.event.events.entity.EntityInteractEvent;
-import org.core.text.Text;
 import org.core.world.position.block.details.BlockDetails;
 import org.core.world.position.block.details.BlockSnapshot;
 import org.core.world.position.impl.sync.SyncBlockPosition;
@@ -35,7 +35,6 @@ import org.ships.implementation.bukkit.event.events.entity.BEntityCommandEvent;
 import org.ships.implementation.bukkit.event.events.entity.BEntityInteractEvent;
 import org.ships.implementation.bukkit.event.events.entity.BEntitySpawnEvent;
 import org.ships.implementation.bukkit.platform.BukkitPlatform;
-import org.ships.implementation.bukkit.text.BText;
 import org.ships.implementation.bukkit.utils.DirectionUtils;
 import org.ships.implementation.bukkit.world.expload.EntityExplosion;
 import org.ships.implementation.bukkit.world.position.block.details.blocks.BBlockDetails;
@@ -47,6 +46,8 @@ import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.lang.reflect.Parameter;
 import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class BukkitListener implements Listener {
 
@@ -124,33 +125,35 @@ public class BukkitListener implements Listener {
     @EventHandler(priority = org.bukkit.event.EventPriority.HIGHEST)
     public static void onPlayerKickedEvent(PlayerKickEvent event) {
         LivePlayer player = (LivePlayer) ((BukkitPlatform) CorePlugin.getPlatform()).createEntityInstance(event.getPlayer());
-        Text message = CorePlugin.buildText(event.getLeaveMessage());
+        AText message = AText.ofLegacy(event.getLeaveMessage());
         BKickEvent kickEvent = new BKickEvent(player, message);
         call(EventPriority.HIGHEST, kickEvent);
-        event.setLeaveMessage(((BText) message).toBukkitString());
+        event.setLeaveMessage(kickEvent.getLeavingMessage().toLegacy());
     }
 
     @EventHandler(priority = org.bukkit.event.EventPriority.HIGHEST)
     public static void onPlayerQuitEvent(PlayerQuitEvent event) {
         LivePlayer player = (LivePlayer) ((BukkitPlatform) CorePlugin.getPlatform()).createEntityInstance(event.getPlayer());
-        Text message = CorePlugin.buildText(event.getQuitMessage());
+        AText message = AText.ofLegacy(event.getQuitMessage());
         BKickEvent kickEvent = new BKickEvent(player, message);
         call(EventPriority.HIGHEST, kickEvent);
-        event.setQuitMessage(((BText) message).toBukkitString());
+        event.setQuitMessage(kickEvent.getLeavingMessage().toLegacy());
     }
 
     @EventHandler
     public static void onSignChangeEvent(SignChangeEvent event) {
         String[] originalLines = event.getLines();
-        Text[] lines = new Text[originalLines.length];
-        for (int A = 0; A < originalLines.length; A++) {
-            lines[A] = new BText(originalLines[A]);
-        }
-        BSignChangeEvent event1 = new BSignChangeEvent((LivePlayer) ((BukkitPlatform) CorePlugin.getPlatform()).createEntityInstance(event.getPlayer()), new BBlockPosition(event.getBlock()), lines);
+        List<AText> lines = Stream
+                .of(event.getLines())
+                .map(AText::ofLegacy)
+                .collect(Collectors.toList());
+        LivePlayer player = (LivePlayer) ((BukkitPlatform) CorePlugin.getPlatform()).createEntityInstance(event.getPlayer());
+        SyncBlockPosition position = new BBlockPosition(event.getBlock());
+        BSignChangeEvent event1 = new BSignChangeEvent(player, position, lines);
         call(EventPriority.NORMAL, event1);
         for (int A = 0; A < 4; A++) {
             final int B = A;
-            event1.getTo().getLine(A).ifPresent(l -> event.setLine(B, ((BText) l).toBukkitString()));
+            event1.getTo().getTextAt(A).ifPresent(l -> event.setLine(B, l.toLegacy()));
         }
         if (event1.isCancelled()) {
             event.setCancelled(event1.isCancelled());
@@ -214,7 +217,7 @@ public class BukkitListener implements Listener {
     }
 
     @EventHandler
-    public void onCommandSend(PlayerCommandSendEvent event){
+    public void onCommandSend(PlayerCommandSendEvent event) {
         Player player = event.getPlayer();
         LivePlayer lPlayer = (LivePlayer) ((BukkitPlatform) CorePlugin.getPlatform()).createEntityInstance(event.getPlayer());
         BEntityCommandEvent event1 = new BEntityCommandEvent(lPlayer, event.getCommands());
@@ -223,9 +226,7 @@ public class BukkitListener implements Listener {
 
     public static <E extends Event> E call(EventPriority priority, E event) {
         Set<BEventLaunch> methods = getMethods(priority, event.getClass());
-        methods.forEach(m -> {
-            m.run(event);
-        });
+        methods.forEach(m -> m.run(event));
         return event;
     }
 
@@ -234,11 +235,8 @@ public class BukkitListener implements Listener {
         CorePlugin.getEventManager().getEventListeners().forEach((key, value) -> value.forEach(el -> {
             for (Method method : el.getClass().getDeclaredMethods()) {
                 HEvent hEvent = method.getAnnotation(HEvent.class);
-                if(hEvent == null){
+                if (hEvent == null) {
                     continue;
-                }
-                if(hEvent.priority() == null){
-                    throw new IllegalStateException("Error: No priority specified in event: " + method.getDeclaringClass().getName() + ":" + method.getName());
                 }
                 if (!(hEvent.priority().equals(priority)) && !hEvent.priority().equals(EventPriority.IGNORE)) {
                     continue;

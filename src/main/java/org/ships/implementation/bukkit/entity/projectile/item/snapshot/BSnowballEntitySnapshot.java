@@ -34,7 +34,7 @@ public class BSnowballEntitySnapshot extends BEntitySnapshot<LiveSnowballEntity>
 
     @Override
     public BLiveSnowballEntity spawnEntity() {
-        org.bukkit.Location loc = ((BExactPosition)this.position).getBukkitLocation();
+        org.bukkit.Location loc = ((BExactPosition)this.position).toBukkitLocation();
         loc.setPitch((float)this.pitch);
         loc.setYaw((float)this.yaw);
         org.bukkit.entity.Snowball snowball = (org.bukkit.entity.Snowball)loc.getWorld().spawnEntity(loc, org.bukkit.entity.EntityType.SNOWBALL);

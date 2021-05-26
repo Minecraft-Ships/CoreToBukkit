@@ -31,7 +31,7 @@ public class BCreeperSnapshot extends BEntitySnapshot<LiveCreeperEntity> impleme
 
     @Override
     public LiveCreeperEntity spawnEntity() {
-        org.bukkit.Location loc = ((BExactPosition)this.position).getBukkitLocation();
+        org.bukkit.Location loc = ((BExactPosition)this.position).toBukkitLocation();
         loc.setPitch((float)this.pitch);
         loc.setYaw((float)this.yaw);
         org.bukkit.entity.Creeper creeper = (org.bukkit.entity.Creeper)loc.getWorld().spawnEntity(loc, org.bukkit.entity.EntityType.CREEPER);

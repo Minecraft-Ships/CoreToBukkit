@@ -32,7 +32,7 @@ public class BBatSnapshot extends BEntitySnapshot<LiveBat> implements BatSnapsho
 
     @Override
     public BLiveBat spawnEntity() {
-        org.bukkit.Location loc = ((BExactPosition)this.position).getBukkitLocation();
+        org.bukkit.Location loc = ((BExactPosition)this.position).toBukkitLocation();
         loc.setPitch((float)this.pitch);
         loc.setYaw((float)this.yaw);
         org.bukkit.entity.Bat bat = (org.bukkit.entity.Bat)loc.getWorld().spawnEntity(loc, org.bukkit.entity.EntityType.BAT);

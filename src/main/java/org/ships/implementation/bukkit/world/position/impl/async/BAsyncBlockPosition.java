@@ -12,6 +12,8 @@ import org.core.world.WorldExtent;
 import org.core.world.position.block.details.BlockDetails;
 import org.core.world.position.block.entity.LiveTileEntity;
 import org.core.world.position.flags.PositionFlag;
+import org.core.world.position.impl.ExactPosition;
+import org.core.world.position.impl.Position;
 import org.core.world.position.impl.async.ASyncBlockPosition;
 import org.core.world.position.impl.async.ASyncExactPosition;
 import org.core.world.position.impl.sync.SyncBlockPosition;

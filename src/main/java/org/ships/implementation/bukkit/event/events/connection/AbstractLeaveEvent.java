@@ -13,7 +13,11 @@ public class AbstractLeaveEvent implements ClientConnectionEvent.Leave {
 
     @Deprecated
     public AbstractLeaveEvent(LivePlayer player, Text leaveMessage) {
-        this.leaveMessage = leaveMessage.toAdventure();
+        this(player, leaveMessage.toAdventure());
+    }
+
+    public AbstractLeaveEvent(LivePlayer player, AText leaveMessage) {
+        this.leaveMessage = leaveMessage;
         this.player = player;
     }
 
