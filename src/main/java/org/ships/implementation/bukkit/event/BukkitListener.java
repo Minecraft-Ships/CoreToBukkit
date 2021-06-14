@@ -238,7 +238,7 @@ public class BukkitListener implements Listener {
                 if (hEvent == null) {
                     continue;
                 }
-                if (!(hEvent.priority().equals(priority)) && !hEvent.priority().equals(EventPriority.IGNORE)) {
+                if ((!(priority.equals(EventPriority.IGNORE))) && !(hEvent.priority().equals(priority)) && !hEvent.priority().equals(EventPriority.IGNORE)) {
                     continue;
                 }
                 if (methods.stream().anyMatch(m -> method.getName().contains("$"))) {
