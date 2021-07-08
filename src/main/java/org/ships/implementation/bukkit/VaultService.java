@@ -24,7 +24,14 @@ public interface VaultService {
         if(!opEco.isPresent()){
             return;
         }
-        EconomyResponse response = opEco.get().depositPlayer(user, (-opEco.get().getBalance(user)) + price);
+        double bal = opEco.get().getBalance(user);
+        double diff = (-bal) + price;
+        EconomyResponse response;
+        if(diff < 0){
+            response = opEco.get().withdrawPlayer(user, -diff);
+        }else{
+            response = opEco.get().depositPlayer(user, price);
+        }
         if(!response.transactionSuccess()){
             throw new IllegalStateException(response.errorMessage);
         }
