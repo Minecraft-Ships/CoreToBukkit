@@ -1,6 +1,7 @@
 package org.ships.implementation.bukkit;
 
 import net.milkbowl.vault.economy.Economy;
+import net.milkbowl.vault.economy.EconomyResponse;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 
@@ -11,10 +12,7 @@ public interface VaultService {
 
     static Optional<Double> getBalance(OfflinePlayer user){
         Optional<Economy> opEco = getEconomy();
-        if(!opEco.isPresent()){
-            return Optional.empty();
-        }
-        return Optional.of(opEco.get().getBalance(user));
+        return opEco.map(economy -> economy.getBalance(user));
     }
 
     static void setBalance(OfflinePlayer user, BigDecimal price){
@@ -26,7 +24,10 @@ public interface VaultService {
         if(!opEco.isPresent()){
             return;
         }
-        opEco.get().depositPlayer(user, (-opEco.get().getBalance(user)) + price);
+        EconomyResponse response = opEco.get().depositPlayer(user, (-opEco.get().getBalance(user)) + price);
+        if(!response.transactionSuccess()){
+            throw new IllegalStateException(response.errorMessage);
+        }
     }
 
     static Optional<Economy> getEconomy(){
