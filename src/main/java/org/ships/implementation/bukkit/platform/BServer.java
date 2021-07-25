@@ -14,6 +14,7 @@ import org.ships.implementation.bukkit.entity.living.human.player.live.BUser;
 import org.ships.implementation.bukkit.world.BWorldExtent;
 
 import java.util.*;
+import java.util.concurrent.CompletableFuture;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -43,39 +44,35 @@ public class BServer implements PlatformServer {
     }
 
     @Override
-    public Optional<User> getOfflineUser(UUID uuid) {
+    public CompletableFuture<Optional<User>> getOfflineUser(UUID uuid) {
         Player player = Bukkit.getServer().getPlayer(uuid);
         if (player != null) {
-            return Optional.of((LivePlayer) ((BukkitPlatform) CorePlugin.getPlatform()).createEntityInstance(player));
+            Optional<User> opUser = Optional.of((LivePlayer) ((BukkitPlatform) CorePlugin.getPlatform()).createEntityInstance(player));
+            return CompletableFuture.supplyAsync(() -> opUser);
         }
         OfflinePlayer user = Bukkit.getServer().getOfflinePlayer(uuid);
-        if (user == null) {
-            return Optional.empty();
-        }
-        return Optional.of(new BUser(user));
+        return CompletableFuture.supplyAsync(() -> Optional.of(user).map(BUser::new));
     }
 
     @Override
-    public Optional<User> getOfflineUser(String lastName) {
+    public CompletableFuture<Optional<User>> getOfflineUser(String lastName) {
         Player player = Bukkit.getServer().getPlayer(lastName);
         if (player != null) {
-            return Optional.of((LivePlayer) ((BukkitPlatform) CorePlugin.getPlatform()).createEntityInstance(player));
+            Optional<User> opUser = Optional.of((LivePlayer) ((BukkitPlatform) CorePlugin.getPlatform()).createEntityInstance(player));
+            return CompletableFuture.supplyAsync(() -> opUser);
         }
         OfflinePlayer user = Bukkit.getServer().getOfflinePlayer(lastName);
-        if (user == null) {
-            return Optional.empty();
-        }
-        return Optional.of(new BUser(user));
+        return CompletableFuture.supplyAsync(() -> Optional.of(user).map(BUser::new));
     }
 
     @Override
-    public Collection<User> getOfflineUsers() {
+    public Collection<CompletableFuture<User>> getOfflineUsers() {
         return Stream.of(Bukkit.getServer().getOfflinePlayers()).map(op -> {
             Player player = op.getPlayer();
-            if(player == null){
-                return new BUser(op);
+            if (player == null) {
+                return CompletableFuture.supplyAsync(() -> (User) new BUser(op));
             }
-            return (LivePlayer) ((BukkitPlatform) CorePlugin.getPlatform()).createEntityInstance(player);
+            return CompletableFuture.supplyAsync(() -> (User) ((BukkitPlatform) CorePlugin.getPlatform()).createEntityInstance(player));
         }).collect(Collectors.toSet());
     }
 
