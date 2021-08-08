@@ -120,17 +120,24 @@ public class BLivePlayer extends BLiveEntity<org.bukkit.entity.Player> implement
     @Override
     public boolean hasPermission(String permission) {
         org.bukkit.entity.Player player = getBukkitEntity();
+        boolean truePerm = player.hasPermission(permission);
+        if (truePerm) {
+            return true;
+        }
         String[] blocks = permission.split("\\.");
-        for (int A = 0; A < blocks.length; A++) {
-            StringBuilder builder = new StringBuilder();
-            for (String block : blocks) {
-                builder.append(block);
+        StringBuilder buffer = null;
+        for (String block : blocks) {
+            if (buffer == null) {
+                buffer = new StringBuilder(block);
+            } else {
+                buffer.append(".").append(block);
             }
-            if (player.hasPermission(builder + ".*")) {
+            if (player.hasPermission(buffer + ".*")) {
                 return true;
             }
+
         }
-        return player.hasPermission(permission);
+        return false;
     }
 
     @Override
