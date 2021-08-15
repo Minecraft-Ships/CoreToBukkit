@@ -25,11 +25,11 @@ public class BExactPosition extends BAbstractPosition<Double> implements SyncExa
 
     protected org.bukkit.Location location;
 
-    public BExactPosition(double x, double y, double z, org.bukkit.World world){
+    public BExactPosition(double x, double y, double z, org.bukkit.World world) {
         this(new Location(world, x, y, z));
     }
 
-    public BExactPosition(org.bukkit.Location location){
+    public BExactPosition(org.bukkit.Location location) {
         this.location = location;
     }
 
@@ -54,7 +54,7 @@ public class BExactPosition extends BAbstractPosition<Double> implements SyncExa
     }
 
     @Override
-    public BlockSnapshot<SyncBlockPosition> getBlockDetails() {
+    public BlockSnapshot.SyncBlockSnapshot getBlockDetails() {
         return toBlockPosition().getBlockDetails();
     }
 
@@ -78,7 +78,7 @@ public class BExactPosition extends BAbstractPosition<Double> implements SyncExa
 
     @Override
     public Optional<LiveTileEntity> getTileEntity() {
-        return ((BukkitPlatform)CorePlugin.getPlatform()).createTileEntityInstance(this.location.getBlock().getState());
+        return ((BukkitPlatform) CorePlugin.getPlatform()).createTileEntityInstance(this.location.getBlock().getState());
     }
 
     @Override
@@ -93,11 +93,11 @@ public class BExactPosition extends BAbstractPosition<Double> implements SyncExa
     }
 
     @Override
-    public boolean equals(Object value){
-        if(!(value instanceof SyncPosition)){
+    public boolean equals(Object value) {
+        if (!(value instanceof SyncPosition)) {
             return false;
         }
-        SyncPosition<? extends Number> pos = (SyncPosition<? extends Number>)value;
+        SyncPosition<? extends Number> pos = (SyncPosition<? extends Number>) value;
         return pos.getPosition().equals(getPosition());
     }
 }

@@ -50,6 +50,12 @@ public class BBlockDetails implements BlockDetails, IBBlockDetails {
         }
     }
 
+    public BBlockDetails(BBlockDetails details) {
+        this.data = details.data.clone();
+        this.async = details.async;
+        this.tileEntitySnapshot = details.tileEntitySnapshot.getSnapshot();
+    }
+
     public BBlockDetails(BAsyncBlockPosition position) {
         this(new BBlockPosition(position.getBukkitBlock()), true);
     }
@@ -83,9 +89,19 @@ public class BBlockDetails implements BlockDetails, IBBlockDetails {
     @Override
     public <T extends BlockPosition> BlockSnapshot<T> createSnapshot(T position) {
         if (position instanceof SyncBlockPosition) {
-            return (BlockSnapshot<T>) new BExtendedBlockSnapshot((SyncBlockPosition) position, this.getBukkitData());
+            return (BlockSnapshot<T>) createSnapshot((SyncBlockPosition) position);
         }
-        return (BlockSnapshot<T>) new AsyncBlockStateSnapshot((ASyncBlockPosition) position, this.getBukkitData());
+        return (BlockSnapshot<T>) createSnapshot((ASyncBlockPosition) position);
+    }
+
+    @Override
+    public BlockSnapshot.AsyncBlockSnapshot createSnapshot(ASyncBlockPosition position) {
+        return new AsyncBlockStateSnapshot(position, this.getBukkitData());
+    }
+
+    @Override
+    public BlockSnapshot.SyncBlockSnapshot createSnapshot(SyncBlockPosition position) {
+        return new BExtendedBlockSnapshot(position, this.getBukkitData());
     }
 
     @Override

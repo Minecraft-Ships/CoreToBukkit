@@ -2,16 +2,27 @@ package org.ships.implementation.bukkit.platform;
 
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
+import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.core.CorePlugin;
 import org.core.command.CommandLauncher;
 import org.core.entity.living.human.player.LivePlayer;
 import org.core.entity.living.human.player.User;
+import org.core.exceptions.BlockNotSupported;
 import org.core.platform.PlatformServer;
+import org.core.platform.Plugin;
 import org.core.platform.tps.TPSExecutor;
+import org.core.schedule.Scheduler;
+import org.core.schedule.unit.TimeUnit;
 import org.core.world.WorldExtent;
+import org.core.world.position.block.details.BlockSnapshot;
+import org.core.world.position.block.details.data.keyed.TileEntityKeyedData;
+import org.core.world.position.impl.Position;
+import org.core.world.position.impl.async.ASyncBlockPosition;
 import org.ships.implementation.bukkit.entity.living.human.player.live.BUser;
 import org.ships.implementation.bukkit.world.BWorldExtent;
+import org.ships.implementation.bukkit.world.position.block.details.blocks.AsyncBlockStateSnapshot;
+import org.ships.implementation.bukkit.world.position.impl.async.BAsyncBlockPosition;
 
 import java.util.*;
 import java.util.concurrent.CompletableFuture;
@@ -41,6 +52,62 @@ public class BServer implements PlatformServer {
         BukkitPlatform platform = ((BukkitPlatform) CorePlugin.getPlatform());
         Bukkit.getServer().getOnlinePlayers().forEach(p -> set.add((LivePlayer) platform.createEntityInstance(p)));
         return set;
+    }
+
+    @Override
+    public void applyBlockSnapshots(Collection<BlockSnapshot.AsyncBlockSnapshot> collection, Plugin plugin, Runnable onComplete) {
+        Set<BlockSnapshot<ASyncBlockPosition>> withTileEntities = collection.stream().filter(bs -> bs.get(TileEntityKeyedData.class).isPresent()).collect(Collectors.toSet());
+        Scheduler syncedSchedule = CorePlugin
+                .createSchedulerBuilder()
+                .setDelay(1)
+                .setDelayUnit(TimeUnit.MINECRAFT_TICKS)
+                .setDisplayName("BlockSnapshotApplyEntities")
+                .setExecutor(() -> withTileEntities
+                        .forEach(bs -> bs
+                                .get(TileEntityKeyedData.class)
+                                .ifPresent(tileEntity -> {
+                                    try {
+                                        tileEntity.apply(Position.toSync(bs.getPosition()));
+                                    } catch (BlockNotSupported e) {
+                                        throw new RuntimeException(e);
+                                    }
+                                })))
+                .setToRunAfter(CorePlugin
+                        .createSchedulerBuilder()
+                        .setDisplayName("BlockSnapshotAsyncedEnd")
+                        .setDelayUnit(TimeUnit.MINECRAFT_TICKS)
+                        .setDelay(0)
+                        .setExecutor(onComplete)
+                        .build(plugin))
+                .build(plugin);
+
+        Scheduler asyncedSchedule = CorePlugin
+                .createSchedulerBuilder()
+                .setDisplayName("BlockSnapshotAsyncedEnd")
+                .setDelayUnit(TimeUnit.MINECRAFT_TICKS)
+                .setDelay(0)
+                .setExecutor(syncedSchedule::run)
+                .setAsync(true)
+                .build(plugin);
+        Iterator<BlockSnapshot.AsyncBlockSnapshot> i = collection.iterator();
+        for (int A = 0; A < collection.size(); A++) {
+            final AsyncBlockStateSnapshot blockSnapshot = (AsyncBlockStateSnapshot) i.next();
+            asyncedSchedule = CorePlugin
+                    .createSchedulerBuilder()
+                    .setDisplayName(
+                            "BlockSnapshot-" + A
+                    ).setDelay(0)
+                    .setDelayUnit(TimeUnit.MINECRAFT_TICKS)
+                    .setExecutor(() -> {
+                        Block block = ((BAsyncBlockPosition) blockSnapshot.getPosition()).getBukkitBlock();
+                        block.setBlockData(blockSnapshot.getBukkitData());
+                    })
+                    .setAsync(true)
+                    .setToRunAfter(asyncedSchedule)
+                    .build(plugin);
+        }
+        asyncedSchedule.run();
+
     }
 
     @Override

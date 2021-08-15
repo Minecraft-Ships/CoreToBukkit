@@ -10,7 +10,6 @@ import org.core.exceptions.BlockNotSupported;
 import org.core.vector.type.Vector3;
 import org.core.world.WorldExtent;
 import org.core.world.position.block.details.BlockDetails;
-import org.core.world.position.block.details.BlockSnapshot;
 import org.core.world.position.block.details.data.keyed.KeyedData;
 import org.core.world.position.block.entity.LiveTileEntity;
 import org.core.world.position.block.entity.TileEntity;
@@ -63,7 +62,7 @@ public class BBlockPosition extends BAbstractPosition<Integer> implements SyncBl
     }
 
     @Override
-    public BlockSnapshot<SyncBlockPosition> getBlockDetails() {
+    public BExtendedBlockSnapshot getBlockDetails() {
         return new BExtendedBlockSnapshot(this);
     }
 

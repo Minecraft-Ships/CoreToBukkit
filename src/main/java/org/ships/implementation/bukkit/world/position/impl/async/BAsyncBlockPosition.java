@@ -27,7 +27,7 @@ import java.util.Optional;
 
 public class BAsyncBlockPosition extends BAbstractPosition<Integer> implements ASyncBlockPosition {
 
-    private Block block;
+    private final Block block;
 
     public BAsyncBlockPosition(World world, int x, int y, int z){
         this(world.getBlockAt(x, y, z));

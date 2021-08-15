@@ -5,11 +5,11 @@ import org.core.world.position.block.details.BlockSnapshot;
 import org.core.world.position.impl.async.ASyncBlockPosition;
 import org.ships.implementation.bukkit.world.position.impl.async.BAsyncBlockPosition;
 
-public class AsyncBlockStateSnapshot extends BBlockDetails implements BlockSnapshot<ASyncBlockPosition> {
+public class AsyncBlockStateSnapshot extends BBlockDetails implements BlockSnapshot.AsyncBlockSnapshot {
 
     protected ASyncBlockPosition position;
 
-    public AsyncBlockStateSnapshot(BAsyncBlockPosition position){
+    public AsyncBlockStateSnapshot(BAsyncBlockPosition position) {
         super(position);
         this.position = position;
     }
@@ -19,13 +19,18 @@ public class AsyncBlockStateSnapshot extends BBlockDetails implements BlockSnaps
         this.position = position;
     }
 
+    public AsyncBlockStateSnapshot(BBlockDetails details, ASyncBlockPosition position) {
+        super(details);
+        this.position = position;
+    }
+
     @Override
     public ASyncBlockPosition getPosition() {
         return this.position;
     }
 
     @Override
-    public BlockSnapshot<ASyncBlockPosition> createCopyOf() {
-        return new AsyncBlockStateSnapshot(this.position, this.getBukkitData().clone());
+    public AsyncBlockStateSnapshot createCopyOf() {
+        return new AsyncBlockStateSnapshot(this, this.position);
     }
 }

@@ -13,7 +13,6 @@ import org.core.world.position.block.details.BlockDetails;
 import org.core.world.position.block.details.BlockSnapshot;
 import org.core.world.position.block.entity.LiveTileEntity;
 import org.core.world.position.flags.PositionFlag;
-import org.core.world.position.impl.BlockPosition;
 import org.core.world.position.impl.async.ASyncBlockPosition;
 import org.core.world.position.impl.async.ASyncExactPosition;
 import org.core.world.position.impl.sync.SyncExactPosition;
@@ -28,11 +27,11 @@ public class BAsyncExactPosition extends BAbstractPosition<Double> implements AS
 
     private final Location location;
 
-    public BAsyncExactPosition(World world, double x, double y, double z){
+    public BAsyncExactPosition(World world, double x, double y, double z) {
         this(new Location(world, x, y, z));
     }
 
-    public BAsyncExactPosition(Location location){
+    public BAsyncExactPosition(Location location) {
         this.location = location;
     }
 
@@ -48,7 +47,7 @@ public class BAsyncExactPosition extends BAbstractPosition<Double> implements AS
     }
 
     @Override
-    public BlockSnapshot<? extends BlockPosition> getBlockDetails() {
+    public BlockSnapshot.AsyncBlockSnapshot getBlockDetails() {
         return this.toBlockPosition().getBlockDetails();
     }
 
@@ -65,7 +64,7 @@ public class BAsyncExactPosition extends BAbstractPosition<Double> implements AS
     @Override
     public FutureResult<SyncPosition<Double>> scheduleBlock(Plugin plugin, BlockDetails details, PositionFlag.SetFlag... flags) {
         FutureResult<SyncPosition<Double>> future = new FutureResult<>();
-        Bukkit.getScheduler().runTask((org.bukkit.plugin.Plugin)plugin.getLauncher(), () -> {
+        Bukkit.getScheduler().runTask((org.bukkit.plugin.Plugin) plugin.getLauncher(), () -> {
             SyncExactPosition position = new BExactPosition(this.location);
             position.setBlock(details, flags);
             future.run(position);
@@ -76,7 +75,7 @@ public class BAsyncExactPosition extends BAbstractPosition<Double> implements AS
     @Override
     public FutureResult<SyncPosition<Double>> scheduleBlock(Plugin plugin, BlockDetails details, LivePlayer... player) {
         FutureResult<SyncPosition<Double>> future = new FutureResult<>();
-        Bukkit.getScheduler().runTask((org.bukkit.plugin.Plugin)plugin.getLauncher(), () -> {
+        Bukkit.getScheduler().runTask((org.bukkit.plugin.Plugin) plugin.getLauncher(), () -> {
             SyncExactPosition position = new BExactPosition(this.location);
             position.setBlock(details, player);
             future.run(position);
@@ -87,7 +86,7 @@ public class BAsyncExactPosition extends BAbstractPosition<Double> implements AS
     @Override
     public FutureResult<SyncPosition<Double>> scheduleReset(Plugin plugin, LivePlayer... player) {
         FutureResult<SyncPosition<Double>> future = new FutureResult<>();
-        Bukkit.getScheduler().runTask((org.bukkit.plugin.Plugin)plugin.getLauncher(), () -> {
+        Bukkit.getScheduler().runTask((org.bukkit.plugin.Plugin) plugin.getLauncher(), () -> {
             SyncExactPosition position = new BExactPosition(this.location);
             position.resetBlock(player);
             future.run(position);
@@ -98,7 +97,7 @@ public class BAsyncExactPosition extends BAbstractPosition<Double> implements AS
     @Override
     public FutureResult<LiveTileEntity> getTileEntity(Plugin plugin) {
         FutureResult<LiveTileEntity> future = new FutureResult<>();
-        Bukkit.getScheduler().runTask((org.bukkit.plugin.Plugin)plugin.getLauncher(), () -> {
+        Bukkit.getScheduler().runTask((org.bukkit.plugin.Plugin) plugin.getLauncher(), () -> {
             SyncExactPosition position = new BExactPosition(this.location);
             Optional<LiveTileEntity> opEntity = position.getTileEntity();
             opEntity.ifPresent(future::run);
