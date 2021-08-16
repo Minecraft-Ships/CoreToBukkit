@@ -97,7 +97,7 @@ public class BBlockDetails implements BlockDetails, IBBlockDetails {
     @Override
     public BlockSnapshot.AsyncBlockSnapshot createSnapshot(ASyncBlockPosition position) {
         AsyncBlockStateSnapshot snapshot = new AsyncBlockStateSnapshot(position, this.getBukkitData());
-        if(this.tileEntitySnapshot != null){
+        if (this.tileEntitySnapshot != null) {
             snapshot.set(TileEntityKeyedData.class, this.tileEntitySnapshot);
         }
         return snapshot;
@@ -154,6 +154,8 @@ public class BBlockDetails implements BlockDetails, IBBlockDetails {
             key = (KeyedData<T>) BAttachableKeyedData.getKeyedData(this).get();
         } else if (data.isAssignableFrom(MultiDirectionalKeyedData.class) && this.data instanceof org.bukkit.block.data.MultipleFacing) {
             key = (KeyedData<T>) new BMultiDirectionalKeyedData((org.bukkit.block.data.MultipleFacing) this.data);
+        } else if (data.isAssignableFrom(TileEntityKeyedData.class)) {
+            key = (KeyedData<T>) new BTileEntityKeyedData();
         }
         return Optional.ofNullable(key);
     }
