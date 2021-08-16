@@ -56,29 +56,28 @@ public class BServer implements PlatformServer {
 
     @Override
     public void applyBlockSnapshots(Collection<BlockSnapshot.AsyncBlockSnapshot> collection, Plugin plugin, Runnable onComplete) {
-        Set<BlockSnapshot<ASyncBlockPosition>> withTileEntities = collection.stream().filter(bs -> bs.get(TileEntityKeyedData.class).isPresent()).collect(Collectors.toSet());
+        Set<BlockSnapshot<ASyncBlockPosition>> withTileEntities = collection
+                .stream()
+                .filter(bs -> bs.get(TileEntityKeyedData.class).isPresent())
+                .collect(Collectors.toSet());
         Scheduler syncedSchedule = CorePlugin
                 .createSchedulerBuilder()
-                .setDelay(1)
+                .setDelay(0)
                 .setDelayUnit(TimeUnit.MINECRAFT_TICKS)
                 .setDisplayName("BlockSnapshotApplyEntities")
-                .setExecutor(() -> withTileEntities
-                        .forEach(bs -> bs
-                                .get(TileEntityKeyedData.class)
-                                .ifPresent(tileEntity -> {
-                                    try {
-                                        tileEntity.apply(Position.toSync(bs.getPosition()));
-                                    } catch (BlockNotSupported e) {
-                                        throw new RuntimeException(e);
-                                    }
-                                })))
-                .setToRunAfter(CorePlugin
-                        .createSchedulerBuilder()
-                        .setDisplayName("BlockSnapshotAsyncedEnd")
-                        .setDelayUnit(TimeUnit.MINECRAFT_TICKS)
-                        .setDelay(0)
-                        .setExecutor(onComplete)
-                        .build(plugin))
+                .setExecutor(() -> {
+                    withTileEntities
+                            .forEach(bs -> bs
+                                    .get(TileEntityKeyedData.class)
+                                    .ifPresent(tileEntity -> {
+                                        try {
+                                            tileEntity.apply(Position.toSync(bs.getPosition()));
+                                        } catch (BlockNotSupported e) {
+                                            throw new RuntimeException(e);
+                                        }
+                                    }));
+                    onComplete.run();
+                })
                 .build(plugin);
 
         Scheduler asyncedSchedule = CorePlugin
@@ -86,26 +85,20 @@ public class BServer implements PlatformServer {
                 .setDisplayName("BlockSnapshotAsyncedEnd")
                 .setDelayUnit(TimeUnit.MINECRAFT_TICKS)
                 .setDelay(0)
-                .setExecutor(syncedSchedule::run)
+                .setExecutor(() -> {
+                    for (BlockSnapshot.AsyncBlockSnapshot blockSnapshot : collection) {
+                        Block block = ((BAsyncBlockPosition) blockSnapshot.getPosition()).getBukkitBlock();
+                        try {
+                            block.setBlockData(((AsyncBlockStateSnapshot) blockSnapshot).getBukkitData(), false);
+                        } catch (IllegalStateException e) {
+                            System.err.println("Failed to set block type of " + blockSnapshot.getType().getId());
+                            throw e;
+                        }
+                    }
+                    syncedSchedule.run();
+                })
                 .setAsync(true)
                 .build(plugin);
-        Iterator<BlockSnapshot.AsyncBlockSnapshot> i = collection.iterator();
-        for (int A = 0; A < collection.size(); A++) {
-            final AsyncBlockStateSnapshot blockSnapshot = (AsyncBlockStateSnapshot) i.next();
-            asyncedSchedule = CorePlugin
-                    .createSchedulerBuilder()
-                    .setDisplayName(
-                            "BlockSnapshot-" + A
-                    ).setDelay(0)
-                    .setDelayUnit(TimeUnit.MINECRAFT_TICKS)
-                    .setExecutor(() -> {
-                        Block block = ((BAsyncBlockPosition) blockSnapshot.getPosition()).getBukkitBlock();
-                        block.setBlockData(blockSnapshot.getBukkitData());
-                    })
-                    .setAsync(true)
-                    .setToRunAfter(asyncedSchedule)
-                    .build(plugin);
-        }
         asyncedSchedule.run();
 
     }

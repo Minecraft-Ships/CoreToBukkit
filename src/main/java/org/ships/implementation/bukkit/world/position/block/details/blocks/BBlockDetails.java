@@ -96,7 +96,11 @@ public class BBlockDetails implements BlockDetails, IBBlockDetails {
 
     @Override
     public BlockSnapshot.AsyncBlockSnapshot createSnapshot(ASyncBlockPosition position) {
-        return new AsyncBlockStateSnapshot(position, this.getBukkitData());
+        AsyncBlockStateSnapshot snapshot = new AsyncBlockStateSnapshot(position, this.getBukkitData());
+        if(this.tileEntitySnapshot != null){
+            snapshot.set(TileEntityKeyedData.class, this.tileEntitySnapshot);
+        }
+        return snapshot;
     }
 
     @Override
