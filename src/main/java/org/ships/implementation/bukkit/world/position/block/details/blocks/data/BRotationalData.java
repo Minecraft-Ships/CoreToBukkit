@@ -1,6 +1,5 @@
 package org.ships.implementation.bukkit.world.position.block.details.blocks.data;
 
-import org.core.exceptions.DirectionNotSupported;
 import org.core.world.direction.Direction;
 import org.core.world.direction.SixteenFacingDirection;
 import org.core.world.position.block.details.data.DirectionalData;
@@ -10,7 +9,7 @@ public class BRotationalData implements DirectionalData {
 
     org.bukkit.block.data.Rotatable rotatable;
 
-    public BRotationalData(org.bukkit.block.data.Rotatable rotatable){
+    public BRotationalData(org.bukkit.block.data.Rotatable rotatable) {
         this.rotatable = rotatable;
     }
 
@@ -25,7 +24,7 @@ public class BRotationalData implements DirectionalData {
     }
 
     @Override
-    public DirectionalData setDirection(Direction direction) throws DirectionNotSupported {
+    public DirectionalData setDirection(Direction direction) {
         this.rotatable.setRotation(DirectionUtils.toFace(direction));
         return this;
     }
