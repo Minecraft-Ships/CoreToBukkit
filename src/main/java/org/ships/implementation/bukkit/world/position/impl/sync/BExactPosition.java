@@ -1,7 +1,7 @@
 package org.ships.implementation.bukkit.world.position.impl.sync;
 
 import org.bukkit.Location;
-import org.core.CorePlugin;
+import org.core.TranslateCore;
 import org.core.entity.EntitySnapshot;
 import org.core.entity.EntityType;
 import org.core.entity.LiveEntity;
@@ -78,12 +78,12 @@ public class BExactPosition extends BAbstractPosition<Double> implements SyncExa
 
     @Override
     public Optional<LiveTileEntity> getTileEntity() {
-        return ((BukkitPlatform) CorePlugin.getPlatform()).createTileEntityInstance(this.location.getBlock().getState());
+        return ((BukkitPlatform) TranslateCore.getPlatform()).createTileEntityInstance(this.location.getBlock().getState());
     }
 
     @Override
     public <E extends LiveEntity, S extends EntitySnapshot<E>> Optional<S> createEntity(EntityType<E, S> type) {
-        return ((BukkitPlatform) CorePlugin.getPlatform()).createSnapshot(type, this);
+        return ((BukkitPlatform) TranslateCore.getPlatform()).createSnapshot(type, this);
     }
 
     @Override

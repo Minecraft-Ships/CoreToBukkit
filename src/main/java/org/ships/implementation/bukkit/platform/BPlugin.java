@@ -2,7 +2,8 @@ package org.ships.implementation.bukkit.platform;
 
 import org.core.command.CommandRegister;
 import org.core.config.ConfigurationStream;
-import org.core.platform.Plugin;
+import org.core.platform.plugin.Plugin;
+import org.jetbrains.annotations.NotNull;
 import org.ships.implementation.bukkit.configuration.YAMLConfigurationFile;
 
 import java.io.File;
@@ -20,7 +21,7 @@ public class BPlugin implements Plugin {
     }
 
     @Override
-    public String getPluginName() {
+    public @NotNull String getPluginName() {
         return this.plugin.getName();
     }
 
@@ -30,13 +31,13 @@ public class BPlugin implements Plugin {
     }
 
     @Override
-    public String getPluginVersion() {
+    public @NotNull String getPluginVersion() {
         return this.plugin.getDescription().getVersion();
     }
 
     @Override
     @Deprecated
-    public void registerCommands(CommandRegister register) {
+    public void onRegisterCommands(@NotNull CommandRegister register) {
 
     }
 
@@ -46,12 +47,12 @@ public class BPlugin implements Plugin {
     }
 
     @Override
-    public void registerReady() {
+    public void onCoreReady() {
 
     }
 
     @Override
-    public org.bukkit.plugin.Plugin getLauncher() {
+    public org.bukkit.plugin.@NotNull Plugin getPlatformLauncher() {
         return this.plugin;
     }
 

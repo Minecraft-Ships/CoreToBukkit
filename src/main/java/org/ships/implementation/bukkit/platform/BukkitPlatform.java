@@ -7,7 +7,7 @@ import org.bukkit.boss.BarColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Parrot;
-import org.core.CorePlugin;
+import org.core.TranslateCore;
 import org.core.config.ConfigurationFormat;
 import org.core.config.parser.unspecific.UnspecificParser;
 import org.core.config.parser.unspecific.UnspecificParsers;
@@ -26,7 +26,7 @@ import org.core.inventory.item.type.ItemTypeCommon;
 import org.core.permission.Permission;
 import org.core.platform.Platform;
 import org.core.platform.PlatformDetails;
-import org.core.platform.Plugin;
+import org.core.platform.plugin.Plugin;
 import org.core.source.command.CommandSource;
 import org.core.source.projectile.ProjectileSource;
 import org.core.text.TextColour;
@@ -162,7 +162,7 @@ public class BukkitPlatform implements Platform {
 
     public CommandSource getSource(CommandSender sender) {
         if (sender instanceof ConsoleCommandSender) {
-            return CorePlugin.getConsole();
+            return TranslateCore.getConsole();
         }
         if (sender instanceof org.bukkit.entity.Player) {
             return new BLivePlayer((org.bukkit.entity.Player) sender);

@@ -1,7 +1,7 @@
 package org.ships.implementation.bukkit.world.position.block.details.blocks;
 
 import org.bukkit.block.data.BlockData;
-import org.core.CorePlugin;
+import org.core.TranslateCore;
 import org.core.world.position.block.BlockType;
 import org.core.world.position.block.details.BlockDetails;
 import org.core.world.position.block.details.BlockSnapshot;
@@ -36,14 +36,14 @@ public class BlockStateSnapshot implements BlockSnapshot.SyncBlockSnapshot, IBBl
 
         @Override
         public Optional<TileEntitySnapshot<? extends TileEntity>> getData() {
-            BukkitPlatform platform = (BukkitPlatform) CorePlugin.getPlatform();
+            BukkitPlatform platform = (BukkitPlatform) TranslateCore.getPlatform();
             Optional<LiveTileEntity> opTile = platform.createTileEntityInstance(BlockStateSnapshot.this.state);
             return opTile.map(TileEntity::getSnapshot);
         }
 
         @Override
         public void setData(TileEntitySnapshot<? extends TileEntity> value) {
-            BukkitPlatform platform = (BukkitPlatform) CorePlugin.getPlatform();
+            BukkitPlatform platform = (BukkitPlatform) TranslateCore.getPlatform();
             Optional<LiveTileEntity> opTile = platform.createTileEntityInstance(BlockStateSnapshot.this.state);
             if (!opTile.isPresent()) {
                 return;

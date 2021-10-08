@@ -3,7 +3,7 @@ package org.ships.implementation.bukkit.command;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabExecutor;
-import org.core.CorePlugin;
+import org.core.TranslateCore;
 import org.core.command.CommandLauncher;
 import org.core.exceptions.NotEnoughArguments;
 import org.core.source.command.CommandSource;
@@ -21,7 +21,7 @@ public class BCommand implements TabExecutor {
 
     @Override
     public boolean onCommand(CommandSender commandSender, Command command, String s, String[] strings) {
-        CommandSource source = ((BukkitPlatform) CorePlugin.getPlatform()).getSource(commandSender);
+        CommandSource source = ((BukkitPlatform) TranslateCore.getPlatform()).getSource(commandSender);
         try {
             return this.command.run(source, strings);
         } catch (NotEnoughArguments notEnoughArguments) {
@@ -32,7 +32,7 @@ public class BCommand implements TabExecutor {
 
     @Override
     public List<String> onTabComplete(CommandSender commandSender, Command command, String s, String[] strings) {
-        CommandSource source = ((BukkitPlatform) CorePlugin.getPlatform()).getSource(commandSender);
+        CommandSource source = ((BukkitPlatform) TranslateCore.getPlatform()).getSource(commandSender);
         return this.command.tab(source, strings);
     }
 }

@@ -1,6 +1,6 @@
 package org.ships.implementation.bukkit.world.position.impl.sync;
 
-import org.core.CorePlugin;
+import org.core.TranslateCore;
 import org.core.adventureText.AText;
 import org.core.entity.EntitySnapshot;
 import org.core.entity.EntityType;
@@ -110,13 +110,13 @@ public class BBlockPosition extends BAbstractPosition<Integer> implements SyncBl
 
     @Override
     public Optional<LiveTileEntity> getTileEntity() {
-        BukkitPlatform platform = (BukkitPlatform) CorePlugin.getPlatform();
+        BukkitPlatform platform = (BukkitPlatform) TranslateCore.getPlatform();
         return platform.createTileEntityInstance(this.block.getState());
     }
 
     @Override
     public <E extends LiveEntity, S extends EntitySnapshot<E>> Optional<S> createEntity(EntityType<E, S> type) {
-        return ((BukkitPlatform) CorePlugin.getPlatform()).createSnapshot(type, this.toExactPosition());
+        return ((BukkitPlatform) TranslateCore.getPlatform()).createSnapshot(type, this.toExactPosition());
     }
 
     @Override

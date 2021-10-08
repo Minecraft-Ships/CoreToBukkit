@@ -4,7 +4,7 @@ import org.core.event.Event;
 import org.core.event.EventListener;
 import org.core.event.EventManager;
 import org.core.event.EventPriority;
-import org.core.platform.Plugin;
+import org.core.platform.plugin.Plugin;
 
 import java.util.*;
 

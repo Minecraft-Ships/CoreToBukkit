@@ -1,7 +1,6 @@
 package org.ships.implementation.bukkit.platform.version;
 
-import org.core.CorePlugin;
-import org.core.entity.Entity;
+import org.core.TranslateCore;
 import org.core.entity.EntitySnapshot;
 import org.core.entity.EntityType;
 import org.core.entity.LiveEntity;
@@ -27,7 +26,7 @@ public interface BukkitSpecificPlatform {
 
     static Set<BukkitSpecificPlatform> getPlatforms(){
         Set<BukkitSpecificPlatform> set = new HashSet<>();
-        int[] version = CorePlugin.getPlatform().getMinecraftVersion();
+        int[] version = TranslateCore.getPlatform().getMinecraftVersion();
         if(version[0] == 1){
             if(version[1] >= 13){
                 set.add(new Specific1V13Platform());
@@ -40,7 +39,7 @@ public interface BukkitSpecificPlatform {
     }
 
     static Optional<BukkitSpecificPlatform> getSpecificPlatform(){
-        int[] version = CorePlugin.getPlatform().getMinecraftVersion();
+        int[] version = TranslateCore.getPlatform().getMinecraftVersion();
         return getPlatforms().stream().filter(p -> version[0] == p.getVersion()[0] && version[1] == p.getVersion()[1]).findAny();
     }
 }

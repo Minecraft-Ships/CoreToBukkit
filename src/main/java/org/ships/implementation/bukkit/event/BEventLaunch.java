@@ -3,7 +3,7 @@ package org.ships.implementation.bukkit.event;
 import org.array.utils.ArrayUtils;
 import org.core.event.Event;
 import org.core.event.EventListener;
-import org.core.platform.Plugin;
+import org.core.platform.plugin.Plugin;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;

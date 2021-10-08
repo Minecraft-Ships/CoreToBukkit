@@ -2,7 +2,7 @@ package org.ships.implementation.bukkit.entity;
 
 import org.bukkit.Location;
 import org.bukkit.util.Vector;
-import org.core.CorePlugin;
+import org.core.TranslateCore;
 import org.core.adventureText.AText;
 import org.core.entity.Entity;
 import org.core.entity.EntitySnapshot;
@@ -184,7 +184,7 @@ public class BSnapshotValueEntity<BE extends org.bukkit.entity.Entity, E extends
         Location loc = this.<Location>getSnapshotValue("LOCATION").get().getValue();
         BE entity = (BE) loc.getWorld().spawnEntity(loc, ((BEntityType<?, ?>) this.type).getBukkitEntityType());
         this.snapshotValues.stream().map(sv -> (EntitySnapshotValue<BE, ?>) sv).forEach(sv -> sv.applyValue(entity));
-        return (E) ((BukkitPlatform) CorePlugin.getPlatform()).createEntityInstance(entity);
+        return (E) ((BukkitPlatform) TranslateCore.getPlatform()).createEntityInstance(entity);
     }
 
     @Override

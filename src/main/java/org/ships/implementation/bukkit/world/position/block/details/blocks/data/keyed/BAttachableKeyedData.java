@@ -1,7 +1,7 @@
 package org.ships.implementation.bukkit.world.position.block.details.blocks.data.keyed;
 
 import org.bukkit.block.data.BlockData;
-import org.core.CorePlugin;
+import org.core.TranslateCore;
 import org.core.world.direction.Direction;
 import org.core.world.position.block.BlockType;
 import org.core.world.position.block.details.data.keyed.AttachableKeyedData;
@@ -30,7 +30,7 @@ public class BAttachableKeyedData implements AttachableKeyedData {
 
     static {
         workArounds.addAll(Arrays.asList(CommonAttachableWorkAround.values()));
-        int[] mcVersion = CorePlugin.getPlatform().getMinecraftVersion();
+        int[] mcVersion = TranslateCore.getPlatform().getMinecraftVersion();
         if(mcVersion[1] >= 14){
             workArounds.addAll(Arrays.asList(AttachableWorkAround1D14.values()));
         }

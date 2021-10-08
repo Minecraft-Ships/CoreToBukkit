@@ -2,7 +2,7 @@ package org.ships.implementation.bukkit;
 
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
-import org.core.CorePlugin;
+import org.core.TranslateCore;
 import org.core.config.ConfigurationFormat;
 import org.core.config.ConfigurationStream;
 import org.core.event.EventManager;
@@ -24,7 +24,7 @@ import org.ships.implementation.bukkit.world.boss.BServerBossBar;
 
 import java.io.File;
 
-public class CoreToBukkit extends CorePlugin.CoreImplementation {
+public class CoreToBukkit extends TranslateCore.CoreImplementation {
 
     protected BukkitPlatform platform = new BukkitPlatform();
     protected BEventManager manager = new BEventManager();

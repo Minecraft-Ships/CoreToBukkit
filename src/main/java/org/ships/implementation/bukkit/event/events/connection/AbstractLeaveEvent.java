@@ -1,6 +1,6 @@
 package org.ships.implementation.bukkit.event.events.connection;
 
-import org.core.CorePlugin;
+import org.core.TranslateCore;
 import org.core.adventureText.AText;
 import org.core.entity.living.human.player.LivePlayer;
 import org.core.event.events.connection.ClientConnectionEvent;
@@ -29,7 +29,7 @@ public class AbstractLeaveEvent implements ClientConnectionEvent.Leave {
     @Override
     @Deprecated
     public Text getLeaveMessage() {
-        return CorePlugin.buildText(this.leaveMessage.toLegacy());
+        return TranslateCore.buildText(this.leaveMessage.toLegacy());
     }
 
     @Override

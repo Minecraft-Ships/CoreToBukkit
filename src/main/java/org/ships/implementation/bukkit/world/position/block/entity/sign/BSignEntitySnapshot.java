@@ -1,6 +1,6 @@
 package org.ships.implementation.bukkit.world.position.block.entity.sign;
 
-import org.core.CorePlugin;
+import org.core.TranslateCore;
 import org.core.adventureText.AText;
 import org.core.text.Text;
 import org.core.world.position.block.BlockType;
@@ -41,7 +41,7 @@ public class BSignEntitySnapshot implements SignTileEntitySnapshot {
     @Override
     @Deprecated
     public Text[] getLines() {
-        return lines.stream().map(t -> CorePlugin.buildText(t.toLegacy())).toArray(Text[]::new);
+        return lines.stream().map(t -> TranslateCore.buildText(t.toLegacy())).toArray(Text[]::new);
     }
 
     @Override

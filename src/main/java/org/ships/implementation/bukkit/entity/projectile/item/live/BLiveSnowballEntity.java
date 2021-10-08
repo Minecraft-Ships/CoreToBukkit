@@ -1,6 +1,6 @@
 package org.ships.implementation.bukkit.entity.projectile.item.live;
 
-import org.core.CorePlugin;
+import org.core.TranslateCore;
 import org.core.entity.EntitySnapshot;
 import org.core.entity.projectile.ProjectileEntity;
 import org.core.entity.projectile.item.snowball.LiveSnowballEntity;
@@ -32,12 +32,12 @@ public class BLiveSnowballEntity extends BLiveEntity<org.bukkit.entity.Snowball>
         if(source == null){
             return Optional.empty();
         }
-        return Optional.of(((BukkitPlatform) CorePlugin.getPlatform()).getCoreProjectileSource(source));
+        return Optional.of(((BukkitPlatform) TranslateCore.getPlatform()).getCoreProjectileSource(source));
     }
 
     @Override
     public ProjectileEntity setSource(ProjectileSource source) {
-        this.getBukkitEntity().setShooter(((BukkitPlatform)CorePlugin.getPlatform()).getBukkitProjectileSource(source));
+        this.getBukkitEntity().setShooter(((BukkitPlatform) TranslateCore.getPlatform()).getBukkitProjectileSource(source));
         return this;
     }
 

@@ -5,15 +5,13 @@ import org.bukkit.Chunk;
 import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.core.entity.living.human.player.LivePlayer;
-import org.core.platform.Plugin;
+import org.core.platform.plugin.Plugin;
 import org.core.threadsafe.FutureResult;
 import org.core.vector.type.Vector3;
 import org.core.world.WorldExtent;
 import org.core.world.position.block.details.BlockDetails;
 import org.core.world.position.block.entity.LiveTileEntity;
 import org.core.world.position.flags.PositionFlag;
-import org.core.world.position.impl.ExactPosition;
-import org.core.world.position.impl.Position;
 import org.core.world.position.impl.async.ASyncBlockPosition;
 import org.core.world.position.impl.async.ASyncExactPosition;
 import org.core.world.position.impl.sync.SyncBlockPosition;
@@ -70,7 +68,7 @@ public class BAsyncBlockPosition extends BAbstractPosition<Integer> implements A
     @Override
     public FutureResult<SyncPosition<Integer>> scheduleBlock(Plugin plugin, BlockDetails details, PositionFlag.SetFlag... flags) {
         FutureResult<SyncPosition<Integer>> future = new FutureResult<>();
-        Bukkit.getScheduler().runTask((org.bukkit.plugin.Plugin)plugin.getLauncher(), () -> {
+        Bukkit.getScheduler().runTask((org.bukkit.plugin.Plugin)plugin.getPlatformLauncher(), () -> {
             SyncBlockPosition position = new BBlockPosition(this.block);
             position.setBlock(details, flags);
             future.run(position);
@@ -81,7 +79,7 @@ public class BAsyncBlockPosition extends BAbstractPosition<Integer> implements A
     @Override
     public FutureResult<SyncPosition<Integer>> scheduleBlock(Plugin plugin, BlockDetails details, LivePlayer... player) {
         FutureResult<SyncPosition<Integer>> future = new FutureResult<>();
-        Bukkit.getScheduler().runTask((org.bukkit.plugin.Plugin)plugin.getLauncher(), () -> {
+        Bukkit.getScheduler().runTask((org.bukkit.plugin.Plugin)plugin.getPlatformLauncher(), () -> {
             SyncBlockPosition position = new BBlockPosition(this.block);
             position.setBlock(details, player);
             future.run(position);
@@ -92,7 +90,7 @@ public class BAsyncBlockPosition extends BAbstractPosition<Integer> implements A
     @Override
     public FutureResult<SyncPosition<Integer>> scheduleReset(Plugin plugin, LivePlayer... player) {
         FutureResult<SyncPosition<Integer>> future = new FutureResult<>();
-        Bukkit.getScheduler().runTask((org.bukkit.plugin.Plugin)plugin.getLauncher(), () -> {
+        Bukkit.getScheduler().runTask((org.bukkit.plugin.Plugin)plugin.getPlatformLauncher(), () -> {
             SyncBlockPosition position = new BBlockPosition(this.block);
             position.resetBlock(player);
             future.run(position);
@@ -103,7 +101,7 @@ public class BAsyncBlockPosition extends BAbstractPosition<Integer> implements A
     @Override
     public FutureResult<LiveTileEntity> getTileEntity(Plugin plugin) {
         FutureResult<LiveTileEntity> future = new FutureResult<>();
-        Bukkit.getScheduler().runTask((org.bukkit.plugin.Plugin)plugin.getLauncher(), () -> {
+        Bukkit.getScheduler().runTask((org.bukkit.plugin.Plugin)plugin.getPlatformLauncher(), () -> {
             SyncBlockPosition position = new BBlockPosition(this.block);
             Optional<LiveTileEntity> opEntity = position.getTileEntity();
             opEntity.ifPresent(future::run);

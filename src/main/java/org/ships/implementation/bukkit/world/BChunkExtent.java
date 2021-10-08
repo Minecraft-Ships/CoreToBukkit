@@ -1,7 +1,7 @@
 package org.ships.implementation.bukkit.world;
 
 import org.bukkit.Chunk;
-import org.core.CorePlugin;
+import org.core.TranslateCore;
 import org.core.entity.LiveEntity;
 import org.core.world.ChunkExtent;
 import org.core.world.WorldExtent;
@@ -56,14 +56,14 @@ public class BChunkExtent implements ChunkExtent {
     @Override
     public Set<LiveEntity> getEntities() {
         return Stream.of(this.chunk.getEntities())
-                .map(entity -> ((BukkitPlatform)CorePlugin.getPlatform()).createEntityInstance(entity))
+                .map(entity -> ((BukkitPlatform) TranslateCore.getPlatform()).createEntityInstance(entity))
                 .collect(Collectors.toSet());
     }
 
     @Override
     public Set<LiveTileEntity> getTileEntities() {
         return Stream.of(this.chunk.getTileEntities())
-                .map(entity -> ((BukkitPlatform)CorePlugin.getPlatform()).createTileEntityInstance(entity).orElse(null))
+                .map(entity -> ((BukkitPlatform) TranslateCore.getPlatform()).createTileEntityInstance(entity).orElse(null))
                 .collect(Collectors.toSet());
     }
 

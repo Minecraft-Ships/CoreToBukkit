@@ -1,6 +1,6 @@
 package org.ships.implementation.bukkit.world.position.block.details.blocks;
 
-import org.core.CorePlugin;
+import org.core.TranslateCore;
 import org.core.world.position.block.BlockType;
 import org.core.world.position.block.details.BlockDetails;
 import org.core.world.position.block.details.BlockSnapshot;
@@ -46,7 +46,7 @@ public class BBlockDetails implements BlockDetails, IBBlockDetails {
         this.data = data;
         this.async = async;
         if (!async) {
-            CorePlugin.getPlatform().getDefaultTileEntity(getType()).ifPresent(t -> tileEntitySnapshot = t);
+            TranslateCore.getPlatform().getDefaultTileEntity(getType()).ifPresent(t -> tileEntitySnapshot = t);
         }
     }
 

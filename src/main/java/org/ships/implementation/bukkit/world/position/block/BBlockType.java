@@ -1,6 +1,6 @@
 package org.ships.implementation.bukkit.world.position.block;
 
-import org.core.CorePlugin;
+import org.core.TranslateCore;
 import org.core.inventory.item.ItemType;
 import org.core.utils.Identifiable;
 import org.core.world.position.block.BlockType;
@@ -45,7 +45,7 @@ public class BBlockType implements BlockType {
 
     @Override
     public Set<BlockGroup> getGroups() {
-        return CorePlugin
+        return TranslateCore
                 .getPlatform()
                 .getBlockGroups()
                 .stream()

@@ -15,7 +15,7 @@ import org.bukkit.event.entity.EntitySpawnEvent;
 import org.bukkit.event.entity.ItemSpawnEvent;
 import org.bukkit.event.player.*;
 import org.bukkit.inventory.EquipmentSlot;
-import org.core.CorePlugin;
+import org.core.TranslateCore;
 import org.core.adventureText.AText;
 import org.core.entity.Entity;
 import org.core.entity.living.human.player.LivePlayer;
@@ -53,7 +53,7 @@ public class BukkitListener implements Listener {
 
     @EventHandler
     public static void onPlayerJoin(PlayerJoinEvent event) {
-        LivePlayer player = (LivePlayer) ((BukkitPlatform) CorePlugin.getPlatform()).createEntityInstance(event.getPlayer());
+        LivePlayer player = (LivePlayer) ((BukkitPlatform) TranslateCore.getPlatform()).createEntityInstance(event.getPlayer());
         BJoinedEvent cEvent = new BJoinedEvent(player);
         call(EventPriority.NORMAL, cEvent);
     }
@@ -63,7 +63,7 @@ public class BukkitListener implements Listener {
         BlockDetails old = new BBlockDetails(event.getBlockReplacedState().getBlockData(), false);
         BlockDetails new1 = new BBlockDetails(event.getBlock().getBlockData(), false);
         SyncBlockPosition position = new BBlockPosition(event.getBlock());
-        LivePlayer player = (LivePlayer) ((BukkitPlatform) CorePlugin.getPlatform()).createEntityInstance(event.getPlayer());
+        LivePlayer player = (LivePlayer) ((BukkitPlatform) TranslateCore.getPlatform()).createEntityInstance(event.getPlayer());
         List<BlockSnapshot<SyncBlockPosition>> collection = Collections.singletonList(new1.createSnapshot(position));
         AbstractBlockChangeEvent.PlaceBlockPlayerPostEvent event2 = new AbstractBlockChangeEvent.PlaceBlockPlayerPostEvent(position, old, new1, player, collection);
         call(EventPriority.NORMAL, event2);
@@ -77,7 +77,7 @@ public class BukkitListener implements Listener {
         BlockDetails old = new BBlockDetails(event.getBlockReplacedState().getBlockData(), false);
         BlockDetails new1 = new BBlockDetails(event.getBlock().getBlockData(), false);
         SyncBlockPosition position = new BBlockPosition(event.getBlock());
-        LivePlayer player = (LivePlayer) ((BukkitPlatform) CorePlugin.getPlatform()).createEntityInstance(event.getPlayer());
+        LivePlayer player = (LivePlayer) ((BukkitPlatform) TranslateCore.getPlatform()).createEntityInstance(event.getPlayer());
         List<BlockSnapshot<SyncBlockPosition>> collection = new ArrayList<>();
         event.getReplacedBlockStates().forEach(bs -> collection.add(new BlockStateSnapshot(bs)));
 
@@ -102,7 +102,7 @@ public class BukkitListener implements Listener {
     @EventHandler
     public static void onEntitySpawnEvent(EntitySpawnEvent event) {
         org.bukkit.entity.Entity entity = event.getEntity();
-        BEntitySpawnEvent spawnEvent = new BEntitySpawnEvent(new BExactPosition(event.getLocation()), ((BukkitPlatform) CorePlugin.getPlatform()).createEntityInstance(entity));
+        BEntitySpawnEvent spawnEvent = new BEntitySpawnEvent(new BExactPosition(event.getLocation()), ((BukkitPlatform) TranslateCore.getPlatform()).createEntityInstance(entity));
         call(EventPriority.NORMAL, spawnEvent);
         boolean cancelled = spawnEvent.isCancelled();
         if (cancelled) {
@@ -124,7 +124,7 @@ public class BukkitListener implements Listener {
 
     @EventHandler(priority = org.bukkit.event.EventPriority.HIGHEST)
     public static void onPlayerKickedEvent(PlayerKickEvent event) {
-        LivePlayer player = (LivePlayer) ((BukkitPlatform) CorePlugin.getPlatform()).createEntityInstance(event.getPlayer());
+        LivePlayer player = (LivePlayer) ((BukkitPlatform) TranslateCore.getPlatform()).createEntityInstance(event.getPlayer());
         AText message = AText.ofLegacy(event.getLeaveMessage());
         BKickEvent kickEvent = new BKickEvent(player, message);
         call(EventPriority.HIGHEST, kickEvent);
@@ -133,7 +133,7 @@ public class BukkitListener implements Listener {
 
     @EventHandler(priority = org.bukkit.event.EventPriority.HIGHEST)
     public static void onPlayerQuitEvent(PlayerQuitEvent event) {
-        LivePlayer player = (LivePlayer) ((BukkitPlatform) CorePlugin.getPlatform()).createEntityInstance(event.getPlayer());
+        LivePlayer player = (LivePlayer) ((BukkitPlatform) TranslateCore.getPlatform()).createEntityInstance(event.getPlayer());
         AText message = AText.ofLegacy(event.getQuitMessage());
         BKickEvent kickEvent = new BKickEvent(player, message);
         call(EventPriority.HIGHEST, kickEvent);
@@ -147,7 +147,7 @@ public class BukkitListener implements Listener {
                 .of(event.getLines())
                 .map(AText::ofLegacy)
                 .collect(Collectors.toList());
-        LivePlayer player = (LivePlayer) ((BukkitPlatform) CorePlugin.getPlatform()).createEntityInstance(event.getPlayer());
+        LivePlayer player = (LivePlayer) ((BukkitPlatform) TranslateCore.getPlatform()).createEntityInstance(event.getPlayer());
         SyncBlockPosition position = new BBlockPosition(event.getBlock());
         BSignChangeEvent event1 = new BSignChangeEvent(player, position, lines);
         call(EventPriority.NORMAL, event1);
@@ -174,7 +174,7 @@ public class BukkitListener implements Listener {
                 action = EntityInteractEvent.SECONDARY_CLICK_ACTION;
                 break;
         }
-        BEntityInteractEvent.PlayerInteractWithBlock event1 = new BEntityInteractEvent.PlayerInteractWithBlock(new BBlockPosition(event.getClickedBlock()), action, DirectionUtils.toDirection(event.getBlockFace()), (LivePlayer) ((BukkitPlatform) CorePlugin.getPlatform()).createEntityInstance(event.getPlayer()));
+        BEntityInteractEvent.PlayerInteractWithBlock event1 = new BEntityInteractEvent.PlayerInteractWithBlock(new BBlockPosition(event.getClickedBlock()), action, DirectionUtils.toDirection(event.getBlockFace()), (LivePlayer) ((BukkitPlatform) TranslateCore.getPlatform()).createEntityInstance(event.getPlayer()));
         call(EventPriority.NORMAL, event1);
         if (event1.isCancelled()) {
             event.setCancelled(event1.isCancelled());
@@ -188,7 +188,7 @@ public class BukkitListener implements Listener {
         for (Block value : list) {
             positions.add(new BBlockPosition(value));
         }
-        Entity<?> entity = ((BukkitPlatform) CorePlugin.getPlatform()).createEntityInstance(event.getEntity());
+        Entity<?> entity = ((BukkitPlatform) TranslateCore.getPlatform()).createEntityInstance(event.getEntity());
         EntityExplosion explosion = new EntityExplosion(entity, positions);
         Iterator<Block> iterator = event.blockList().iterator();
         while (iterator.hasNext()) {
@@ -209,7 +209,7 @@ public class BukkitListener implements Listener {
             event.setCancelled(true);
             return;
         }
-        AbstractBlockChangeEvent.BreakBlockChangeEventPlayer event1 = new AbstractBlockChangeEvent.BreakBlockChangeEventPlayer(new BBlockPosition(event.getBlock()), (LivePlayer) ((BukkitPlatform) CorePlugin.getPlatform()).createEntityInstance(event.getPlayer()));
+        AbstractBlockChangeEvent.BreakBlockChangeEventPlayer event1 = new AbstractBlockChangeEvent.BreakBlockChangeEventPlayer(new BBlockPosition(event.getBlock()), (LivePlayer) ((BukkitPlatform) TranslateCore.getPlatform()).createEntityInstance(event.getPlayer()));
         call(EventPriority.NORMAL, event1);
         if (event1.isCancelled()) {
             event.setCancelled(event1.isCancelled());
@@ -219,7 +219,7 @@ public class BukkitListener implements Listener {
     @EventHandler
     public void onCommandSend(PlayerCommandSendEvent event) {
         Player player = event.getPlayer();
-        LivePlayer lPlayer = (LivePlayer) ((BukkitPlatform) CorePlugin.getPlatform()).createEntityInstance(event.getPlayer());
+        LivePlayer lPlayer = (LivePlayer) ((BukkitPlatform) TranslateCore.getPlatform()).createEntityInstance(event.getPlayer());
         BEntityCommandEvent event1 = new BEntityCommandEvent(lPlayer, event.getCommands());
         call(EventPriority.NORMAL, event1);
     }
@@ -232,7 +232,7 @@ public class BukkitListener implements Listener {
 
     private static Set<BEventLaunch> getMethods(EventPriority priority, Class<? extends Event> classEvent) {
         Set<BEventLaunch> methods = new HashSet<>();
-        CorePlugin.getEventManager().getEventListeners().forEach((key, value) -> value.forEach(el -> {
+        TranslateCore.getEventManager().getEventListeners().forEach((key, value) -> value.forEach(el -> {
             for (Method method : el.getClass().getDeclaredMethods()) {
                 HEvent hEvent = method.getAnnotation(HEvent.class);
                 if (hEvent == null) {

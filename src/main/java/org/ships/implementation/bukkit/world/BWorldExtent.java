@@ -2,7 +2,7 @@ package org.ships.implementation.bukkit.world;
 
 import org.bukkit.Chunk;
 import org.bukkit.block.BlockState;
-import org.core.CorePlugin;
+import org.core.TranslateCore;
 import org.core.entity.LiveEntity;
 import org.core.vector.type.Vector3;
 import org.core.world.ChunkExtent;
@@ -66,7 +66,7 @@ public class BWorldExtent implements WorldExtent {
     public Set<LiveEntity> getEntities() {
         Set<LiveEntity> entities = new HashSet<>();
         this.world.getEntities().forEach(e -> {
-            LiveEntity entity = ((BukkitPlatform)CorePlugin.getPlatform()).createEntityInstance(e);
+            LiveEntity entity = ((BukkitPlatform) TranslateCore.getPlatform()).createEntityInstance(e);
             if(entity == null){
                 System.err.println("Entity could not be converted: " + e.getType().name() + " | " + e.getName());
                 return;
@@ -81,7 +81,7 @@ public class BWorldExtent implements WorldExtent {
         Set<LiveTileEntity> set = new HashSet<>();
         for (org.bukkit.Chunk chunk : this.world.getLoadedChunks()){
             for (BlockState state : chunk.getTileEntities()) {
-                ((BukkitPlatform) CorePlugin.getPlatform()).createTileEntityInstance(state).ifPresent(set::add);
+                ((BukkitPlatform) TranslateCore.getPlatform()).createTileEntityInstance(state).ifPresent(set::add);
             }
         }
         return set;

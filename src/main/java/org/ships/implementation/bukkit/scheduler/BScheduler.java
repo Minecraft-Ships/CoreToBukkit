@@ -1,7 +1,7 @@
 package org.ships.implementation.bukkit.scheduler;
 
 import org.bukkit.Bukkit;
-import org.core.platform.Plugin;
+import org.core.platform.plugin.Plugin;
 import org.core.schedule.Scheduler;
 import org.core.schedule.SchedulerBuilder;
 import org.core.schedule.unit.TimeUnit;
@@ -56,15 +56,15 @@ public class BScheduler implements Scheduler {
         }
         if(iter == null){
             if(this.async) {
-                this.task = Bukkit.getScheduler().scheduleAsyncDelayedTask((org.bukkit.plugin.Plugin) this.plugin.getLauncher(), new BScheduler.RunAfterScheduler(), ticks);
+                this.task = Bukkit.getScheduler().scheduleAsyncDelayedTask((org.bukkit.plugin.Plugin) this.plugin.getPlatformLauncher(), new BScheduler.RunAfterScheduler(), ticks);
             }else{
-                this.task = Bukkit.getScheduler().scheduleSyncDelayedTask((org.bukkit.plugin.Plugin) this.plugin.getLauncher(), new BScheduler.RunAfterScheduler(), ticks);
+                this.task = Bukkit.getScheduler().scheduleSyncDelayedTask((org.bukkit.plugin.Plugin) this.plugin.getPlatformLauncher(), new BScheduler.RunAfterScheduler(), ticks);
             }
         } else {
             if(this.async){
-                this.task = Bukkit.getScheduler().scheduleAsyncRepeatingTask((org.bukkit.plugin.Plugin) this.plugin.getLauncher(), new BScheduler.RunAfterScheduler(), ticks, iter);
+                this.task = Bukkit.getScheduler().scheduleAsyncRepeatingTask((org.bukkit.plugin.Plugin) this.plugin.getPlatformLauncher(), new BScheduler.RunAfterScheduler(), ticks, iter);
             }else {
-                this.task = Bukkit.getScheduler().scheduleSyncRepeatingTask((org.bukkit.plugin.Plugin) this.plugin.getLauncher(), new BScheduler.RunAfterScheduler(), ticks, iter);
+                this.task = Bukkit.getScheduler().scheduleSyncRepeatingTask((org.bukkit.plugin.Plugin) this.plugin.getPlatformLauncher(), new BScheduler.RunAfterScheduler(), ticks, iter);
             }
         }
     }

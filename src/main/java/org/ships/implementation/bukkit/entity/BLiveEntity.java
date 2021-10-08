@@ -1,6 +1,6 @@
 package org.ships.implementation.bukkit.entity;
 
-import org.core.CorePlugin;
+import org.core.TranslateCore;
 import org.core.adventureText.AText;
 import org.core.entity.Entity;
 import org.core.entity.LiveEntity;
@@ -102,7 +102,7 @@ public abstract class BLiveEntity<T extends org.bukkit.entity.Entity> implements
 
     @Override
     public Collection<LiveEntity> getPassengers() {
-        BukkitPlatform bukkitPlatform = (BukkitPlatform) CorePlugin.getPlatform();
+        BukkitPlatform bukkitPlatform = (BukkitPlatform) TranslateCore.getPlatform();
         Set<LiveEntity> set = new HashSet<>();
         this.entity.getPassengers().forEach(e -> set.add(bukkitPlatform.createEntityInstance(e)));
         return set;
