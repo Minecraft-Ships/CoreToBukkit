@@ -11,7 +11,6 @@ import org.core.entity.living.human.player.User;
 import org.core.exceptions.BlockNotSupported;
 import org.core.platform.PlatformServer;
 import org.core.platform.plugin.Plugin;
-import org.core.platform.tps.TPSExecutor;
 import org.core.schedule.Scheduler;
 import org.core.schedule.unit.TimeUnit;
 import org.core.world.WorldExtent;
@@ -32,7 +31,6 @@ import java.util.stream.Stream;
 public class BServer implements PlatformServer {
 
     protected Set<CommandLauncher> commands = new HashSet<>();
-    protected TPSExecutor tpsExecutor = new TPSExecutor();
 
     @Override
     public Set<WorldExtent> getWorlds() {
@@ -106,7 +104,7 @@ public class BServer implements PlatformServer {
     @Override
     public CompletableFuture<Optional<User>> getOfflineUser(UUID uuid) {
         Player player = Bukkit.getServer().getPlayer(uuid);
-        if (player != null) {
+        if (player!=null) {
             Optional<User> opUser = Optional.of((LivePlayer) ((BukkitPlatform) TranslateCore.getPlatform()).createEntityInstance(player));
             return CompletableFuture.supplyAsync(() -> opUser);
         }
@@ -117,7 +115,7 @@ public class BServer implements PlatformServer {
     @Override
     public CompletableFuture<Optional<User>> getOfflineUser(String lastName) {
         Player player = Bukkit.getServer().getPlayer(lastName);
-        if (player != null) {
+        if (player!=null) {
             Optional<User> opUser = Optional.of((LivePlayer) ((BukkitPlatform) TranslateCore.getPlatform()).createEntityInstance(player));
             return CompletableFuture.supplyAsync(() -> opUser);
         }
@@ -129,15 +127,10 @@ public class BServer implements PlatformServer {
     public Collection<CompletableFuture<User>> getOfflineUsers() {
         return Stream.of(Bukkit.getServer().getOfflinePlayers()).map(op -> {
             Player player = op.getPlayer();
-            if (player == null) {
+            if (player==null) {
                 return CompletableFuture.supplyAsync(() -> (User) new BUser(op));
             }
             return CompletableFuture.supplyAsync(() -> (User) ((BukkitPlatform) TranslateCore.getPlatform()).createEntityInstance(player));
         }).collect(Collectors.toSet());
-    }
-
-    @Override
-    public TPSExecutor getTPSExecutor() {
-        return this.tpsExecutor;
     }
 }

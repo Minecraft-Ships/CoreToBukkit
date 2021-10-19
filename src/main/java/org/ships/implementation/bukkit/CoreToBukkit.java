@@ -31,15 +31,18 @@ public class CoreToBukkit extends TranslateCore.CoreImplementation {
     protected BServer server = new BServer();
     protected PlatformConsole console = new PlatformConsole();
 
-    public CoreToBukkit(JavaPlugin plugin) {
-        init(plugin);
+    public CoreToBukkit() {
+        init();
     }
 
-    private void init(JavaPlugin plugin) {
+    private void init() {
         CoreImplementation.IMPLEMENTATION = this;
-        Bukkit.getPluginManager().registerEvents(new BukkitListener(), plugin);
-        Bukkit.getScheduler().scheduleSyncRepeatingTask(plugin, getRawServer().getTPSExecutor(), 0, 1);
         this.platform.init();
+
+    }
+
+    public void init2(JavaPlugin plugin) {
+        Bukkit.getPluginManager().registerEvents(new BukkitListener(), plugin);
     }
 
     @Override
@@ -64,10 +67,10 @@ public class CoreToBukkit extends TranslateCore.CoreImplementation {
 
     @Override
     public ConfigurationStream.ConfigurationFile createRawConfigurationFile(File file, ConfigurationFormat type) {
-        if (file == null) {
+        if (file==null) {
             throw new IllegalStateException("File cannot be null");
         }
-        if (type == null) {
+        if (type==null) {
             throw new IllegalStateException("ConfigurationFormat cannot be null");
         }
         boolean check = false;

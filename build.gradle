@@ -9,7 +9,7 @@ plugins {
 repositories {
     mavenLocal()
     maven {
-        url = uri('https://hub.spigotmc.org/nexus/content/repositories/snapshots/')
+        url = uri('https://papermc.io/repo/repository/maven-public/')
     }
 
     maven {
@@ -26,9 +26,9 @@ jar {
 }
 
 dependencies {
-    compileOnly 'org.spigotmc:spigot-api:1.16.4-R0.1-SNAPSHOT'
+    compileOnly 'com.destroystokyo.paper:paper-api:1.16.5-R0.1-SNAPSHOT'
     compileOnly 'com.github.MilkBowl:VaultAPI:1.7'
-    api project(":ShipsCore")
+    api project(":TranslateCore")
     compileOnly group: 'net.kyori', name: 'examination-api', version: '1.1.0'
     compileOnly group: 'net.kyori', name: 'adventure-api', version: '4.7.0'
     compileOnly 'net.kyori:adventure-text-serializer-legacy:4.7.0'
@@ -44,4 +44,26 @@ compileJava.options.encoding = 'UTF-8'
 
 tasks.withType(JavaCompile) {
     options.encoding = 'UTF-8'
+}
+
+tasks.register("buildPlugin", Jar) {
+    def path = project.rootDir.path + "\\build\\"
+    file(path).mkdirs()
+    archiveClassifier = 'uber'
+    archiveFileName = 'TranslateCore.jar'
+    destinationDirectory = file(path)
+
+
+    from sourceSets.main.output
+    dependsOn configurations.runtimeClasspath
+    from {
+        configurations.runtimeClasspath.findAll {
+            it.name.endsWith('jar') && !it.name.contains("junit") && !it.name.contains("hamcrest")
+        }.collect {
+            zipTree(it).matching {
+                exclude "*.txt"
+            }
+        }
+    }
+    println("Creating file in '" + path + "TranslateCore.jar'")
 }

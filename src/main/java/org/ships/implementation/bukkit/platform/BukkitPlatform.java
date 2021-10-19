@@ -27,6 +27,7 @@ import org.core.permission.Permission;
 import org.core.platform.Platform;
 import org.core.platform.PlatformDetails;
 import org.core.platform.plugin.Plugin;
+import org.core.platform.plugin.details.CorePluginVersion;
 import org.core.source.command.CommandSource;
 import org.core.source.projectile.ProjectileSource;
 import org.core.text.TextColour;
@@ -54,6 +55,7 @@ import org.ships.implementation.bukkit.event.BukkitListener;
 import org.ships.implementation.bukkit.inventory.item.BItemType;
 import org.ships.implementation.bukkit.inventory.item.data.dye.BItemDyeType;
 import org.ships.implementation.bukkit.permission.BukkitPermission;
+import org.ships.implementation.bukkit.platform.plugin.BPlugin;
 import org.ships.implementation.bukkit.platform.version.BukkitSpecificPlatform;
 import org.ships.implementation.bukkit.text.BTextColour;
 import org.ships.implementation.bukkit.world.boss.colour.BBossColour;
@@ -63,6 +65,7 @@ import org.ships.implementation.bukkit.world.position.block.entity.unknown.BLive
 import org.ships.implementation.bukkit.world.position.flags.BApplyPhysicsFlag;
 import org.ships.implementation.bukkit.world.position.impl.sync.BBlockPosition;
 
+import java.io.File;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.util.*;
@@ -459,7 +462,7 @@ public class BukkitPlatform implements Platform {
 
     @Override
     public @NotNull Permission register(@NotNull String permissionNode) {
-        if (Bukkit.getServer().getPluginManager().getPermission(permissionNode) == null) {
+        if (Bukkit.getServer().getPluginManager().getPermission(permissionNode)==null) {
             BukkitPermission permission = new BukkitPermission(permissionNode);
             Bukkit.getServer().getPluginManager().addPermission(new org.bukkit.permissions.Permission(permissionNode));
             return permission;
@@ -480,7 +483,7 @@ public class BukkitPlatform implements Platform {
     }
 
     @Override
-    public int[] getMinecraftVersion() {
+    public CorePluginVersion getMinecraftVersion() {
         String version = Bukkit.getServer().getVersion();
         try {
             version = version.split("MC: ")[1];
@@ -489,20 +492,12 @@ public class BukkitPlatform implements Platform {
                 version = version.split(" ")[0];
             }
             String[] versionString = version.split(Pattern.quote("."));
-            int[] versionInt = new int[3];
-            for (int A = 0; A < versionString.length; A++) {
-                versionInt[A] = Integer.parseInt(versionString[A]);
-            }
-            return versionInt;
+            return new CorePluginVersion(Integer.parseInt(versionString[0]), Integer.parseInt(versionString[1]), Integer.parseInt(versionString[2]));
         } catch (ArrayIndexOutOfBoundsException e) {
             //fix for Pukkit (Pocket Edition of Spigot)
             if (version.startsWith("v")) {
                 String[] versionString = version.substring(1).split(Pattern.quote("."));
-                int[] versionInt = new int[3];
-                for (int A = 0; A < versionString.length; A++) {
-                    versionInt[A] = Integer.parseInt(versionString[A]);
-                }
-                return versionInt;
+                return new CorePluginVersion(Integer.parseInt(versionString[0]), Integer.parseInt(versionString[1]), Integer.parseInt(versionString[2]));
             }
             throw e;
         }
@@ -526,6 +521,16 @@ public class BukkitPlatform implements Platform {
             plugins.add(new BPlugin(plugin));
         }
         return plugins;
+    }
+
+    @Override
+    public File getPlatformPluginsFolder() {
+        return new File("plugins");
+    }
+
+    @Override
+    public File getPlatformConfigFolder() {
+        return getPlatformPluginsFolder();
     }
 
     @Override
