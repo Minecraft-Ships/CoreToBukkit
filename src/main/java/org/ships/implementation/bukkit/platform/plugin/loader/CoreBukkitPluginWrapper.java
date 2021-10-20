@@ -8,7 +8,6 @@ import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.generator.ChunkGenerator;
 import org.bukkit.plugin.InvalidDescriptionException;
 import org.bukkit.plugin.PluginDescriptionFile;
-import org.bukkit.plugin.PluginLoader;
 import org.core.platform.plugin.CorePlugin;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -93,9 +92,8 @@ public class CoreBukkitPluginWrapper implements org.bukkit.plugin.Plugin {
     @NotNull
     @Override
     @Deprecated
-    public PluginLoader getPluginLoader() {
-        //TODO
-        throw new RuntimeException("No Bukkit plugin loader");
+    public CoreBukkitPluginLoader getPluginLoader() {
+        return new CoreBukkitPluginLoader();
     }
 
     @NotNull

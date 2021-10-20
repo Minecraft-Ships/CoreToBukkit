@@ -6,6 +6,7 @@ import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.SimplePluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.core.TranslateCore;
 import org.core.command.CommandRegister;
 import org.core.platform.plugin.CorePlugin;
 import org.core.platform.plugin.loader.CommonLoad;
@@ -40,8 +41,15 @@ public class TranslateCoreBoot extends JavaPlugin {
 
     @Override
     public void onLoad() {
-        File folder = core.getRawPlatform().getTranslatePluginsFolder();
-        plugins.addAll(loadPlugins(folder));
+        Optional<Class<? extends CorePlugin>> opLauncher = TranslateCore.getStandAloneLauncher();
+        if(opLauncher.isPresent()){
+            Class<? extends CorePlugin> pluginClass = opLauncher.get();
+            CorePlugin plugin = CommonLoad.loadStandAlonePlugin(pluginClass);
+            this.plugins.add(plugin);
+            return;
+        }
+        File folder = this.core.getRawPlatform().getTranslatePluginsFolder();
+        this.plugins.addAll(loadPlugins(folder));
     }
 
     @Override
