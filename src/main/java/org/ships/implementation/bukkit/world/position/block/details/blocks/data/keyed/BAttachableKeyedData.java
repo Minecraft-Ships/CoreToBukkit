@@ -2,6 +2,7 @@ package org.ships.implementation.bukkit.world.position.block.details.blocks.data
 
 import org.bukkit.block.data.BlockData;
 import org.core.TranslateCore;
+import org.core.platform.plugin.details.CorePluginVersion;
 import org.core.world.direction.Direction;
 import org.core.world.position.block.BlockType;
 import org.core.world.position.block.details.data.keyed.AttachableKeyedData;
@@ -18,11 +19,13 @@ public class BAttachableKeyedData implements AttachableKeyedData {
 
     public interface AttachableBlockWorkAround {
 
-        Function<BlockData, Direction> GET_DIRECTION_FROM_BLOOCK_DATA = b -> DirectionUtils.toDirection(((org.bukkit.block.data.Directional)b).getFacing()).getOpposite();
+        Function<BlockData, Direction> GET_DIRECTION_FROM_BLOOCK_DATA = b -> DirectionUtils.toDirection(((org.bukkit.block.data.Directional) b).getFacing()).getOpposite();
         Consumer<Map.Entry<BlockData, Direction>> SET_BLOCK_DATA_FROM_DIRECTION = e -> ((org.bukkit.block.data.Directional) e.getKey()).setFacing(DirectionUtils.toFace(e.getValue().getOpposite()));
 
         Collection<BlockType> getTypes();
+
         Direction getAttachedDirection(BlockData data);
+
         org.bukkit.block.data.BlockData setAttachedDirection(org.bukkit.block.data.BlockData data, Direction direction);
     }
 
@@ -30,16 +33,16 @@ public class BAttachableKeyedData implements AttachableKeyedData {
 
     static {
         workArounds.addAll(Arrays.asList(CommonAttachableWorkAround.values()));
-        int[] mcVersion = TranslateCore.getPlatform().getMinecraftVersion();
-        if(mcVersion[1] >= 14){
+        CorePluginVersion mcVersion = TranslateCore.getPlatform().getMinecraftVersion();
+        if (mcVersion.getMinor() >= 14) {
             workArounds.addAll(Arrays.asList(AttachableWorkAround1D14.values()));
         }
     }
 
-    private IBBlockDetails details;
-    private AttachableBlockWorkAround workAround;
+    private final IBBlockDetails details;
+    private final AttachableBlockWorkAround workAround;
 
-    private BAttachableKeyedData(IBBlockDetails details, AttachableBlockWorkAround workAround){
+    private BAttachableKeyedData(IBBlockDetails details, AttachableBlockWorkAround workAround) {
         this.details = details;
         this.workAround = workAround;
     }
@@ -54,11 +57,8 @@ public class BAttachableKeyedData implements AttachableKeyedData {
         details.setBukkitData(this.workAround.setAttachedDirection(details.getBukkitData(), value));
     }
 
-    public static Optional<BAttachableKeyedData> getKeyedData(IBBlockDetails details){
+    public static Optional<BAttachableKeyedData> getKeyedData(IBBlockDetails details) {
         Optional<AttachableBlockWorkAround> opWork = workArounds.stream().filter(w -> w.getTypes().stream().anyMatch(b -> details.getType().equals(b))).findAny();
-        if(opWork.isPresent()){
-            return Optional.of(new BAttachableKeyedData(details, opWork.get()));
-        }
-        return Optional.empty();
+        return opWork.map(attachableBlockWorkAround -> new BAttachableKeyedData(details, attachableBlockWorkAround));
     }
 }

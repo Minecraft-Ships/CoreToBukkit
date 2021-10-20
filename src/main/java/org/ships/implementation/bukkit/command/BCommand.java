@@ -7,20 +7,25 @@ import org.core.TranslateCore;
 import org.core.command.CommandLauncher;
 import org.core.exceptions.NotEnoughArguments;
 import org.core.source.command.CommandSource;
+import org.jetbrains.annotations.NotNull;
 import org.ships.implementation.bukkit.platform.BukkitPlatform;
 
 import java.util.List;
 
 public class BCommand implements TabExecutor {
 
-    private CommandLauncher command;
+    private final CommandLauncher command;
 
-    public BCommand(CommandLauncher command){
+    public BCommand(CommandLauncher command) {
         this.command = command;
     }
 
+    public CommandLauncher getWrapper() {
+        return this.command;
+    }
+
     @Override
-    public boolean onCommand(CommandSender commandSender, Command command, String s, String[] strings) {
+    public boolean onCommand(@NotNull CommandSender commandSender, @NotNull Command command, String s, String[] strings) {
         CommandSource source = ((BukkitPlatform) TranslateCore.getPlatform()).getSource(commandSender);
         try {
             return this.command.run(source, strings);
@@ -31,7 +36,7 @@ public class BCommand implements TabExecutor {
     }
 
     @Override
-    public List<String> onTabComplete(CommandSender commandSender, Command command, String s, String[] strings) {
+    public @NotNull List<String> onTabComplete(@NotNull CommandSender commandSender, @NotNull Command command, @NotNull String s, String[] strings) {
         CommandSource source = ((BukkitPlatform) TranslateCore.getPlatform()).getSource(commandSender);
         return this.command.tab(source, strings);
     }
