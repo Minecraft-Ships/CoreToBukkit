@@ -7,6 +7,8 @@ import org.ships.implementation.paper.event.PaperListener;
 
 public class CoreToPaper extends CoreToBukkit {
 
+    //random change
+
     @Override
     public void init2(JavaPlugin plugin) {
         super.init2(plugin);
