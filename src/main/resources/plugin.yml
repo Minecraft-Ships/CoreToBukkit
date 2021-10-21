@@ -1,4 +1,4 @@
 name: TranslateCore
 version: 1.0.0
-main: org.ships.implementation.bukkit.platform.plugin.boot.TranslateCoreBoot
+main: org.core.implementation.bukkit.platform.plugin.boot.TranslateCoreBoot
 api-version: 1.15
