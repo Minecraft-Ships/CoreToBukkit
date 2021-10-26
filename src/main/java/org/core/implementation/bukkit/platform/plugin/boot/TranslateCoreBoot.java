@@ -10,11 +10,11 @@ import org.core.TranslateCore;
 import org.core.command.CommandRegister;
 import org.core.implementation.bukkit.CoreToBukkit;
 import org.core.implementation.bukkit.command.BCommand;
-import org.core.platform.plugin.CorePlugin;
-import org.core.platform.plugin.loader.CommonLoad;
 import org.core.implementation.bukkit.command.BCommandWrapper;
 import org.core.implementation.bukkit.platform.plugin.loader.CoreBukkitPluginWrapper;
 import org.core.implementation.paper.CoreToPaper;
+import org.core.platform.plugin.CorePlugin;
+import org.core.platform.plugin.loader.CommonLoad;
 
 import java.io.File;
 import java.io.IOException;
@@ -42,7 +42,7 @@ public class TranslateCoreBoot extends JavaPlugin {
     @Override
     public void onLoad() {
         Optional<Class<? extends CorePlugin>> opLauncher = TranslateCore.getStandAloneLauncher();
-        if(opLauncher.isPresent()){
+        if (opLauncher.isPresent()) {
             Class<? extends CorePlugin> pluginClass = opLauncher.get();
             CorePlugin plugin = CommonLoad.loadStandAlonePlugin(pluginClass);
             this.plugins.add(plugin);
@@ -55,7 +55,10 @@ public class TranslateCoreBoot extends JavaPlugin {
     @Override
     public void onEnable() {
         core.init2(this);
-        plugins.forEach(org.core.platform.plugin.Plugin::onCoreReady);
+        plugins.forEach(plugin -> {
+            plugin.onCoreReady();
+            Bukkit.getScheduler().runTask((Plugin) plugin.getPlatformLauncher(), plugin::onCoreFinishedInit);
+        });
     }
 
     private <T> T getFromField(Object from, String field, Class<T> type) throws NoSuchFieldException, IllegalAccessException {
