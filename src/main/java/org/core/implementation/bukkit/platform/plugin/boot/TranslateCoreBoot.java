@@ -45,6 +45,27 @@ public class TranslateCoreBoot extends JavaPlugin {
         if (opLauncher.isPresent()) {
             Class<? extends CorePlugin> pluginClass = opLauncher.get();
             CorePlugin plugin = CommonLoad.loadStandAlonePlugin(pluginClass);
+            plugin.onConstruct(this);
+            PluginManager pluginManager = Bukkit.getPluginManager();
+            if (pluginManager instanceof SimplePluginManager) {
+                SimplePluginManager spm = (SimplePluginManager) pluginManager;
+                try {
+                    CommandMap map = getFromField(spm, "commandMap", CommandMap.class);
+                    List<Plugin> spmPlugins = getFromField(spm, "plugins", (Class<? extends List<Plugin>>) (Object) List.class);
+                    Map<String, Plugin> lookup = getFromField(spm, "lookupNames", (Class<Map<String, Plugin>>) (Object) Map.class);
+                    spmPlugins.add((Plugin)plugin.getPlatformLauncher());
+                    lookup.putAll(spmPlugins.stream().collect(Collectors.toMap(Plugin::getName, (plugin2) -> plugin2)));
+
+                        CommandRegister cmdReg = new CommandRegister();
+                        plugin.onRegisterCommands(cmdReg);
+                        cmdReg.getCommands().forEach(commandLauncher -> {
+                            BCommandWrapper command = new BCommandWrapper(new BCommand(commandLauncher));
+                            map.register(commandLauncher.getName(), command);
+                        });
+                } catch (IllegalAccessException | NoSuchFieldException e) {
+                    e.printStackTrace();
+                }
+            }
             this.plugins.add(plugin);
             return;
         }
