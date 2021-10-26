@@ -46,7 +46,7 @@ tasks.register("buildPlugin", Jar) {
     def path = project.rootDir.path + "\\build\\"
     file(path).mkdirs()
     archiveClassifier = 'uber'
-    archiveFileName = 'TranslateCore.jar'
+    archiveFileName = 'TranslateCoreBukkit.jar'
     destinationDirectory = file(path)
 
 

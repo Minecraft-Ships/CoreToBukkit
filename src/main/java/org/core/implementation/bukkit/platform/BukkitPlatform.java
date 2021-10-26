@@ -21,8 +21,21 @@ import org.core.event.CustomEvent;
 import org.core.event.EventPriority;
 import org.core.implementation.bukkit.entity.BLiveEntity;
 import org.core.implementation.bukkit.entity.UnknownLiveEntity;
+import org.core.implementation.bukkit.entity.living.animal.type.BParrotType;
+import org.core.implementation.bukkit.entity.living.human.player.live.BLivePlayer;
 import org.core.implementation.bukkit.event.BukkitListener;
+import org.core.implementation.bukkit.inventory.item.BItemType;
+import org.core.implementation.bukkit.inventory.item.data.dye.BItemDyeType;
+import org.core.implementation.bukkit.permission.BukkitPermission;
+import org.core.implementation.bukkit.platform.plugin.BPlugin;
+import org.core.implementation.bukkit.platform.version.BukkitSpecificPlatform;
 import org.core.implementation.bukkit.text.BTextColour;
+import org.core.implementation.bukkit.world.boss.colour.BBossColour;
+import org.core.implementation.bukkit.world.position.block.BBlockType;
+import org.core.implementation.bukkit.world.position.block.details.blocks.grouptype.BBlockGroup;
+import org.core.implementation.bukkit.world.position.block.entity.unknown.BLiveUnknownContainerTileEntity;
+import org.core.implementation.bukkit.world.position.flags.BApplyPhysicsFlag;
+import org.core.implementation.bukkit.world.position.impl.sync.BBlockPosition;
 import org.core.inventory.item.ItemType;
 import org.core.inventory.item.data.dye.DyeType;
 import org.core.inventory.item.data.dye.DyeTypes;
@@ -50,20 +63,8 @@ import org.core.world.position.block.grouptype.BlockGroups;
 import org.core.world.position.flags.physics.ApplyPhysicsFlag;
 import org.core.world.position.flags.physics.ApplyPhysicsFlags;
 import org.core.world.position.impl.sync.SyncExactPosition;
+import org.core.world.structure.Structure;
 import org.jetbrains.annotations.NotNull;
-import org.core.implementation.bukkit.entity.living.animal.type.BParrotType;
-import org.core.implementation.bukkit.entity.living.human.player.live.BLivePlayer;
-import org.core.implementation.bukkit.inventory.item.BItemType;
-import org.core.implementation.bukkit.inventory.item.data.dye.BItemDyeType;
-import org.core.implementation.bukkit.permission.BukkitPermission;
-import org.core.implementation.bukkit.platform.plugin.BPlugin;
-import org.core.implementation.bukkit.platform.version.BukkitSpecificPlatform;
-import org.core.implementation.bukkit.world.boss.colour.BBossColour;
-import org.core.implementation.bukkit.world.position.block.BBlockType;
-import org.core.implementation.bukkit.world.position.block.details.blocks.grouptype.BBlockGroup;
-import org.core.implementation.bukkit.world.position.block.entity.unknown.BLiveUnknownContainerTileEntity;
-import org.core.implementation.bukkit.world.position.flags.BApplyPhysicsFlag;
-import org.core.implementation.bukkit.world.position.impl.sync.BBlockPosition;
 
 import java.io.File;
 import java.lang.reflect.Field;
@@ -458,6 +459,11 @@ public class BukkitPlatform implements Platform {
     @Override
     public Collection<Permission> getPermissions() {
         return Bukkit.getServer().getPluginManager().getPermissions().parallelStream().map(p -> new BukkitPermission(p.getName())).collect(Collectors.toList());
+    }
+
+    @Override
+    public Collection<Structure> getStructures() {
+        throw new RuntimeException("Not implemented yet");
     }
 
     @Override
