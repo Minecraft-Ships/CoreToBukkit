@@ -3,7 +3,6 @@ package org.core.implementation.bukkit.entity;
 import org.core.adventureText.AText;
 import org.core.entity.EntitySnapshot;
 import org.core.entity.LiveEntity;
-import org.core.text.Text;
 import org.core.vector.type.Vector3;
 import org.core.world.position.impl.Position;
 import org.core.world.position.impl.sync.SyncBlockPosition;
@@ -60,7 +59,7 @@ public abstract class BEntitySnapshot<T extends LiveEntity> implements EntitySna
 
     protected <L extends LiveEntity> L applyDefaults(L entity) {
         entity.setCustomNameVisible(this.isCustomNameVisible);
-        if (this.customName != null) {
+        if (this.customName!=null) {
             entity.setCustomName(this.customName);
         }
         entity.setGravity(this.hasGravity);
@@ -97,7 +96,7 @@ public abstract class BEntitySnapshot<T extends LiveEntity> implements EntitySna
 
     @Override
     public EntitySnapshot<T> setPosition(Position<? extends Number> position) {
-        this.position = position instanceof SyncExactPosition ? (SyncExactPosition) position : ((SyncBlockPosition) position).toExactPosition();
+        this.position = position instanceof SyncExactPosition ? (SyncExactPosition) position:((SyncBlockPosition) position).toExactPosition();
         return this;
     }
 
@@ -122,7 +121,7 @@ public abstract class BEntitySnapshot<T extends LiveEntity> implements EntitySna
     }
 
     @Override
-    public EntitySnapshot<T> addPassengers(Collection<EntitySnapshot<? extends LiveEntity>> entities) {
+    public EntitySnapshot<T> addPassengers(Collection<? extends EntitySnapshot<? extends LiveEntity>> entities) {
         this.passengers.addAll(entities);
         return this;
     }
@@ -158,12 +157,6 @@ public abstract class BEntitySnapshot<T extends LiveEntity> implements EntitySna
     @Override
     public Vector3<Double> getVelocity() {
         return this.velocity;
-    }
-
-    @Override
-    public EntitySnapshot<T> setCustomName(Text text) {
-        this.customName = text.toAdventure();
-        return this;
     }
 
     @Override

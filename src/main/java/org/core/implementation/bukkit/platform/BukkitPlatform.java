@@ -29,13 +29,12 @@ import org.core.implementation.bukkit.inventory.item.data.dye.BItemDyeType;
 import org.core.implementation.bukkit.permission.BukkitPermission;
 import org.core.implementation.bukkit.platform.plugin.BPlugin;
 import org.core.implementation.bukkit.platform.version.BukkitSpecificPlatform;
-import org.core.implementation.bukkit.text.BTextColour;
 import org.core.implementation.bukkit.world.boss.colour.BBossColour;
 import org.core.implementation.bukkit.world.position.block.BBlockType;
 import org.core.implementation.bukkit.world.position.block.details.blocks.grouptype.BBlockGroup;
 import org.core.implementation.bukkit.world.position.block.entity.unknown.BLiveUnknownContainerTileEntity;
 import org.core.implementation.bukkit.world.position.flags.BApplyPhysicsFlag;
-import org.core.implementation.bukkit.world.position.impl.sync.BBlockPosition;
+import org.core.implementation.bukkit.world.position.impl.BAbstractPosition;
 import org.core.inventory.item.ItemType;
 import org.core.inventory.item.data.dye.DyeType;
 import org.core.inventory.item.data.dye.DyeTypes;
@@ -47,11 +46,11 @@ import org.core.platform.plugin.Plugin;
 import org.core.platform.plugin.details.CorePluginVersion;
 import org.core.source.command.CommandSource;
 import org.core.source.projectile.ProjectileSource;
-import org.core.text.TextColour;
-import org.core.text.TextColours;
+import org.core.utils.Identifiable;
 import org.core.utils.Singleton;
 import org.core.world.boss.colour.BossColour;
 import org.core.world.boss.colour.BossColours;
+import org.core.world.position.Positionable;
 import org.core.world.position.block.BlockType;
 import org.core.world.position.block.entity.LiveTileEntity;
 import org.core.world.position.block.entity.TileEntity;
@@ -62,6 +61,7 @@ import org.core.world.position.block.grouptype.BlockGroup;
 import org.core.world.position.block.grouptype.BlockGroups;
 import org.core.world.position.flags.physics.ApplyPhysicsFlag;
 import org.core.world.position.flags.physics.ApplyPhysicsFlags;
+import org.core.world.position.impl.sync.SyncBlockPosition;
 import org.core.world.position.impl.sync.SyncExactPosition;
 import org.core.world.structure.Structure;
 import org.jetbrains.annotations.NotNull;
@@ -81,7 +81,8 @@ public class BukkitPlatform implements Platform {
     protected Map<Class<? extends org.bukkit.block.BlockState>, Class<? extends LiveTileEntity>> blockStateToTileEntity = new HashMap<>();
     protected Set<TileEntitySnapshot<? extends TileEntity>> defaultTileEntities = new HashSet<>();
     protected Set<BlockGroup> blockGroups = new HashSet<>();
-    protected @Deprecated
+    @Deprecated
+    protected
     Set<UnspecificParser<?>> parsers = new HashSet<>();
     protected Set<BlockType> blockTypes = new HashSet<>();
     protected Set<ItemType> itemTypes = new HashSet<>();
@@ -126,7 +127,7 @@ public class BukkitPlatform implements Platform {
             } catch (IllegalAccessException e) {
                 e.printStackTrace();
             }
-            this.blockGroups.add(new BBlockGroup(field.getName(), blockType.toArray(new BlockType[blockType.size()])));
+            this.blockGroups.add(new BBlockGroup(field.getName(), blockType.toArray(new BlockType[0])));
         }
         this.blockGroups.addAll(BlockGroups.values());
 
@@ -136,20 +137,20 @@ public class BukkitPlatform implements Platform {
         if (source instanceof org.bukkit.entity.Player) {
             return new BLivePlayer((org.bukkit.entity.Player) source);
         } else if (source instanceof org.bukkit.entity.Entity) {
-            return (ProjectileSource) createEntityInstance((org.bukkit.entity.Entity) source);
+            return (ProjectileSource) this.createEntityInstance((org.bukkit.entity.Entity) source);
         } else if (source instanceof org.bukkit.projectiles.BlockProjectileSource) {
-            return (ProjectileSource) createTileEntityInstance(((org.bukkit.projectiles.BlockProjectileSource) source).getBlock().getState()).get();
+            return (ProjectileSource) this.createTileEntityInstance(((org.bukkit.projectiles.BlockProjectileSource) source).getBlock().getState()).get();
         }
-        return null;
+        throw new RuntimeException("Unknown projectile source of " + source.getClass().getSimpleName());
     }
 
     public org.bukkit.projectiles.ProjectileSource getBukkitProjectileSource(ProjectileSource source) {
         if (source instanceof LiveTileEntity) {
-            return (org.bukkit.projectiles.BlockProjectileSource) ((BBlockPosition) ((LiveTileEntity) source).getPosition()).toBukkitBlock();
+            return (org.bukkit.projectiles.ProjectileSource) ((BAbstractPosition<Integer>) ((Positionable<SyncBlockPosition>) source).getPosition()).toBukkitBlock();
         } else if (source instanceof BLiveEntity) {
-            return (org.bukkit.projectiles.ProjectileSource) ((BLiveEntity) source).getBukkitEntity();
+            return (org.bukkit.projectiles.ProjectileSource) ((BLiveEntity<?>) source).getBukkitEntity();
         }
-        return null;
+        throw new RuntimeException("Unknown projectile source of " + source.getClass().getSimpleName());
     }
 
     public Map<Class<? extends org.bukkit.block.BlockState>, Class<? extends LiveTileEntity>> getBukkitBlockStateToCoreTileEntity() {
@@ -171,11 +172,11 @@ public class BukkitPlatform implements Platform {
         if (sender instanceof org.bukkit.entity.Player) {
             return new BLivePlayer((org.bukkit.entity.Player) sender);
         }
-        return null;
+        throw new RuntimeException("Unknown command source of " + sender.getName());
     }
 
-    public <E extends LiveEntity, S extends EntitySnapshot<E>> Optional<S> createSnapshot(EntityType<E, S> type, SyncExactPosition position) {
-        if (type.equals(EntityTypes.PLAYER) || type.equals(EntityTypes.HUMAN)) {
+    public <E extends LiveEntity, S extends EntitySnapshot<E>> Optional<S> createSnapshot(EntityType<E, ? extends S> type, SyncExactPosition position) {
+        if (type.equals(EntityTypes.PLAYER.get()) || type.equals(EntityTypes.HUMAN.get())) {
             return Optional.empty();
         }
         try {
@@ -187,7 +188,8 @@ public class BukkitPlatform implements Platform {
     }
 
     public LiveEntity createEntityInstance(org.bukkit.entity.Entity entity) {
-        Optional<Map.Entry<Class<? extends org.bukkit.entity.Entity>, Class<? extends LiveEntity>>> opEntry = entityToEntity.entrySet().stream().filter(e -> e.getKey().isInstance(entity)).findAny();
+        Optional<Map.Entry<Class<? extends org.bukkit.entity.Entity>, Class<? extends LiveEntity>>> opEntry =
+                this.entityToEntity.entrySet().stream().filter(e -> e.getKey().isInstance(entity)).findAny();
         if (!opEntry.isPresent()) {
             return new UnknownLiveEntity<>(entity);
         }
@@ -197,8 +199,7 @@ public class BukkitPlatform implements Platform {
         } catch (InstantiationException | NoSuchMethodException | IllegalAccessException | InvocationTargetException e) {
             e.printStackTrace();
         }
-        System.err.println("Welp. Something went very wrong with entity " + entity.getName() + " | " + entity.getType().name());
-        return null;
+        throw new RuntimeException("Something went very wrong with entity " + entity.getName() + " | " + entity.getType().name());
     }
 
     public Optional<LiveTileEntity> createTileEntityInstance(org.bukkit.block.BlockState state) {
@@ -218,15 +219,15 @@ public class BukkitPlatform implements Platform {
         return Optional.empty();
     }
 
-    private org.bukkit.Material getMaterial(String id, boolean block) {
+    private org.bukkit.Material getMaterial(String id) {
         for (org.bukkit.Material material : org.bukkit.Material.values()) {
-            if ((block && material.isBlock()) || (!block && material.isItem())) {
+            if ((material.isBlock()) || (!material.isItem())) {
                 if (material.getKey().toString().equals(id)) {
                     return material;
                 }
             }
         }
-        return null;
+        throw new RuntimeException("Unknown material with id of '" + id + "' is your plugin too new?");
     }
 
 
@@ -244,7 +245,7 @@ public class BukkitPlatform implements Platform {
     @Override
     @Deprecated
     public <T> UnspecificParser<T> get(UnspecificParsers<T> parsers) {
-        return (UnspecificParser<T>) getUnspecifiedParser(parsers.getId()).get();
+        return (UnspecificParser<T>) this.getUnspecifiedParser(parsers.getId()).get();
     }
 
     @Override
@@ -257,7 +258,7 @@ public class BukkitPlatform implements Platform {
 
     @Override
     public @NotNull Singleton<ItemType> get(ItemTypeCommon itemId) {
-        return new Singleton<>(() -> new BItemType(getMaterial(itemId.getId(), false)));
+        return new Singleton<>(() -> new BItemType(this.getMaterial(itemId.getId())));
     }
 
     @Override
@@ -268,17 +269,6 @@ public class BukkitPlatform implements Platform {
                 .findAny()
                 .map(BParrotType::new)
                 .orElseThrow(() -> new RuntimeException("Could not find parrot type of " + parrotID.getId())));
-    }
-
-    @Override
-    @Deprecated
-    public @NotNull TextColour get(TextColours id) {
-        for (org.bukkit.ChatColor color : org.bukkit.ChatColor.values()) {
-            if (id.getId().equals("minecraft:" + color.name().toLowerCase())) {
-                return new BTextColour(color);
-            }
-        }
-        throw new RuntimeException("Could not find Text Colour of " + id.getId());
     }
 
     @Override
@@ -331,21 +321,9 @@ public class BukkitPlatform implements Platform {
     }
 
     @Override
-    @Deprecated
-    public Optional<TextColour> getTextColour(String id) {
-        for (org.bukkit.ChatColor color : org.bukkit.ChatColor.values()) {
-            BTextColour colour = new BTextColour(color);
-            if (colour.getId().equals(id)) {
-                return Optional.of(colour);
-            }
-        }
-        return Optional.empty();
-    }
-
-    @Override
     public Optional<DyeType> getDyeType(String id) {
         for (org.bukkit.DyeColor colour : org.bukkit.DyeColor.values()) {
-            BItemDyeType dyeType = new BItemDyeType(colour);
+            Identifiable dyeType = new BItemDyeType(colour);
             if (dyeType.getId().equals(id)) {
                 return Optional.of(new BItemDyeType(colour));
             }
@@ -376,7 +354,7 @@ public class BukkitPlatform implements Platform {
 
     @Override
     public Optional<ApplyPhysicsFlag> getApplyPhysics(String id) {
-        return getApplyPhysics().stream().filter(f -> f.getId().equals(id)).findAny();
+        return this.getApplyPhysics().stream().filter(f -> f.getId().equals(id)).findAny();
     }
 
     @Override
@@ -402,18 +380,8 @@ public class BukkitPlatform implements Platform {
     }
 
     @Override
-    @Deprecated
-    public Collection<TextColour> getTextColours() {
-        Set<TextColour> set = new HashSet<>();
-        for (org.bukkit.ChatColor color : org.bukkit.ChatColor.values()) {
-            set.add(new BTextColour(color));
-        }
-        return set;
-    }
-
-    @Override
     public Collection<DyeType> getDyeTypes() {
-        Set<DyeType> set = new HashSet<>();
+        Collection<DyeType> set = new HashSet<>();
         for (org.bukkit.DyeColor colour : org.bukkit.DyeColor.values()) {
             set.add(new BItemDyeType(colour));
         }
@@ -422,7 +390,7 @@ public class BukkitPlatform implements Platform {
 
     @Override
     public Collection<PatternLayerType> getPatternLayerTypes() {
-        return null;
+        throw new RuntimeException("Not implemented yet");
     }
 
     @Override
@@ -441,7 +409,7 @@ public class BukkitPlatform implements Platform {
 
     @Override
     public Collection<ParrotType> getParrotType() {
-        List<ParrotType> list = new ArrayList<>();
+        Collection<ParrotType> list = new ArrayList<>();
         for (org.bukkit.entity.Parrot.Variant variant : org.bukkit.entity.Parrot.Variant.values()) {
             list.add(new BParrotType(variant));
         }
@@ -450,7 +418,7 @@ public class BukkitPlatform implements Platform {
 
     @Override
     public Collection<ApplyPhysicsFlag> getApplyPhysics() {
-        List<ApplyPhysicsFlag> list = new ArrayList<>();
+        Collection<ApplyPhysicsFlag> list = new ArrayList<>();
         list.add(BApplyPhysicsFlag.DEFAULT);
         list.add(BApplyPhysicsFlag.NONE);
         return Collections.unmodifiableCollection(list);
@@ -469,7 +437,7 @@ public class BukkitPlatform implements Platform {
     @Override
     public @NotNull Permission register(@NotNull String permissionNode) {
         if (Bukkit.getServer().getPluginManager().getPermission(permissionNode)==null) {
-            BukkitPermission permission = new BukkitPermission(permissionNode);
+            Permission permission = new BukkitPermission(permissionNode);
             Bukkit.getServer().getPluginManager().addPermission(new org.bukkit.permissions.Permission(permissionNode));
             return permission;
         }
@@ -536,7 +504,7 @@ public class BukkitPlatform implements Platform {
 
     @Override
     public File getPlatformConfigFolder() {
-        return getPlatformPluginsFolder();
+        return this.getPlatformPluginsFolder();
     }
 
     @Override

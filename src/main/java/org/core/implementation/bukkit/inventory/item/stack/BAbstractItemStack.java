@@ -4,13 +4,10 @@ import org.bukkit.Bukkit;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.core.adventureText.AText;
 import org.core.implementation.bukkit.inventory.item.BItemType;
-import org.core.implementation.bukkit.text.BText;
 import org.core.inventory.item.ItemType;
 import org.core.inventory.item.stack.ItemStack;
 import org.core.inventory.item.stack.ItemStackSnapshot;
-import org.core.text.Text;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
@@ -41,46 +38,27 @@ public abstract class BAbstractItemStack implements ItemStack {
     @Override
     public List<AText> getLoreText() {
         ItemMeta meta = this.stack.getItemMeta();
-        if (meta == null) {
+        if (meta==null) {
             return Collections.emptyList();
         }
         List<String> lore = meta.getLore();
-        if (lore == null) {
+        if (lore==null) {
             return Collections.emptyList();
         }
         return lore.stream().map(AText::ofLegacy).collect(Collectors.toList());
     }
 
     @Override
-    public org.core.inventory.item.stack.ItemStack setLoreText(Collection<AText> lore) {
+    public org.core.inventory.item.stack.ItemStack setLoreText(Collection<? extends AText> lore) {
         ItemMeta meta = this.stack.getItemMeta();
-        if (meta == null) {
+        if (meta==null) {
             meta = Bukkit.getItemFactory().getItemMeta(this.stack.getType());
-            if (meta == null) {
+            if (meta==null) {
                 throw new IllegalStateException("Could not create ItemMeta for " + this.stack.getType().name());
             }
         }
         meta.setLore(lore.stream().map(AText::toLegacy).collect(Collectors.toList()));
         this.stack.setItemMeta(meta);
-        return this;
-    }
-
-    @Override
-    @Deprecated
-    public List<Text> getLore() {
-        List<Text> lore = new ArrayList<>();
-        this.stack.getItemMeta().getLore().stream().forEach(l -> {
-            lore.add(new BText(l));
-        });
-        return lore;
-    }
-
-    @Override
-    @Deprecated
-    public ItemStack setLore(Collection<Text> lore) {
-        List<String> newLore = new ArrayList<>();
-        lore.stream().forEach(l -> newLore.add(((BText) l).toBukkitString()));
-        this.stack.getItemMeta().setLore(newLore);
         return this;
     }
 

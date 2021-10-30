@@ -4,15 +4,13 @@ import org.core.TranslateCore;
 import org.core.adventureText.AText;
 import org.core.entity.Entity;
 import org.core.entity.LiveEntity;
-import org.core.implementation.bukkit.text.BText;
-import org.core.text.Text;
+import org.core.implementation.bukkit.platform.BukkitPlatform;
+import org.core.implementation.bukkit.world.position.impl.sync.BExactPosition;
 import org.core.vector.type.Vector3;
 import org.core.world.position.impl.BlockPosition;
 import org.core.world.position.impl.Position;
 import org.core.world.position.impl.sync.SyncExactPosition;
 import org.jetbrains.annotations.Nullable;
-import org.core.implementation.bukkit.platform.BukkitPlatform;
-import org.core.implementation.bukkit.world.position.impl.sync.BExactPosition;
 
 import java.util.Collection;
 import java.util.HashSet;
@@ -80,7 +78,7 @@ public abstract class BLiveEntity<T extends org.bukkit.entity.Entity> implements
 
     @Override
     public BLiveEntity<T> setPosition(Position<? extends Number> position) {
-        BExactPosition position1 = position instanceof BExactPosition ? (BExactPosition) position : (BExactPosition) ((BlockPosition) position).toExactPosition();
+        BExactPosition position1 = position instanceof BExactPosition ? (BExactPosition) position:(BExactPosition) ((BlockPosition) position).toExactPosition();
         this.entity.teleport(position1.toBukkitLocation());
         return this;
     }
@@ -109,7 +107,7 @@ public abstract class BLiveEntity<T extends org.bukkit.entity.Entity> implements
     }
 
     @Override
-    public LiveEntity addPassengers(Collection<LiveEntity> entities) {
+    public LiveEntity addPassengers(Collection<? extends LiveEntity> entities) {
         return this;
     }
 
@@ -136,16 +134,9 @@ public abstract class BLiveEntity<T extends org.bukkit.entity.Entity> implements
     }
 
     @Override
-    @Deprecated
-    public LiveEntity setCustomName(Text text) {
-        this.entity.setCustomName(((BText) text).toBukkitString());
-        return this;
-    }
-
-    @Override
     public Optional<AText> getCustomName() {
         String customName = this.entity.getCustomName();
-        if (customName == null) {
+        if (customName==null) {
             return Optional.empty();
         }
         return Optional.of(AText.ofLegacy(customName));
@@ -153,7 +144,7 @@ public abstract class BLiveEntity<T extends org.bukkit.entity.Entity> implements
 
     @Override
     public Entity<LiveEntity> setCustomName(@Nullable AText text) {
-        if (text == null) {
+        if (text==null) {
             this.entity.setCustomName(null);
             return this;
         }

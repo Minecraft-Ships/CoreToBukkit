@@ -5,12 +5,10 @@ import org.bukkit.boss.BarColor;
 import org.bukkit.boss.BarStyle;
 import org.core.adventureText.AText;
 import org.core.entity.living.human.player.LivePlayer;
-import org.core.implementation.bukkit.text.BText;
-import org.core.text.Text;
-import org.core.world.boss.ServerBossBar;
-import org.core.world.boss.colour.BossColour;
 import org.core.implementation.bukkit.entity.living.human.player.live.BLivePlayer;
 import org.core.implementation.bukkit.world.boss.colour.BBossColour;
+import org.core.world.boss.ServerBossBar;
+import org.core.world.boss.colour.BossColour;
 
 import java.util.HashSet;
 import java.util.List;
@@ -26,19 +24,6 @@ public class BServerBossBar implements ServerBossBar {
 
     public BServerBossBar(org.bukkit.boss.BossBar boss) {
         this.bossBar = boss;
-    }
-
-    @Override
-    @Deprecated
-    public Text getMessage() {
-        return new BText(this.bossBar.getTitle());
-    }
-
-    @Override
-    @Deprecated
-    public ServerBossBar setMessage(Text text) {
-        this.bossBar.setTitle(((BText) text).toBukkitString());
-        return this;
     }
 
     @Override

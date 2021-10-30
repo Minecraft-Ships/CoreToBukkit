@@ -8,15 +8,13 @@ import org.core.entity.Entity;
 import org.core.entity.EntitySnapshot;
 import org.core.entity.EntityType;
 import org.core.entity.LiveEntity;
-import org.core.implementation.bukkit.text.BText;
+import org.core.implementation.bukkit.platform.BukkitPlatform;
 import org.core.implementation.bukkit.world.BWorldExtent;
-import org.core.text.Text;
+import org.core.implementation.bukkit.world.position.impl.sync.BExactPosition;
 import org.core.vector.type.Vector3;
 import org.core.world.position.impl.Position;
 import org.core.world.position.impl.sync.SyncExactPosition;
 import org.jetbrains.annotations.Nullable;
-import org.core.implementation.bukkit.platform.BukkitPlatform;
-import org.core.implementation.bukkit.world.position.impl.sync.BExactPosition;
 
 import java.util.Collection;
 import java.util.HashSet;
@@ -100,15 +98,8 @@ public class BSnapshotValueEntity<BE extends org.bukkit.entity.Entity, E extends
     }
 
     @Override
-    @Deprecated
-    public Entity<EntitySnapshot<? extends LiveEntity>> setCustomName(Text text) {
-        this.<String>getSnapshotValue("CUSTOM_NAME").get().setValue(((BText) text).toBukkitString());
-        return this;
-    }
-
-    @Override
     public Entity<EntitySnapshot<? extends LiveEntity>> setCustomName(@Nullable AText text) {
-        if (text == null) {
+        if (text==null) {
             this.<String>getSnapshotValue("CUSTOM_NAME").get().setValue(null);
             return this;
         }
@@ -165,7 +156,7 @@ public class BSnapshotValueEntity<BE extends org.bukkit.entity.Entity, E extends
     }
 
     @Override
-    public Entity<EntitySnapshot<? extends LiveEntity>> addPassengers(Collection<EntitySnapshot<? extends LiveEntity>> entities) {
+    public Entity<EntitySnapshot<? extends LiveEntity>> addPassengers(Collection<? extends EntitySnapshot<? extends LiveEntity>> entities) {
         return this;
     }
 

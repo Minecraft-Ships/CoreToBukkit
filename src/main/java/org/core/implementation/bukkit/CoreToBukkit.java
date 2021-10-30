@@ -6,12 +6,6 @@ import org.core.TranslateCore;
 import org.core.config.ConfigurationFormat;
 import org.core.config.ConfigurationStream;
 import org.core.event.EventManager;
-import org.core.platform.Platform;
-import org.core.platform.PlatformServer;
-import org.core.schedule.SchedulerBuilder;
-import org.core.source.command.ConsoleSource;
-import org.core.text.Text;
-import org.core.world.boss.ServerBossBar;
 import org.core.implementation.bukkit.configuration.YAMLConfigurationFile;
 import org.core.implementation.bukkit.event.BEventManager;
 import org.core.implementation.bukkit.event.BukkitListener;
@@ -19,8 +13,12 @@ import org.core.implementation.bukkit.platform.BServer;
 import org.core.implementation.bukkit.platform.BukkitPlatform;
 import org.core.implementation.bukkit.platform.PlatformConsole;
 import org.core.implementation.bukkit.scheduler.BSchedulerBuilder;
-import org.core.implementation.bukkit.text.BText;
 import org.core.implementation.bukkit.world.boss.BServerBossBar;
+import org.core.platform.Platform;
+import org.core.platform.PlatformServer;
+import org.core.schedule.SchedulerBuilder;
+import org.core.source.command.ConsoleSource;
+import org.core.world.boss.ServerBossBar;
 
 import java.io.File;
 
@@ -32,7 +30,7 @@ public class CoreToBukkit extends TranslateCore.CoreImplementation {
     protected PlatformConsole console = new PlatformConsole();
 
     public CoreToBukkit() {
-        init();
+        this.init();
     }
 
     private void init() {
@@ -80,24 +78,17 @@ public class CoreToBukkit extends TranslateCore.CoreImplementation {
             }
         }
         if (!check) {
-            return null;
+            throw new IllegalStateException("Unknown file type");
         }
         if (type.equals(ConfigurationFormat.FORMAT_YAML)) {
             return new YAMLConfigurationFile(file);
         }
-        System.err.println("ConfigurationFormat is not supported: " + type.getName());
-        return null;
+        throw new IllegalStateException("ConfigurationFormat is not supported: " + type.getName());
     }
 
     @Override
     public PlatformServer getRawServer() {
         return this.server;
-    }
-
-    @Override
-    @Deprecated
-    public Text textBuilder(String chars) {
-        return new BText(chars);
     }
 
     @Override
