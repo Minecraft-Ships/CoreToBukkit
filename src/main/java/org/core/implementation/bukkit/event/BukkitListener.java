@@ -17,15 +17,14 @@ import org.bukkit.event.player.*;
 import org.bukkit.inventory.EquipmentSlot;
 import org.core.TranslateCore;
 import org.core.adventureText.AText;
+import org.core.adventureText.adventure.AdventureText;
+import org.core.adventureText.format.NamedTextColours;
 import org.core.entity.Entity;
 import org.core.entity.living.human.player.LivePlayer;
 import org.core.event.Event;
 import org.core.event.EventPriority;
 import org.core.event.HEvent;
 import org.core.event.events.entity.EntityInteractEvent;
-import org.core.world.position.block.details.BlockDetails;
-import org.core.world.position.block.details.BlockSnapshot;
-import org.core.world.position.impl.sync.SyncBlockPosition;
 import org.core.implementation.bukkit.entity.scene.live.BLiveDroppedItem;
 import org.core.implementation.bukkit.event.events.block.AbstractBlockChangeEvent;
 import org.core.implementation.bukkit.event.events.block.tileentity.BSignChangeEvent;
@@ -41,7 +40,11 @@ import org.core.implementation.bukkit.world.position.block.details.blocks.BBlock
 import org.core.implementation.bukkit.world.position.block.details.blocks.BlockStateSnapshot;
 import org.core.implementation.bukkit.world.position.impl.sync.BBlockPosition;
 import org.core.implementation.bukkit.world.position.impl.sync.BExactPosition;
+import org.core.world.position.block.details.BlockDetails;
+import org.core.world.position.block.details.BlockSnapshot;
+import org.core.world.position.impl.sync.SyncBlockPosition;
 
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.lang.reflect.Parameter;
@@ -137,12 +140,20 @@ public class BukkitListener implements Listener {
         AText message = AText.ofLegacy(event.getQuitMessage());
         BKickEvent kickEvent = new BKickEvent(player, message);
         call(EventPriority.HIGHEST, kickEvent);
+        AText text = kickEvent.getLeavingMessage();
+        if (text instanceof AdventureText) {
+            try {
+                Object component = text.getClass().getMethod("getComponent").invoke(text);
+                event.getClass().getMethod("quitMessage", component.getClass()).invoke(event, component);
+                return;
+            } catch (IllegalAccessException | InvocationTargetException | NoSuchMethodException ignored) {
+            }
+        }
         event.setQuitMessage(kickEvent.getLeavingMessage().toLegacy());
     }
 
     @EventHandler
     public static void onSignChangeEvent(SignChangeEvent event) {
-        String[] originalLines = event.getLines();
         List<AText> lines = Stream
                 .of(event.getLines())
                 .map(AText::ofLegacy)
@@ -162,7 +173,7 @@ public class BukkitListener implements Listener {
 
     @EventHandler
     public static void onPlayerInteractWithBlockEvent(PlayerInteractEvent event) {
-        if (event.getClickedBlock() == null || event.getHand() != EquipmentSlot.HAND) {
+        if (event.getClickedBlock()==null || event.getHand()!=EquipmentSlot.HAND) {
             return;
         }
         int action = -1;
@@ -205,7 +216,13 @@ public class BukkitListener implements Listener {
     public static void onBlockBreakByPlayer(BlockBreakEvent event) {
         Player player = event.getPlayer();
         Material material = player.getInventory().getItemInMainHand().getType();
-        if (player.getGameMode().equals(GameMode.CREATIVE) && (material.equals(Material.WOODEN_SWORD) || material.equals(Material.STONE_SWORD) || material.equals(Material.IRON_SWORD) || material.equals(Material.DIAMOND_SWORD) || material.equals(Material.GOLDEN_SWORD))) {
+        if (player.getGameMode()==GameMode.CREATIVE
+                && (
+                material==Material.WOODEN_SWORD
+                        || material==Material.STONE_SWORD
+                        || material==Material.IRON_SWORD
+                        || material==Material.DIAMOND_SWORD
+                        || material==Material.GOLDEN_SWORD)) {
             event.setCancelled(true);
             return;
         }
@@ -218,7 +235,6 @@ public class BukkitListener implements Listener {
 
     @EventHandler
     public void onCommandSend(PlayerCommandSendEvent event) {
-        Player player = event.getPlayer();
         LivePlayer lPlayer = (LivePlayer) ((BukkitPlatform) TranslateCore.getPlatform()).createEntityInstance(event.getPlayer());
         BEntityCommandEvent event1 = new BEntityCommandEvent(lPlayer, event.getCommands());
         call(EventPriority.NORMAL, event1);
@@ -235,18 +251,30 @@ public class BukkitListener implements Listener {
         TranslateCore.getEventManager().getEventListeners().forEach((key, value) -> value.forEach(el -> {
             for (Method method : el.getClass().getDeclaredMethods()) {
                 HEvent hEvent = method.getAnnotation(HEvent.class);
-                if (hEvent == null) {
+                if (hEvent==null) {
                     continue;
                 }
-                if ((!(priority.equals(EventPriority.IGNORE))) && !(hEvent.priority().equals(priority)) && !hEvent.priority().equals(EventPriority.IGNORE)) {
+                if ((priority!=EventPriority.IGNORE)
+                        && hEvent.priority()!=priority
+                        && hEvent.priority()!=EventPriority.IGNORE) {
                     continue;
                 }
                 if (methods.stream().anyMatch(m -> method.getName().contains("$"))) {
                     continue;
                 }
                 Parameter[] parameters = method.getParameters();
-                if (parameters.length == 0) {
-                    System.err.println("Failed to know what to do: HEvent found on method, but no event on " + el.getClass().getName() + "." + method.getName() + "()");
+                if (parameters.length==0) {
+                    TranslateCore
+                            .getConsole()
+                            .sendMessage(
+                                    AText
+                                            .ofPlain("Failed to know what to do: HEvent found on method, "
+                                                    + "but no event on "
+                                                    + el.getClass().getName()
+                                                    + "."
+                                                    + method.getName()
+                                                    + "()")
+                                            .withColour(NamedTextColours.RED));
                     continue;
                 }
                 if (!Modifier.isPublic(method.getModifiers())) {

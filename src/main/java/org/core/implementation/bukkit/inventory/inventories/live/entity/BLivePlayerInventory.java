@@ -27,7 +27,7 @@ public class BLivePlayerInventory implements LivePlayerInventory {
 
         @Override
         public Set<Slot> getSlots() {
-            return new HashSet<>(Arrays.asList(slot1, slot2, slot3, slot4));
+            return new HashSet<>(Arrays.asList(this.slot1, this.slot2, this.slot3, this.slot4));
         }
     }
 
@@ -63,7 +63,7 @@ public class BLivePlayerInventory implements LivePlayerInventory {
 
         Set<Slot> slots = new HashSet<>();
 
-        public PlayerMainInventory(){
+        private PlayerMainInventory(){
             for(int A = 9; A < 35; A++){
                 this.slots.add(new BLivePlayerInventory.PlayerItemSlot(A));
             }
@@ -79,7 +79,7 @@ public class BLivePlayerInventory implements LivePlayerInventory {
 
         Set<Slot> slots = new HashSet<>();
 
-        public PlayerHotbar(){
+        private PlayerHotbar(){
             for(int A = 0; A < 9; A++){
                 this.slots.add(new BLivePlayerInventory.PlayerItemSlot(A));
             }
@@ -100,7 +100,7 @@ public class BLivePlayerInventory implements LivePlayerInventory {
 
         int position;
 
-        public PlayerItemSlot(int slot){
+        private PlayerItemSlot(int slot){
             this.position = slot;
         }
 
@@ -112,7 +112,7 @@ public class BLivePlayerInventory implements LivePlayerInventory {
         @Override
         public Optional<ItemStack> getItem() {
             org.bukkit.inventory.ItemStack stack = BLivePlayerInventory.this.player.getBukkitEntity().getInventory().getItem(this.position);
-            if(stack == null || stack.getType().equals(Material.VOID_AIR)){
+            if(stack == null || stack.getType()==Material.VOID_AIR){
                 return Optional.empty();
             }
             return Optional.of(new BLiveItemStack(stack));

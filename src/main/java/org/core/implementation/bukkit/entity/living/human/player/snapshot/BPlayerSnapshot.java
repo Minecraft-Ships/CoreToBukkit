@@ -1,10 +1,11 @@
 package org.core.implementation.bukkit.entity.living.human.player.snapshot;
 
+import org.bukkit.entity.Player;
 import org.core.entity.living.human.player.LivePlayer;
 import org.core.entity.living.human.player.PlayerSnapshot;
 import org.core.implementation.bukkit.VaultService;
 import org.core.implementation.bukkit.entity.BEntitySnapshot;
-import org.core.implementation.bukkit.entity.living.human.player.live.BLivePlayer;
+import org.core.implementation.bukkit.entity.BLiveEntity;
 import org.core.inventory.inventories.general.entity.PlayerInventory;
 import org.core.inventory.inventories.snapshots.entity.PlayerInventorySnapshot;
 import org.core.world.position.impl.sync.SyncExactPosition;
@@ -21,25 +22,25 @@ public class BPlayerSnapshot extends BEntitySnapshot<LivePlayer> implements Play
     protected double saturationLevel;
     protected boolean sneaking;
 
-    public BPlayerSnapshot(LivePlayer player){
+    public BPlayerSnapshot(LivePlayer player) {
         super(player);
-        setRoll(player.getRoll());
-        setExhaustionLevel(player.getExhaustionLevel());
-        setFood(player.getFoodLevel());
-        setSaturationLevel(player.getSaturationLevel());
-        setPitch(player.getPitch());
-        setYaw(player.getYaw());
+        this.setRoll(player.getRoll());
+        this.setExhaustionLevel(player.getExhaustionLevel());
+        this.setFood(player.getFoodLevel());
+        this.setSaturationLevel(player.getSaturationLevel());
+        this.setPitch(player.getPitch());
+        this.setYaw(player.getYaw());
         this.inventorySnapshot = player.getInventory().createSnapshot();
     }
 
-    public BPlayerSnapshot(PlayerSnapshot player){
+    public BPlayerSnapshot(PlayerSnapshot player) {
         super(player);
-        setRoll(player.getRoll());
-        setExhaustionLevel(player.getExhaustionLevel());
-        setFood(player.getFoodLevel());
-        setSaturationLevel(player.getSaturationLevel());
-        setPitch(player.getPitch());
-        setYaw(player.getYaw());
+        this.setRoll(player.getRoll());
+        this.setExhaustionLevel(player.getExhaustionLevel());
+        this.setFood(player.getFoodLevel());
+        this.setSaturationLevel(player.getSaturationLevel());
+        this.setPitch(player.getPitch());
+        this.setYaw(player.getYaw());
         this.inventorySnapshot = player.getInventory().createSnapshot();
     }
 
@@ -61,17 +62,17 @@ public class BPlayerSnapshot extends BEntitySnapshot<LivePlayer> implements Play
 
     @Override
     public LivePlayer spawnEntity() {
-        return teleportEntity(false);
+        return this.teleportEntity(false);
     }
 
     @Override
     public LivePlayer teleportEntity(boolean keepInventory) {
-        applyDefaults(this.createdFrom);
+        this.applyDefaults(this.createdFrom);
         this.createdFrom.setSneaking(this.sneaking);
         this.createdFrom.setExhaustionLevel(this.exhaustionLevel);
         this.createdFrom.setFood(this.foodLevel);
         this.createdFrom.setSaturationLevel(this.saturationLevel);
-        if(!keepInventory) {
+        if (!keepInventory) {
             this.inventorySnapshot.apply(this.createdFrom);
         }
         return this.createdFrom;
@@ -109,8 +110,8 @@ public class BPlayerSnapshot extends BEntitySnapshot<LivePlayer> implements Play
 
     @Override
     public PlayerSnapshot setFood(int value) throws IndexOutOfBoundsException {
-        if(value > 20){
-            throw new IndexOutOfBoundsException();
+        if (value > 20) {
+            throw new IndexOutOfBoundsException("Food level cannot be above 20");
         }
         this.foodLevel = value;
         return this;
@@ -141,11 +142,11 @@ public class BPlayerSnapshot extends BEntitySnapshot<LivePlayer> implements Play
 
     @Override
     public BigDecimal getBalance() {
-        return BigDecimal.valueOf(VaultService.getBalance(((BLivePlayer)this.createdFrom).getBukkitEntity()).orElse(0.0));
+        return BigDecimal.valueOf(VaultService.getBalance(((BLiveEntity<Player>) this.createdFrom).getBukkitEntity()).orElse(0.0));
     }
 
     @Override
     public void setBalance(BigDecimal decimal) {
-        VaultService.setBalance(((BLivePlayer)this.createdFrom).getBukkitEntity(), decimal);
+        VaultService.setBalance(((BLiveEntity<Player>) this.createdFrom).getBukkitEntity(), decimal);
     }
 }

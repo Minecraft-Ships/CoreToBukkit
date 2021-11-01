@@ -5,11 +5,15 @@ import org.bukkit.OfflinePlayer;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.core.TranslateCore;
-import org.core.command.CommandLauncher;
+import org.core.adventureText.AText;
+import org.core.adventureText.format.NamedTextColours;
 import org.core.entity.living.human.player.LivePlayer;
 import org.core.entity.living.human.player.User;
 import org.core.exceptions.BlockNotSupported;
+import org.core.implementation.bukkit.entity.living.human.player.live.BUser;
 import org.core.implementation.bukkit.world.BWorldExtent;
+import org.core.implementation.bukkit.world.position.block.details.blocks.IBBlockDetails;
+import org.core.implementation.bukkit.world.position.impl.async.BAsyncBlockPosition;
 import org.core.platform.PlatformServer;
 import org.core.platform.plugin.Plugin;
 import org.core.schedule.Scheduler;
@@ -19,9 +23,6 @@ import org.core.world.position.block.details.BlockSnapshot;
 import org.core.world.position.block.details.data.keyed.TileEntityKeyedData;
 import org.core.world.position.impl.Position;
 import org.core.world.position.impl.async.ASyncBlockPosition;
-import org.core.implementation.bukkit.entity.living.human.player.live.BUser;
-import org.core.implementation.bukkit.world.position.block.details.blocks.AsyncBlockStateSnapshot;
-import org.core.implementation.bukkit.world.position.impl.async.BAsyncBlockPosition;
 
 import java.util.*;
 import java.util.concurrent.CompletableFuture;
@@ -29,8 +30,6 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public class BServer implements PlatformServer {
-
-    protected Set<CommandLauncher> commands = new HashSet<>();
 
     @Override
     public Set<WorldExtent> getWorlds() {
@@ -53,7 +52,7 @@ public class BServer implements PlatformServer {
     }
 
     @Override
-    public void applyBlockSnapshots(Collection<BlockSnapshot.AsyncBlockSnapshot> collection, Plugin plugin, Runnable onComplete) {
+    public void applyBlockSnapshots(Collection<? extends BlockSnapshot.AsyncBlockSnapshot> collection, Plugin plugin, Runnable onComplete) {
         Set<BlockSnapshot<ASyncBlockPosition>> withTileEntities = collection
                 .stream()
                 .filter(bs -> bs.get(TileEntityKeyedData.class).isPresent())
@@ -87,9 +86,9 @@ public class BServer implements PlatformServer {
                     for (BlockSnapshot.AsyncBlockSnapshot blockSnapshot : collection) {
                         Block block = ((BAsyncBlockPosition) blockSnapshot.getPosition()).getBukkitBlock();
                         try {
-                            block.setBlockData(((AsyncBlockStateSnapshot) blockSnapshot).getBukkitData(), false);
+                            block.setBlockData(((IBBlockDetails) blockSnapshot).getBukkitData(), false);
                         } catch (IllegalStateException e) {
-                            System.err.println("Failed to set block type of " + blockSnapshot.getType().getId());
+                            TranslateCore.getConsole().sendMessage(AText.ofPlain("Failed to set block type of " + blockSnapshot.getType().getId()).withColour(NamedTextColours.RED));
                             throw e;
                         }
                     }
@@ -105,7 +104,7 @@ public class BServer implements PlatformServer {
     public CompletableFuture<Optional<User>> getOfflineUser(UUID uuid) {
         Player player = Bukkit.getServer().getPlayer(uuid);
         if (player!=null) {
-            Optional<User> opUser = Optional.of((LivePlayer) ((BukkitPlatform) TranslateCore.getPlatform()).createEntityInstance(player));
+            Optional<User> opUser = Optional.of((User) ((BukkitPlatform) TranslateCore.getPlatform()).createEntityInstance(player));
             return CompletableFuture.supplyAsync(() -> opUser);
         }
         OfflinePlayer user = Bukkit.getServer().getOfflinePlayer(uuid);
@@ -116,7 +115,7 @@ public class BServer implements PlatformServer {
     public CompletableFuture<Optional<User>> getOfflineUser(String lastName) {
         Player player = Bukkit.getServer().getPlayer(lastName);
         if (player!=null) {
-            Optional<User> opUser = Optional.of((LivePlayer) ((BukkitPlatform) TranslateCore.getPlatform()).createEntityInstance(player));
+            Optional<User> opUser = Optional.of((User) ((BukkitPlatform) TranslateCore.getPlatform()).createEntityInstance(player));
             return CompletableFuture.supplyAsync(() -> opUser);
         }
         OfflinePlayer user = Bukkit.getServer().getOfflinePlayer(lastName);

@@ -17,7 +17,8 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-public class EntitySnapshotValue<E, O> extends AbstractSnapshotValue<E, O> {
+@SuppressWarnings("unused")
+public class EntitySnapshotValue<E, O> extends AbstractSnapshotValue<E, O> implements Cloneable {
 
     public static final EntitySnapshotValue<Entity, Location> LOCATION = new EntitySnapshotValue<>(Entity::getLocation, Entity::teleport);
     public static final EntitySnapshotValue<Entity, Vector> VELOCITY = new EntitySnapshotValue<>(Entity::getVelocity, Entity::setVelocity);
@@ -46,7 +47,8 @@ public class EntitySnapshotValue<E, O> extends AbstractSnapshotValue<E, O> {
     public static final EntitySnapshotValue<LivingEntity, Boolean> SWIMMING = new EntitySnapshotValue<>(LivingEntity.class, LivingEntity::isSwimming, LivingEntity::setSwimming);
 
     public static final EntitySnapshotValue<Ageable, Integer> AGE = new EntitySnapshotValue<>(Ageable.class, Ageable::getAge, Ageable::setAge);
-    public static final EntitySnapshotValue<Ageable, Boolean> BREED = new EntitySnapshotValue<>(Ageable.class, Ageable::canBreed, Ageable::setBreed);
+    public static final EntitySnapshotValue<Ageable, Boolean> BREED = new EntitySnapshotValue<>(Ageable.class,
+            Ageable::canBreed, Ageable::setBreed);
     public static final EntitySnapshotValue<Ageable, Boolean> AGE_LOCK = new EntitySnapshotValue<>(Ageable.class, Ageable::getAgeLock, Ageable::setAgeLock);
 
     public static final EntitySnapshotValue<Animals, Integer> LOVE_MODE_TICKS = new EntitySnapshotValue<>(Animals.class, Animals::getLoveModeTicks, Animals::setLoveModeTicks);
@@ -186,9 +188,13 @@ public class EntitySnapshotValue<E, O> extends AbstractSnapshotValue<E, O> {
                 snapshot.setId(f.getName());
                 return snapshot;
             } catch (IllegalAccessException e) {
-                return null;
+                throw new RuntimeException(e);
             }
         }).collect(Collectors.toSet());
-        return values.parallelStream().filter(v -> v.canApplyTo(entity)).map(e -> (EntitySnapshotValue<? super E, ?>) e).collect(Collectors.toSet());
+        return values
+                .parallelStream()
+                .filter(v -> v.canApplyTo(entity))
+                .map(e -> (EntitySnapshotValue<? super E, ?>) e)
+                .collect(Collectors.toSet());
     }
 }

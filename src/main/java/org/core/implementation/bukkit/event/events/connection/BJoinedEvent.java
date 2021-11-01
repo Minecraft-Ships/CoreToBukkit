@@ -5,7 +5,7 @@ import org.core.event.events.connection.ClientConnectionEvent;
 
 public class BJoinedEvent implements ClientConnectionEvent.Incoming.Joined {
 
-    private LivePlayer player;
+    private final LivePlayer player;
 
     public BJoinedEvent(LivePlayer player){
         this.player = player;

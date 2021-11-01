@@ -11,7 +11,7 @@ import org.core.entity.living.animal.parrot.ParrotSnapshot;
 import org.core.entity.living.animal.parrot.ParrotType;
 import org.core.implementation.bukkit.entity.BEntitySnapshot;
 import org.core.implementation.bukkit.entity.living.animal.live.BLiveParrot;
-import org.core.implementation.bukkit.world.position.impl.sync.BExactPosition;
+import org.core.implementation.bukkit.world.position.impl.BAbstractPosition;
 import org.core.world.position.impl.sync.SyncExactPosition;
 
 public class BParrotSnapshot extends BEntitySnapshot<LiveParrot> implements ParrotSnapshot {
@@ -37,12 +37,12 @@ public class BParrotSnapshot extends BEntitySnapshot<LiveParrot> implements Parr
 
     @Override
     public BLiveParrot spawnEntity() {
-        org.bukkit.Location loc = ((BExactPosition)this.position).toBukkitLocation();
-        loc.setPitch((float)this.pitch);
-        loc.setYaw((float)this.yaw);
-        org.bukkit.entity.Parrot parrot = (org.bukkit.entity.Parrot)loc.getWorld().spawnEntity(loc, org.bukkit.entity.EntityType.PARROT);
+        org.bukkit.Location loc = ((BAbstractPosition<Double>) this.position).toBukkitLocation();
+        loc.setPitch((float) this.pitch);
+        loc.setYaw((float) this.yaw);
+        org.bukkit.entity.Parrot parrot = (org.bukkit.entity.Parrot) loc.getWorld().spawnEntity(loc, org.bukkit.entity.EntityType.PARROT);
         BLiveParrot coreParrot = new BLiveParrot(parrot);
-        applyDefaults(coreParrot);
+        this.applyDefaults(coreParrot);
         coreParrot.setAdult(this.adult);
         coreParrot.setVariant(this.type);
         return coreParrot;

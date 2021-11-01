@@ -3,12 +3,11 @@ package org.core.implementation.bukkit.entity.projectile.item.snapshot;
 import org.core.entity.EntitySnapshot;
 import org.core.entity.EntityType;
 import org.core.entity.EntityTypes;
-import org.core.entity.projectile.ProjectileEntity;
 import org.core.entity.projectile.item.snowball.LiveSnowballEntity;
 import org.core.entity.projectile.item.snowball.SnowballEntitySnapshot;
 import org.core.implementation.bukkit.entity.BEntitySnapshot;
 import org.core.implementation.bukkit.entity.projectile.item.live.BLiveSnowballEntity;
-import org.core.implementation.bukkit.world.position.impl.sync.BExactPosition;
+import org.core.implementation.bukkit.world.position.impl.BAbstractPosition;
 import org.core.source.projectile.ProjectileSource;
 import org.core.world.position.impl.sync.SyncExactPosition;
 
@@ -34,12 +33,12 @@ public class BSnowballEntitySnapshot extends BEntitySnapshot<LiveSnowballEntity>
 
     @Override
     public BLiveSnowballEntity spawnEntity() {
-        org.bukkit.Location loc = ((BExactPosition)this.position).toBukkitLocation();
-        loc.setPitch((float)this.pitch);
-        loc.setYaw((float)this.yaw);
-        org.bukkit.entity.Snowball snowball = (org.bukkit.entity.Snowball)loc.getWorld().spawnEntity(loc, org.bukkit.entity.EntityType.SNOWBALL);
+        org.bukkit.Location loc = ((BAbstractPosition<Double>) this.position).toBukkitLocation();
+        loc.setPitch((float) this.pitch);
+        loc.setYaw((float) this.yaw);
+        org.bukkit.entity.Snowball snowball = (org.bukkit.entity.Snowball) loc.getWorld().spawnEntity(loc, org.bukkit.entity.EntityType.SNOWBALL);
         BLiveSnowballEntity coreSnowball = new BLiveSnowballEntity(snowball);
-        applyDefaults(coreSnowball);
+        this.applyDefaults(coreSnowball);
         coreSnowball.setSource(this.source);
         return coreSnowball;
     }
@@ -60,7 +59,7 @@ public class BSnowballEntitySnapshot extends BEntitySnapshot<LiveSnowballEntity>
     }
 
     @Override
-    public ProjectileEntity setSource(ProjectileSource source) {
+    public BSnowballEntitySnapshot setSource(ProjectileSource source) {
         this.source = source;
         return this;
     }

@@ -9,7 +9,7 @@ import org.core.entity.living.hostile.undead.classic.LiveClassicZombie;
 import org.core.implementation.bukkit.entity.BEntitySnapshot;
 import org.core.implementation.bukkit.entity.living.hostile.undead.classic.live.BLiveZombie;
 import org.core.implementation.bukkit.inventory.inventories.snapshot.entity.BClassicZombieInventorySnapshot;
-import org.core.implementation.bukkit.world.position.impl.sync.BExactPosition;
+import org.core.implementation.bukkit.world.position.impl.BAbstractPosition;
 import org.core.world.position.impl.sync.SyncExactPosition;
 
 public class BZombieSnapshot extends BEntitySnapshot<LiveClassicZombie> implements ClassicZombieSnapshot {
@@ -21,13 +21,13 @@ public class BZombieSnapshot extends BEntitySnapshot<LiveClassicZombie> implemen
         super(position);
     }
 
-    public BZombieSnapshot(LiveClassicZombie zombie){
+    public BZombieSnapshot(LiveClassicZombie zombie) {
         super(zombie);
         this.isAdult = zombie.isAdult();
         this.inventory = new BClassicZombieInventorySnapshot(zombie.getInventory());
     }
 
-    public BZombieSnapshot(ClassicZombieSnapshot zombie){
+    public BZombieSnapshot(ClassicZombieSnapshot zombie) {
         super(zombie);
         this.isAdult = zombie.isAdult();
         this.inventory = new BClassicZombieInventorySnapshot(zombie.getInventory());
@@ -36,13 +36,17 @@ public class BZombieSnapshot extends BEntitySnapshot<LiveClassicZombie> implemen
 
     @Override
     public LiveClassicZombie spawnEntity() {
-        org.bukkit.Location loc = ((BExactPosition)this.position).toBukkitLocation();
-        loc.setPitch((float)this.pitch);
-        loc.setYaw((float)this.yaw);
-        org.bukkit.entity.Zombie zombie = (Zombie)loc.getWorld().spawnEntity(loc, org.bukkit.entity.EntityType.ZOMBIE);
-        zombie.setBaby(!this.isAdult);
+        org.bukkit.Location loc = ((BAbstractPosition<Double>) this.position).toBukkitLocation();
+        loc.setPitch((float) this.pitch);
+        loc.setYaw((float) this.yaw);
+        org.bukkit.entity.Zombie zombie = (Zombie) loc.getWorld().spawnEntity(loc, org.bukkit.entity.EntityType.ZOMBIE);
+        if (this.isAdult) {
+            zombie.setAdult();
+        } else {
+            zombie.setBaby();
+        }
         BLiveZombie coreZombie = new BLiveZombie(zombie);
-        applyDefaults(coreZombie);
+        this.applyDefaults(coreZombie);
         this.inventory.apply(coreZombie);
         return coreZombie;
     }

@@ -5,7 +5,6 @@ import org.core.schedule.Scheduler;
 import org.core.schedule.SchedulerBuilder;
 import org.core.schedule.unit.TimeUnit;
 
-import java.io.IOException;
 import java.util.Optional;
 
 public class BSchedulerBuilder implements SchedulerBuilder {
@@ -109,40 +108,14 @@ public class BSchedulerBuilder implements SchedulerBuilder {
 
     @Override
     public Scheduler build(Plugin plugin) {
-        if(this.executor == null){
-            System.err.println("SchedulerBuilder was attempted to be built but no executor was set");
-            new IOException("No Executor in build").printStackTrace();
+        if (this.executor==null) {
+            throw new IllegalArgumentException("No Executor in build");
         }
-        if(this.delay != null && this.delayUnit == null){
-            System.err.println("SchedulerBuilder was attempted to be built but delayUnit was set to null");
-            new IOException("Invalid delayUnit in build").printStackTrace();
+        if (this.delay!=null && this.delayUnit==null) {
+            throw new IllegalArgumentException("Invalid delayUnit in build");
         }
         return new BScheduler(this, plugin);
     }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 }

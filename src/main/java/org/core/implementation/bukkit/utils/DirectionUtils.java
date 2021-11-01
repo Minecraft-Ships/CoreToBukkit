@@ -5,7 +5,11 @@ import org.core.world.direction.Direction;
 import org.core.world.direction.SixteenFacingDirection;
 import org.jetbrains.annotations.NotNull;
 
-public abstract class DirectionUtils {
+public final class DirectionUtils {
+
+    private DirectionUtils() {
+        throw new RuntimeException("Should not be constructed");
+    }
 
     public static @NotNull org.bukkit.block.BlockFace toFace(Direction direction) {
         if (direction.equals(SixteenFacingDirection.NORTH)) {

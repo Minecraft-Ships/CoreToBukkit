@@ -7,7 +7,7 @@ import org.core.entity.living.fish.cod.LiveCod;
 import org.core.implementation.bukkit.entity.BEntitySnapshot;
 import org.core.implementation.bukkit.entity.BEntityType;
 import org.core.implementation.bukkit.entity.living.animal.fish.live.BLiveCod;
-import org.core.implementation.bukkit.world.position.impl.sync.BExactPosition;
+import org.core.implementation.bukkit.world.position.impl.BAbstractPosition;
 import org.core.world.position.impl.sync.SyncExactPosition;
 
 public class BCodSnapshot extends BEntitySnapshot<LiveCod> implements CodSnapshot {
@@ -26,12 +26,12 @@ public class BCodSnapshot extends BEntitySnapshot<LiveCod> implements CodSnapsho
 
     @Override
     public LiveCod spawnEntity() {
-        org.bukkit.Location loc = ((BExactPosition)this.position).toBukkitLocation();
-        loc.setPitch((float)this.pitch);
-        loc.setYaw((float)this.yaw);
-        org.bukkit.entity.Cod cod = (org.bukkit.entity.Cod)loc.getWorld().spawnEntity(loc, org.bukkit.entity.EntityType.COD);
+        org.bukkit.Location loc = ((BAbstractPosition<Double>) this.position).toBukkitLocation();
+        loc.setPitch((float) this.pitch);
+        loc.setYaw((float) this.yaw);
+        org.bukkit.entity.Cod cod = (org.bukkit.entity.Cod) loc.getWorld().spawnEntity(loc, org.bukkit.entity.EntityType.COD);
         LiveCod coreCod = new BLiveCod(cod);
-        applyDefaults(coreCod);
+        this.applyDefaults(coreCod);
         return coreCod;
     }
 

@@ -1,9 +1,7 @@
 package org.core.implementation.bukkit.entity.living.bat.live;
 
-import org.core.entity.EntitySnapshot;
 import org.core.entity.EntityType;
 import org.core.entity.EntityTypes;
-import org.core.entity.living.bat.Bat;
 import org.core.entity.living.bat.BatSnapshot;
 import org.core.entity.living.bat.LiveBat;
 import org.core.implementation.bukkit.entity.BLiveEntity;
@@ -12,8 +10,8 @@ import org.core.implementation.bukkit.entity.living.bat.snapshot.BBatSnapshot;
 public class BLiveBat extends BLiveEntity<org.bukkit.entity.Bat> implements LiveBat {
 
     @Deprecated
-    public BLiveBat(org.bukkit.entity.Entity entity){
-        this((org.bukkit.entity.Bat)entity);
+    public BLiveBat(org.bukkit.entity.Entity entity) {
+        this((org.bukkit.entity.Bat) entity);
     }
 
     public BLiveBat(org.bukkit.entity.Bat entity) {
@@ -27,12 +25,12 @@ public class BLiveBat extends BLiveEntity<org.bukkit.entity.Bat> implements Live
 
     @Override
     public boolean isAwake() {
-        return getBukkitEntity().isAwake();
+        return this.getBukkitEntity().isAwake();
     }
 
     @Override
-    public Bat setAwake(boolean state) {
-        getBukkitEntity().setAwake(state);
+    public BLiveBat setAwake(boolean state) {
+        this.getBukkitEntity().setAwake(state);
         return this;
     }
 
@@ -42,7 +40,7 @@ public class BLiveBat extends BLiveEntity<org.bukkit.entity.Bat> implements Live
     }
 
     @Override
-    public EntitySnapshot createSnapshot() {
+    public BBatSnapshot createSnapshot() {
         return new BBatSnapshot(this);
     }
 }

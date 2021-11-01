@@ -3,8 +3,10 @@ package org.core.implementation.bukkit.world.boss;
 import org.bukkit.Bukkit;
 import org.bukkit.boss.BarColor;
 import org.bukkit.boss.BarStyle;
+import org.bukkit.entity.Player;
 import org.core.adventureText.AText;
 import org.core.entity.living.human.player.LivePlayer;
+import org.core.implementation.bukkit.entity.BLiveEntity;
 import org.core.implementation.bukkit.entity.living.human.player.live.BLivePlayer;
 import org.core.implementation.bukkit.world.boss.colour.BBossColour;
 import org.core.world.boss.ServerBossBar;
@@ -74,7 +76,7 @@ public class BServerBossBar implements ServerBossBar {
     @Override
     public ServerBossBar register(LivePlayer... players) {
         for (LivePlayer player : players) {
-            this.bossBar.addPlayer(((BLivePlayer) player).getBukkitEntity());
+            this.bossBar.addPlayer(((BLiveEntity<Player>) player).getBukkitEntity());
         }
         return this;
     }
@@ -82,7 +84,7 @@ public class BServerBossBar implements ServerBossBar {
     @Override
     public ServerBossBar deregister(LivePlayer... players) {
         for (LivePlayer player : players) {
-            this.bossBar.removePlayer(((BLivePlayer) player).getBukkitEntity());
+            this.bossBar.removePlayer(((BLiveEntity<Player>) player).getBukkitEntity());
         }
         return this;
     }

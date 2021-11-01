@@ -8,7 +8,7 @@ import org.core.entity.living.hostile.creeper.CreeperEntity;
 import org.core.entity.living.hostile.creeper.CreeperEntitySnapshot;
 import org.core.entity.living.hostile.creeper.LiveCreeperEntity;
 import org.core.implementation.bukkit.entity.BEntitySnapshot;
-import org.core.implementation.bukkit.world.position.impl.sync.BExactPosition;
+import org.core.implementation.bukkit.world.position.impl.BAbstractPosition;
 import org.core.world.position.impl.sync.SyncExactPosition;
 
 public class BCreeperSnapshot extends BEntitySnapshot<LiveCreeperEntity> implements CreeperEntitySnapshot {
@@ -31,12 +31,12 @@ public class BCreeperSnapshot extends BEntitySnapshot<LiveCreeperEntity> impleme
 
     @Override
     public LiveCreeperEntity spawnEntity() {
-        org.bukkit.Location loc = ((BExactPosition)this.position).toBukkitLocation();
-        loc.setPitch((float)this.pitch);
-        loc.setYaw((float)this.yaw);
-        org.bukkit.entity.Creeper creeper = (org.bukkit.entity.Creeper)loc.getWorld().spawnEntity(loc, org.bukkit.entity.EntityType.CREEPER);
+        org.bukkit.Location loc = ((BAbstractPosition<Double>) this.position).toBukkitLocation();
+        loc.setPitch((float) this.pitch);
+        loc.setYaw((float) this.yaw);
+        org.bukkit.entity.Creeper creeper = (org.bukkit.entity.Creeper) loc.getWorld().spawnEntity(loc, org.bukkit.entity.EntityType.CREEPER);
         BLiveCreeper liveCreeper = new BLiveCreeper(creeper);
-        applyDefaults(liveCreeper);
+        this.applyDefaults(liveCreeper);
         liveCreeper.setCharged(this.charged);
         return liveCreeper;
     }

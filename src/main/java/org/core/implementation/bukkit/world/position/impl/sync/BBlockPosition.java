@@ -1,5 +1,6 @@
 package org.core.implementation.bukkit.world.position.impl.sync;
 
+import org.bukkit.entity.Player;
 import org.core.TranslateCore;
 import org.core.adventureText.AText;
 import org.core.entity.EntitySnapshot;
@@ -7,8 +8,11 @@ import org.core.entity.EntityType;
 import org.core.entity.LiveEntity;
 import org.core.entity.living.human.player.LivePlayer;
 import org.core.exceptions.BlockNotSupported;
+import org.core.implementation.bukkit.entity.BLiveEntity;
 import org.core.implementation.bukkit.platform.BukkitPlatform;
 import org.core.implementation.bukkit.world.BWorldExtent;
+import org.core.implementation.bukkit.world.position.block.details.blocks.BExtendedBlockSnapshot;
+import org.core.implementation.bukkit.world.position.block.details.blocks.IBBlockDetails;
 import org.core.implementation.bukkit.world.position.flags.BApplyPhysicsFlag;
 import org.core.implementation.bukkit.world.position.impl.BAbstractPosition;
 import org.core.vector.type.Vector3;
@@ -18,16 +22,16 @@ import org.core.world.position.block.details.data.keyed.KeyedData;
 import org.core.world.position.block.entity.LiveTileEntity;
 import org.core.world.position.block.entity.TileEntity;
 import org.core.world.position.block.entity.TileEntitySnapshot;
+import org.core.world.position.block.entity.sign.SignTileEntity;
 import org.core.world.position.block.entity.sign.SignTileEntitySnapshot;
 import org.core.world.position.flags.PositionFlag;
 import org.core.world.position.flags.physics.ApplyPhysicsFlag;
 import org.core.world.position.flags.physics.ApplyPhysicsFlags;
+import org.core.world.position.impl.Position;
 import org.core.world.position.impl.sync.SyncBlockPosition;
-import org.core.world.position.impl.sync.SyncPosition;
-import org.core.implementation.bukkit.entity.living.human.player.live.BLivePlayer;
-import org.core.implementation.bukkit.world.position.block.details.blocks.BExtendedBlockSnapshot;
-import org.core.implementation.bukkit.world.position.block.details.blocks.IBBlockDetails;
+import org.jetbrains.annotations.NotNull;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.stream.Stream;
 
@@ -35,14 +39,11 @@ public class BBlockPosition extends BAbstractPosition<Integer> implements SyncBl
 
     protected org.bukkit.block.Block block;
 
-    public BBlockPosition(int x, int y, int z, org.bukkit.World world) {
+    public BBlockPosition(int x, int y, int z, @NotNull org.bukkit.World world) {
         this(world.getBlockAt(x, y, z));
     }
 
-    public BBlockPosition(org.bukkit.block.Block block) {
-        if (block == null) {
-            new NullPointerException().printStackTrace();
-        }
+    public BBlockPosition(@NotNull org.bukkit.block.Block block) {
         this.block = block;
     }
 
@@ -70,7 +71,7 @@ public class BBlockPosition extends BAbstractPosition<Integer> implements SyncBl
     public BBlockPosition setBlock(BlockDetails details, PositionFlag.SetFlag... flags) {
         BApplyPhysicsFlag physicsFlag = (BApplyPhysicsFlag) Stream.of(flags).filter(b -> b instanceof ApplyPhysicsFlag).findAny().orElse(ApplyPhysicsFlags.NONE.get());
 
-        this.block.setBlockData(((IBBlockDetails) details).getBukkitData(), physicsFlag.getBukitValue());
+        this.block.setBlockData(((IBBlockDetails) details).getBukkitData(), physicsFlag.getBukkitValue());
         Optional<TileEntitySnapshot<? extends TileEntity>> opTile = details.get(KeyedData.TILED_ENTITY);
         if (opTile.isPresent()) {
             try {
@@ -84,14 +85,15 @@ public class BBlockPosition extends BAbstractPosition<Integer> implements SyncBl
 
     @Override
     public BBlockPosition setBlock(BlockDetails details, LivePlayer... player) {
-        Stream.of(player).forEach(lp -> ((BLivePlayer) lp).getBukkitEntity().sendBlockChange(this.block.getLocation(), ((IBBlockDetails) details).getBukkitData()));
+        Stream.of(player).forEach(lp -> ((BLiveEntity<Player>) lp).getBukkitEntity().sendBlockChange(this.block.getLocation(), ((IBBlockDetails) details).getBukkitData()));
         Optional<TileEntitySnapshot<? extends TileEntity>> opTile = details.get(KeyedData.TILED_ENTITY);
         if (opTile.isPresent()) {
             TileEntitySnapshot<? extends TileEntity> tile = opTile.get();
             if (tile instanceof SignTileEntitySnapshot) {
-                SignTileEntitySnapshot stes = (SignTileEntitySnapshot) tile;
-                String[] lines = stes.getText().parallelStream().map(AText::toLegacy).toArray(String[]::new);
-                Stream.of(player).forEach(lp -> ((BLivePlayer) lp).getBukkitEntity().sendSignChange(this.block.getLocation(), lines));
+                SignTileEntity stes = (SignTileEntity) tile;
+                List<AText> lines = stes.getText();
+                String[] linesArray = lines.parallelStream().map(AText::toLegacy).toArray(String[]::new);
+                Stream.of(player).forEach(lp -> ((BLiveEntity<Player>) lp).getBukkitEntity().sendSignChange(this.block.getLocation(), linesArray));
             }
         }
         return this;
@@ -99,7 +101,7 @@ public class BBlockPosition extends BAbstractPosition<Integer> implements SyncBl
 
     @Override
     public BBlockPosition resetBlock(LivePlayer... player) {
-        return setBlock(getBlockDetails(), player);
+        return this.setBlock(this.getBlockDetails(), player);
     }
 
     @Override
@@ -115,16 +117,16 @@ public class BBlockPosition extends BAbstractPosition<Integer> implements SyncBl
     }
 
     @Override
-    public <E extends LiveEntity, S extends EntitySnapshot<E>> Optional<S> createEntity(EntityType<E, S> type) {
+    public <E extends LiveEntity, S extends EntitySnapshot<E>> Optional<S> createEntity(EntityType<E, ? extends S> type) {
         return ((BukkitPlatform) TranslateCore.getPlatform()).createSnapshot(type, this.toExactPosition());
     }
 
     @Override
     public boolean equals(Object value) {
-        if (!(value instanceof SyncPosition)) {
+        if (!(value instanceof Position)) {
             return false;
         }
-        SyncPosition<? extends Number> pos = (SyncPosition<? extends Number>) value;
-        return pos.getPosition().equals(getPosition());
+        Position<? extends Number> pos = (Position<? extends Number>) value;
+        return pos.getPosition().equals(this.getPosition());
     }
 }

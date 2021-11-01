@@ -26,7 +26,7 @@ public class BLiveCod extends BLiveEntity<Cod> implements LiveCod {
     }
 
     @Override
-    public EntitySnapshot createSnapshot() {
+    public BCodSnapshot createSnapshot() {
         return new BCodSnapshot(this);
     }
 }

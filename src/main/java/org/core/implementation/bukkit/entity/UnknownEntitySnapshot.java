@@ -2,7 +2,7 @@ package org.core.implementation.bukkit.entity;
 
 import org.core.entity.EntitySnapshot;
 import org.core.implementation.bukkit.world.BWorldExtent;
-import org.core.implementation.bukkit.world.position.impl.sync.BExactPosition;
+import org.core.implementation.bukkit.world.position.impl.BAbstractPosition;
 
 @Deprecated
 public class UnknownEntitySnapshot<T extends org.bukkit.entity.Entity> extends BEntitySnapshot<UnknownLiveEntity<T>> {
@@ -11,20 +11,22 @@ public class UnknownEntitySnapshot<T extends org.bukkit.entity.Entity> extends B
 
     public UnknownEntitySnapshot(UnknownLiveEntity<T> entity) {
         super(entity);
-        this.type = new BEntityType.UnknownType<>(entity.entity.getType());
+        this.type = new BEntityType.UnknownType<>(entity.getBukkitEntity().getType());
     }
 
     public UnknownEntitySnapshot(EntitySnapshot<UnknownLiveEntity<T>> entity) {
         super(entity);
-        this.type = (BEntityType.UnknownType)entity.getType();
+        this.type = (BEntityType.UnknownType) entity.getType();
     }
 
     @Override
     public UnknownLiveEntity<T> spawnEntity() {
-        BWorldExtent world = ((BWorldExtent)this.position.getWorld());
-        T entity = (T)world.getBukkitWorld().spawnEntity(((BExactPosition)this.position).toBukkitLocation(), this.type.type);
+        BWorldExtent world = ((BWorldExtent) this.position.getWorld());
+        T entity =
+                (T) world.getBukkitWorld().spawnEntity(((BAbstractPosition<Double>) this.position).toBukkitLocation(),
+                        this.type.getBukkitEntityType());
         UnknownLiveEntity<T> coreEntity = new UnknownLiveEntity<>(entity);
-        applyDefaults(coreEntity);
+        this.applyDefaults(coreEntity);
         return coreEntity;
     }
 

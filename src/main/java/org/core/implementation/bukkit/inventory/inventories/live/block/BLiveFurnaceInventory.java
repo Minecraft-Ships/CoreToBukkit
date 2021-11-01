@@ -21,9 +21,9 @@ public class BLiveFurnaceInventory implements LiveFurnaceInventory {
 
     private class FurnaceItemSlot implements Slot {
 
-        private int position;
+        private final int position;
 
-        public FurnaceItemSlot(int pos){
+        private FurnaceItemSlot(int pos){
             this.position = pos;
         }
 

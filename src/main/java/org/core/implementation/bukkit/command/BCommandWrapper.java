@@ -1,10 +1,8 @@
 package org.core.implementation.bukkit.command;
 
-import org.bukkit.Location;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 import java.util.Collections;
 import java.util.List;
@@ -30,9 +28,4 @@ public class BCommandWrapper extends Command {
         return this.command.onTabComplete(sender, this, alias, args);
     }
 
-    @NotNull
-    @Override
-    public List<String> tabComplete(@NotNull CommandSender sender, @NotNull String alias, @NotNull String[] args, @Nullable Location location) throws IllegalArgumentException {
-        return super.tabComplete(sender, alias, args, location);
-    }
 }

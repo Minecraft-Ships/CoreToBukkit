@@ -1,10 +1,10 @@
 package org.core.implementation.bukkit.inventory.item;
 
+import org.core.implementation.bukkit.inventory.item.stack.BItemStackSnapshot;
+import org.core.implementation.bukkit.world.position.block.BBlockType;
 import org.core.inventory.item.ItemType;
 import org.core.inventory.item.stack.ItemStackSnapshot;
 import org.core.world.position.block.BlockType;
-import org.core.implementation.bukkit.inventory.item.stack.BItemStackSnapshot;
-import org.core.implementation.bukkit.world.position.block.BBlockType;
 
 import java.util.Optional;
 
@@ -12,27 +12,25 @@ public class BItemType implements ItemType {
 
     protected org.bukkit.Material material;
 
-    public BItemType(org.bukkit.Material material){
+    public BItemType(org.bukkit.Material material) {
         this.material = material;
     }
 
-    public org.bukkit.Material getBukkitMaterial(){
+    public org.bukkit.Material getBukkitMaterial() {
         return this.material;
     }
 
     @Override
-    public boolean equals(Object object){
-        if(object instanceof BBlockType){
+    public boolean equals(Object object) {
+        if (object instanceof BBlockType) {
             BBlockType type = (BBlockType) object;
-            if(type.getBukkitMaterial().equals(this.material)){
+            if (type.getBukkitMaterial()==this.material) {
                 return true;
             }
         }
-        if(object instanceof BItemType){
+        if (object instanceof BItemType) {
             BItemType type = (BItemType) object;
-            if(type.getBukkitMaterial().equals(this.material)){
-                return true;
-            }
+            return type.getBukkitMaterial()==this.material;
         }
         return false;
     }
@@ -45,8 +43,8 @@ public class BItemType implements ItemType {
 
     @Override
     public Optional<BlockType> getBlockType() {
-        if (!this.material.isBlock()){
-    return Optional.empty();
+        if (!this.material.isBlock()) {
+            return Optional.empty();
         }
         return Optional.of(new BBlockType(this.material));
     }

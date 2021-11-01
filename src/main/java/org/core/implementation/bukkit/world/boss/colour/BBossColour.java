@@ -5,7 +5,7 @@ import org.core.world.boss.colour.BossColour;
 
 public class BBossColour implements BossColour {
 
-    private BarColor colour;
+    private final BarColor colour;
 
     public BBossColour(BarColor colour){
         this.colour = colour;
