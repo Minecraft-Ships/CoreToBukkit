@@ -11,7 +11,7 @@ public abstract class BAbstractPosition<T extends Number> implements Position<T>
     }
 
     public org.bukkit.block.Block toBukkitBlock() {
-        return toBukkitLocation().getBlock();
+        return this.toBukkitLocation().getBlock();
     }
 
     @Override

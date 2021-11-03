@@ -9,7 +9,7 @@ import java.util.Optional;
 
 public class BLiveItemFrameSlot implements Slot {
 
-    protected org.bukkit.entity.ItemFrame frame;
+    protected final org.bukkit.entity.ItemFrame frame;
 
     public BLiveItemFrameSlot(org.bukkit.entity.ItemFrame frame){
         this.frame = frame;

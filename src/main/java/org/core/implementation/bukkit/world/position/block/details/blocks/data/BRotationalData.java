@@ -7,7 +7,7 @@ import org.core.world.position.block.details.data.DirectionalData;
 
 public class BRotationalData implements DirectionalData {
 
-    org.bukkit.block.data.Rotatable rotatable;
+    final org.bukkit.block.data.Rotatable rotatable;
 
     public BRotationalData(org.bukkit.block.data.Rotatable rotatable) {
         this.rotatable = rotatable;

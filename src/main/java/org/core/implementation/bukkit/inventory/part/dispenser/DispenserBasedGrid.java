@@ -11,13 +11,13 @@ import java.util.*;
 
 public abstract class DispenserBasedGrid implements Grid3x3 {
 
-    protected List<DispenserSlot> slots = new ArrayList<>();
+    protected final List<DispenserSlot> slots = new ArrayList<>();
 
     public class DispenserSlot implements Slot {
 
-        private int position;
+        private final int position;
 
-        public DispenserSlot(int pos){
+        public DispenserSlot(int pos) {
             this.position = pos;
         }
 
@@ -29,22 +29,22 @@ public abstract class DispenserBasedGrid implements Grid3x3 {
         @Override
         public Optional<ItemStack> getItem() {
             org.bukkit.inventory.ItemStack is = DispenserBasedGrid.this.getContainer().getInventory().getItem(this.position);
-            if(is == null){
+            if (is==null) {
                 return Optional.empty();
             }
-            BAbstractItemStack stack = new BLiveItemStack(is);
+            ItemStack stack = new BLiveItemStack(is);
             return Optional.of(stack);
         }
 
         @Override
         public Slot setItem(ItemStack stack) {
             org.bukkit.block.Container container = DispenserBasedGrid.this.getContainer();
-            if(stack == null){
+            if (stack==null) {
                 container.getSnapshotInventory().setItem(this.position, null);
                 container.update();
                 return this;
             }
-            container.getSnapshotInventory().setItem(this.position, ((BAbstractItemStack)stack).getBukkitItem());
+            container.getSnapshotInventory().setItem(this.position, ((BAbstractItemStack) stack).getBukkitItem());
             container.update();
             return this;
         }
@@ -52,8 +52,8 @@ public abstract class DispenserBasedGrid implements Grid3x3 {
 
     protected abstract org.bukkit.block.Container getContainer();
 
-    public DispenserBasedGrid(){
-        for(int A = 0; A < 9; A++){
+    public DispenserBasedGrid() {
+        for (int A = 0; A < 9; A++) {
             this.slots.add(new DispenserSlot(A));
         }
     }

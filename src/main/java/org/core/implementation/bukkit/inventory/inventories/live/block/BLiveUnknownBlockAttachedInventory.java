@@ -20,7 +20,7 @@ public class BLiveUnknownBlockAttachedInventory implements LiveUnknownBlockAttac
 
     public class UnknownSlot implements Slot{
 
-        protected int position;
+        protected final int position;
 
         public UnknownSlot(int position){
             this.position = position;
@@ -51,13 +51,13 @@ public class BLiveUnknownBlockAttachedInventory implements LiveUnknownBlockAttac
         }
     }
 
-    protected org.bukkit.block.Container state;
-    protected Set<Slot> slots = new HashSet<>();
+    protected final org.bukkit.block.Container state;
+    protected final Set<Slot> slots = new HashSet<>();
 
     public BLiveUnknownBlockAttachedInventory(org.bukkit.block.Container state){
         this.state = state;
         for(int A = 0; A < state.getInventory().getSize(); A++){
-            slots.add(new UnknownSlot(A));
+            this.slots.add(new UnknownSlot(A));
         }
     }
 

@@ -6,9 +6,9 @@ import java.util.Optional;
 
 public class BWaterLoggedKeyedData implements WaterLoggedKeyedData {
 
-    org.bukkit.block.data.Waterlogged data;
+    final org.bukkit.block.data.Waterlogged data;
 
-    public BWaterLoggedKeyedData(org.bukkit.block.data.Waterlogged data){
+    public BWaterLoggedKeyedData(org.bukkit.block.data.Waterlogged data) {
         this.data = data;
     }
 

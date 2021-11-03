@@ -15,7 +15,7 @@ public class BLiveBannerTileEntity extends AbstractLiveTileEntity implements Liv
 
     @Override
     public PatternLayers getLayers() {
-        return new BPatternLayers((org.bukkit.block.Banner)state);
+        return new BPatternLayers((org.bukkit.block.Banner) this.state);
     }
 
     @Override

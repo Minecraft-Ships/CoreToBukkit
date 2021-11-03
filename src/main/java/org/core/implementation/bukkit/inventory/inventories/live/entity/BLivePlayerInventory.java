@@ -20,10 +20,10 @@ public class BLivePlayerInventory implements LivePlayerInventory {
 
     private class PlayerCraftingSlots implements Grid2x2 {
 
-        BLivePlayerInventory.PlayerItemSlot slot1 = new BLivePlayerInventory.PlayerItemSlot(80);
-        BLivePlayerInventory.PlayerItemSlot slot2 = new BLivePlayerInventory.PlayerItemSlot(81);
-        BLivePlayerInventory.PlayerItemSlot slot3 = new BLivePlayerInventory.PlayerItemSlot(82);
-        BLivePlayerInventory.PlayerItemSlot slot4 = new BLivePlayerInventory.PlayerItemSlot(83);
+        final BLivePlayerInventory.PlayerItemSlot slot1 = new BLivePlayerInventory.PlayerItemSlot(80);
+        final BLivePlayerInventory.PlayerItemSlot slot2 = new BLivePlayerInventory.PlayerItemSlot(81);
+        final BLivePlayerInventory.PlayerItemSlot slot3 = new BLivePlayerInventory.PlayerItemSlot(82);
+        final BLivePlayerInventory.PlayerItemSlot slot4 = new BLivePlayerInventory.PlayerItemSlot(83);
 
         @Override
         public Set<Slot> getSlots() {
@@ -33,10 +33,10 @@ public class BLivePlayerInventory implements LivePlayerInventory {
 
     private class PlayerArmorSlots implements ArmorPart {
 
-        BLivePlayerInventory.PlayerItemSlot helmetSlot = new BLivePlayerInventory.PlayerItemSlot(103);
-        BLivePlayerInventory.PlayerItemSlot armorSlot = new BLivePlayerInventory.PlayerItemSlot(102);
-        BLivePlayerInventory.PlayerItemSlot leggingsSlot = new BLivePlayerInventory.PlayerItemSlot(101);
-        BLivePlayerInventory.PlayerItemSlot shoeSlot = new BLivePlayerInventory.PlayerItemSlot(100);
+        final BLivePlayerInventory.PlayerItemSlot helmetSlot = new BLivePlayerInventory.PlayerItemSlot(103);
+        final BLivePlayerInventory.PlayerItemSlot armorSlot = new BLivePlayerInventory.PlayerItemSlot(102);
+        final BLivePlayerInventory.PlayerItemSlot leggingsSlot = new BLivePlayerInventory.PlayerItemSlot(101);
+        final BLivePlayerInventory.PlayerItemSlot shoeSlot = new BLivePlayerInventory.PlayerItemSlot(100);
 
         @Override
         public Slot getHelmetSlot() {
@@ -61,7 +61,7 @@ public class BLivePlayerInventory implements LivePlayerInventory {
 
     private class PlayerMainInventory implements MainPlayerInventory{
 
-        Set<Slot> slots = new HashSet<>();
+        final Set<Slot> slots = new HashSet<>();
 
         private PlayerMainInventory(){
             for(int A = 9; A < 35; A++){
@@ -77,7 +77,7 @@ public class BLivePlayerInventory implements LivePlayerInventory {
 
     private class PlayerHotbar implements Hotbar {
 
-        Set<Slot> slots = new HashSet<>();
+        final Set<Slot> slots = new HashSet<>();
 
         private PlayerHotbar(){
             for(int A = 0; A < 9; A++){
@@ -98,7 +98,7 @@ public class BLivePlayerInventory implements LivePlayerInventory {
 
     private class PlayerItemSlot implements Slot {
 
-        int position;
+        final int position;
 
         private PlayerItemSlot(int slot){
             this.position = slot;
@@ -127,12 +127,12 @@ public class BLivePlayerInventory implements LivePlayerInventory {
 
     }
 
-    protected BLivePlayer player;
-    protected BLivePlayerInventory.PlayerItemSlot offHandSlot;
-    protected BLivePlayerInventory.PlayerArmorSlots armorSlots;
-    protected BLivePlayerInventory.PlayerHotbar hotbar;
-    protected BLivePlayerInventory.PlayerCraftingSlots craftingSlots;
-    protected BLivePlayerInventory.PlayerMainInventory main;
+    protected final BLivePlayer player;
+    protected final BLivePlayerInventory.PlayerItemSlot offHandSlot;
+    protected final BLivePlayerInventory.PlayerArmorSlots armorSlots;
+    protected final BLivePlayerInventory.PlayerHotbar hotbar;
+    protected final BLivePlayerInventory.PlayerCraftingSlots craftingSlots;
+    protected final BLivePlayerInventory.PlayerMainInventory main;
 
     public BLivePlayerInventory(BLivePlayer player){
         this.player = player;

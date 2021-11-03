@@ -1,24 +1,24 @@
 package org.core.implementation.bukkit.world.position.block.entity.banner;
 
+import org.core.implementation.bukkit.world.position.block.entity.banner.pattern.BPatternLayersSnapshot;
 import org.core.world.position.block.BlockType;
 import org.core.world.position.block.blocktypes.post.BlockTypes1V13;
 import org.core.world.position.block.entity.banner.BannerTileEntity;
 import org.core.world.position.block.entity.banner.BannerTileEntitySnapshot;
 import org.core.world.position.block.entity.banner.LiveBannerTileEntity;
 import org.core.world.position.block.entity.banner.pattern.PatternLayersSnapshot;
-import org.core.implementation.bukkit.world.position.block.entity.banner.pattern.BPatternLayersSnapshot;
 
 import java.util.Collection;
 
 public class BBannerTileEntitySnapshot implements BannerTileEntitySnapshot {
 
-    protected PatternLayersSnapshot layers;
+    protected final PatternLayersSnapshot layers;
 
-    public BBannerTileEntitySnapshot(){
+    public BBannerTileEntitySnapshot() {
         this.layers = new BPatternLayersSnapshot();
     }
 
-    public BBannerTileEntitySnapshot(BannerTileEntity bannerTileEntity){
+    public BBannerTileEntitySnapshot(BannerTileEntity bannerTileEntity) {
         this.layers = bannerTileEntity.getLayers().createSnapshot();
     }
 

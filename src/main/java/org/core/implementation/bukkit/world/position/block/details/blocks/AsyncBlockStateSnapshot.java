@@ -7,7 +7,7 @@ import org.core.world.position.impl.async.ASyncBlockPosition;
 
 public class AsyncBlockStateSnapshot extends BBlockDetails implements BlockSnapshot.AsyncBlockSnapshot {
 
-    protected ASyncBlockPosition position;
+    protected final ASyncBlockPosition position;
 
     public AsyncBlockStateSnapshot(BAsyncBlockPosition position) {
         super(position);

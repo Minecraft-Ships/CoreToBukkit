@@ -20,15 +20,15 @@ public class BScheduler implements Scheduler {
         }
     }
 
-    protected Runnable taskToRun;
+    protected final Runnable taskToRun;
     protected Scheduler runAfter;
-    protected int delayCount;
-    protected TimeUnit delayTimeUnit;
-    protected Integer iteration;
-    protected TimeUnit iterationTimeUnit;
-    protected String displayName;
-    protected boolean async;
-    protected Plugin plugin;
+    protected final int delayCount;
+    protected final TimeUnit delayTimeUnit;
+    protected final Integer iteration;
+    protected final TimeUnit iterationTimeUnit;
+    protected final String displayName;
+    protected final boolean async;
+    protected final Plugin plugin;
 
     protected int task;
 

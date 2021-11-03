@@ -9,7 +9,7 @@ import java.util.Optional;
 
 public class BLiveDroppedItemSlot implements Slot {
 
-    protected org.bukkit.entity.Item item;
+    protected final org.bukkit.entity.Item item;
 
     public BLiveDroppedItemSlot(org.bukkit.entity.Item item){
         this.item = item;

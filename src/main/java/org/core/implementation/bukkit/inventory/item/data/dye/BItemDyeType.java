@@ -4,7 +4,7 @@ import org.core.inventory.item.data.dye.DyeType;
 
 public class BItemDyeType implements DyeType {
 
-    protected org.bukkit.DyeColor dye;
+    protected final org.bukkit.DyeColor dye;
 
     public BItemDyeType(org.bukkit.DyeColor dye){
         this.dye = dye;
@@ -16,7 +16,7 @@ public class BItemDyeType implements DyeType {
 
     @Override
     public String getId() {
-        return "minecraft:" + getName().toLowerCase();
+        return "minecraft:" + this.getName().toLowerCase();
     }
 
     @Override

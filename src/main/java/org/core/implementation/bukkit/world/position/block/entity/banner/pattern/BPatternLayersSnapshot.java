@@ -11,13 +11,13 @@ import java.util.List;
 
 public class BPatternLayersSnapshot implements PatternLayersSnapshot {
 
-    protected List<PatternLayer> list;
+    protected final List<PatternLayer> list;
 
-    public BPatternLayersSnapshot(PatternLayer... list){
+    public BPatternLayersSnapshot(PatternLayer... list) {
         this(Arrays.asList(list));
     }
 
-    public BPatternLayersSnapshot(List<PatternLayer> list){
+    public BPatternLayersSnapshot(List<PatternLayer> list) {
         this.list = list;
     }
 
@@ -27,7 +27,7 @@ public class BPatternLayersSnapshot implements PatternLayersSnapshot {
     }
 
     @Override
-    public PatternLayers addLayers(Collection<PatternLayer> layers) {
+    public PatternLayers addLayers(Collection<? extends PatternLayer> layers) {
         this.list.addAll(layers);
         return this;
     }

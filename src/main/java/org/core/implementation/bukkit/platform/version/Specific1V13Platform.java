@@ -5,7 +5,6 @@ import org.core.entity.EntitySnapshot;
 import org.core.entity.EntityType;
 import org.core.entity.LiveEntity;
 import org.core.implementation.bukkit.entity.BEntityType;
-import org.core.world.position.block.entity.LiveTileEntity;
 import org.core.implementation.bukkit.entity.living.animal.fish.live.BLiveCod;
 import org.core.implementation.bukkit.entity.living.animal.live.BLiveChicken;
 import org.core.implementation.bukkit.entity.living.animal.live.BLiveCow;
@@ -22,6 +21,7 @@ import org.core.implementation.bukkit.world.position.block.entity.container.disp
 import org.core.implementation.bukkit.world.position.block.entity.container.furnace.BFurnaceEntity;
 import org.core.implementation.bukkit.world.position.block.entity.sign.BSignEntity;
 import org.core.implementation.bukkit.world.position.block.entity.skull.BSkullEntity;
+import org.core.world.position.block.entity.LiveTileEntity;
 
 import java.util.*;
 
@@ -38,7 +38,7 @@ public class Specific1V13Platform implements BukkitSpecificPlatform {
 
     @Override
     public Set<EntityType<? extends LiveEntity, ? extends EntitySnapshot<? extends LiveEntity>>> getGeneralEntityTypes() {
-        Set<EntityType<? extends LiveEntity, ? extends EntitySnapshot<? extends LiveEntity>>> set = new HashSet<>(
+        return new HashSet<>(
                 Arrays.asList(
                         new BEntityType.ZombieType(),
                         new BEntityType.ChickenType(),
@@ -53,7 +53,6 @@ public class Specific1V13Platform implements BukkitSpecificPlatform {
                         new BEntityType.HumanType(),
                         new BEntityType.CreeperType()
                 ));
-        return set;
     }
 
 

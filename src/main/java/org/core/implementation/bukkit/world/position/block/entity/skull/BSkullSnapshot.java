@@ -38,7 +38,7 @@ public class BSkullSnapshot implements SkullSnapshot {
 
     @Override
     public Collection<BlockType> getSupportedBlocks() {
-        Set<BlockType> blocks = new HashSet<>();
+        Collection<BlockType> blocks = new HashSet<>();
         blocks.addAll(Arrays.asList(BlockGroups1V13.STANDARD_HEAD.getGrouped()));
         blocks.addAll(Arrays.asList(BlockGroups1V13.WALL_HEAD.getGrouped()));
         return blocks;

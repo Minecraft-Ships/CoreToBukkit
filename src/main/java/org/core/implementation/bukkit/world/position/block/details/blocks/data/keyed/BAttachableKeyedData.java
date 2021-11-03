@@ -29,7 +29,7 @@ public class BAttachableKeyedData implements AttachableKeyedData {
         org.bukkit.block.data.BlockData setAttachedDirection(org.bukkit.block.data.BlockData data, Direction direction);
     }
 
-    public static final Set<AttachableBlockWorkAround> workArounds = new HashSet<>();
+    public static final Collection<AttachableBlockWorkAround> workArounds = new HashSet<>();
 
     static {
         workArounds.addAll(Arrays.asList(CommonAttachableWorkAround.values()));

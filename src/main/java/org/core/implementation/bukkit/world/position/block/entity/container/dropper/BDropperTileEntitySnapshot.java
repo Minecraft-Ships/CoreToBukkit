@@ -14,10 +14,10 @@ import java.util.Collections;
 
 public class BDropperTileEntitySnapshot implements DropperTileEntitySnapshot {
 
-    protected DropperInventorySnapshot inventory;
+    protected final DropperInventorySnapshot inventory;
 
     public BDropperTileEntitySnapshot() {
-        inventory = new BDropperInventorySnapshot();
+        this.inventory = new BDropperInventorySnapshot();
     }
 
     public BDropperTileEntitySnapshot(DropperTileEntity dte) {

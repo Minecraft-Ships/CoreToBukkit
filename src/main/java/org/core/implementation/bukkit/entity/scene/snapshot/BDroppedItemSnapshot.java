@@ -66,20 +66,16 @@ public class BDroppedItemSnapshot extends BEntitySnapshot<LiveDroppedItem> imple
         //TODO
         switch (unit) {
             case NANOSECONDS:
-                break;
-            case MICROSECONDS:
-                break;
             case MILLISECONDS:
+            case MICROSECONDS:
+            case DAYS:
+            case HOURS:
                 break;
             case SECONDS:
                 this.pickupDelay = (time * 20);
                 break;
             case MINUTES:
                 this.pickupDelay = ((time * 20) * 60);
-                break;
-            case HOURS:
-                break;
-            case DAYS:
                 break;
         }
         return this;

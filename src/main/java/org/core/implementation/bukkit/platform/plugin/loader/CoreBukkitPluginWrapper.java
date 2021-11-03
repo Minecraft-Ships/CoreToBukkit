@@ -28,7 +28,7 @@ public class CoreBukkitPluginWrapper implements org.bukkit.plugin.Plugin {
     }
 
     public CorePlugin getPlugin() {
-        return plugin;
+        return this.plugin;
     }
 
     @NotNull

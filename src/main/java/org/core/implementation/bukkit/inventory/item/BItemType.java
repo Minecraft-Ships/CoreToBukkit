@@ -10,7 +10,7 @@ import java.util.Optional;
 
 public class BItemType implements ItemType {
 
-    protected org.bukkit.Material material;
+    protected final org.bukkit.Material material;
 
     public BItemType(org.bukkit.Material material) {
         this.material = material;

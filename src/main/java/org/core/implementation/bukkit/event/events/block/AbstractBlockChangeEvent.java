@@ -11,13 +11,12 @@ import org.core.world.position.impl.sync.SyncBlockPosition;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
 
 public class AbstractBlockChangeEvent implements BlockChangeEvent {
 
-    protected SyncBlockPosition position;
-    protected BlockDetails before;
-    protected BlockDetails after;
+    protected final SyncBlockPosition position;
+    protected final BlockDetails before;
+    protected final BlockDetails after;
 
     public AbstractBlockChangeEvent(SyncBlockPosition pos, BlockDetails before, BlockDetails after) {
         this.position = pos;
@@ -42,9 +41,9 @@ public class AbstractBlockChangeEvent implements BlockChangeEvent {
 
     public static class PlaceBlockPlayerPostEvent extends AbstractBlockChangeEvent implements BlockChangeEvent.Place.Post.ByPlayer {
 
-        protected LivePlayer player;
+        protected final LivePlayer player;
         protected boolean cancelled;
-        protected Collection<BlockSnapshot<SyncBlockPosition>> collection;
+        protected final Collection<BlockSnapshot<SyncBlockPosition>> collection;
 
         public PlaceBlockPlayerPostEvent(SyncBlockPosition pos, BlockDetails before, BlockDetails after, LivePlayer player, Collection<BlockSnapshot<SyncBlockPosition>> affected) {
             super(pos, before, after);
@@ -76,9 +75,9 @@ public class AbstractBlockChangeEvent implements BlockChangeEvent {
 
     public static class BreakBlockPostEvent extends AbstractBlockChangeEvent implements BlockChangeEvent.Break.Post.ByPlayer {
 
-        Collection<DroppedItemSnapshot> items;
-        List<DroppedItemSnapshot> toRemove = new ArrayList<>();
-        LivePlayer player;
+        final Collection<DroppedItemSnapshot> items;
+        final Collection<DroppedItemSnapshot> toRemove = new ArrayList<>();
+        final LivePlayer player;
 
         public BreakBlockPostEvent(BlockDetails pre, SyncBlockPosition pos, LivePlayer player, Collection<DroppedItemSnapshot> items) {
             super(pos, pre, pos.getBlockDetails());
@@ -106,7 +105,7 @@ public class AbstractBlockChangeEvent implements BlockChangeEvent {
     public static class BreakBlockChangeExplode extends AbstractBlockChangeEvent implements BlockChangeEvent.Break.Pre.ByExplosion {
 
         protected boolean cancelled;
-        protected Explosion explosion;
+        protected final Explosion explosion;
 
         public BreakBlockChangeExplode(SyncBlockPosition pos, Explosion explosion) {
             super(pos, pos.getBlockDetails(), BlockTypes.AIR.getDefaultBlockDetails());
@@ -131,7 +130,7 @@ public class AbstractBlockChangeEvent implements BlockChangeEvent {
 
     public static class BreakBlockChangeEventPlayer extends AbstractBlockChangeEvent implements BlockChangeEvent.Break.Pre.ByPlayer {
 
-        protected LivePlayer player;
+        protected final LivePlayer player;
         protected boolean isCancelled;
 
         public BreakBlockChangeEventPlayer(SyncBlockPosition pos, LivePlayer player) {

@@ -48,7 +48,7 @@ public class BlockStateSnapshot implements BlockSnapshot.SyncBlockSnapshot, IBBl
             if (!opTile.isPresent()) {
                 return;
             }
-            apply(value, opTile.get());
+            this.apply(value, opTile.get());
         }
 
         private <T extends LiveTileEntity> void apply(TileEntitySnapshot<T> snapshot, LiveTileEntity lte) {
@@ -56,7 +56,7 @@ public class BlockStateSnapshot implements BlockSnapshot.SyncBlockSnapshot, IBBl
         }
     }
 
-    protected org.bukkit.block.BlockState state;
+    protected final org.bukkit.block.BlockState state;
 
     public BlockStateSnapshot(org.bukkit.block.BlockState state) {
         this.state = state;
@@ -79,9 +79,9 @@ public class BlockStateSnapshot implements BlockSnapshot.SyncBlockSnapshot, IBBl
     @Override
     public <T extends BlockPosition> BlockSnapshot<T> createSnapshot(T position) {
         if (position instanceof SyncBlockPosition) {
-            return (BlockSnapshot<T>) createSnapshot((SyncBlockPosition) position);
+            return (BlockSnapshot<T>) this.createSnapshot((SyncBlockPosition) position);
         }
-        return (BlockSnapshot<T>) createSnapshot((ASyncBlockPosition) position);
+        return (BlockSnapshot<T>) this.createSnapshot((ASyncBlockPosition) position);
     }
 
     @Override
@@ -107,7 +107,7 @@ public class BlockStateSnapshot implements BlockSnapshot.SyncBlockSnapshot, IBBl
 
     @Override
     public <T> Optional<T> get(Class<? extends KeyedData<T>> data) {
-        Optional<KeyedData<T>> opKey = getKey(data);
+        Optional<KeyedData<T>> opKey = this.getKey(data);
         if (opKey.isPresent()) {
             return opKey.get().getData();
         }
@@ -116,14 +116,14 @@ public class BlockStateSnapshot implements BlockSnapshot.SyncBlockSnapshot, IBBl
 
     @Override
     public <T> BlockDetails set(Class<? extends KeyedData<T>> data, T value) {
-        Optional<KeyedData<T>> opKey = getKey(data);
+        Optional<KeyedData<T>> opKey = this.getKey(data);
         opKey.ifPresent(k -> k.setData(value));
         return this;
     }
 
     @Override
     public BlockStateSnapshot createCopyOf() {
-        return (BlockStateSnapshot) createSnapshot(this.getPosition());
+        return (BlockStateSnapshot) this.createSnapshot(this.getPosition());
     }
 
     @Override

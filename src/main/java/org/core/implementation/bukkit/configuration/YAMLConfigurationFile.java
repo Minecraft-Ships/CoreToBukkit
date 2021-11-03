@@ -12,7 +12,7 @@ import java.util.*;
 
 public class YAMLConfigurationFile implements ConfigurationStream.ConfigurationFile {
 
-    protected File file;
+    protected final File file;
     protected YamlConfiguration yaml;
 
     public YAMLConfigurationFile(File file) {

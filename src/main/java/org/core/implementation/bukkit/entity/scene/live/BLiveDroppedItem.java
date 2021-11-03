@@ -41,20 +41,16 @@ public class BLiveDroppedItem extends BLiveEntity<Item> implements LiveDroppedIt
     public BLiveDroppedItem setPickupDelay(int time, TimeUnit unit) {
         switch (unit) {
             case NANOSECONDS:
-                break;
             case MICROSECONDS:
-                break;
             case MILLISECONDS:
+            case DAYS:
+            case HOURS:
                 break;
             case SECONDS:
                 this.getBukkitEntity().setPickupDelay(time * 20);
                 break;
             case MINUTES:
                 this.getBukkitEntity().setPickupDelay((time * 20) * 60);
-                break;
-            case HOURS:
-                break;
-            case DAYS:
                 break;
         }
         return this;

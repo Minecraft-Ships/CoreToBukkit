@@ -14,7 +14,7 @@ import java.util.Collection;
 
 public class BChestTileEntitySnapshot implements ChestTileEntitySnapshot {
 
-    protected ChestInventorySnapshot inventory;
+    protected final ChestInventorySnapshot inventory;
 
     public BChestTileEntitySnapshot(){
         this.inventory = new BChestInventorySnapshot();

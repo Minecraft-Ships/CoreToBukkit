@@ -52,10 +52,13 @@ public class BLiveFurnaceInventory implements LiveFurnaceInventory {
         }
     }
 
-    protected org.bukkit.block.Furnace block;
-    protected BLiveFurnaceInventory.FurnaceItemSlot result = new BLiveFurnaceInventory.FurnaceItemSlot(RESULTS_POSITION);
-    protected BLiveFurnaceInventory.FurnaceItemSlot fuel = new BLiveFurnaceInventory.FurnaceItemSlot(FUEL_POSITION);
-    protected BLiveFurnaceInventory.FurnaceItemSlot smelting = new BLiveFurnaceInventory.FurnaceItemSlot(SMELTING_POSITION);
+    protected final org.bukkit.block.Furnace block;
+    protected final BLiveFurnaceInventory.FurnaceItemSlot result =
+            new BLiveFurnaceInventory.FurnaceItemSlot(RESULTS_POSITION);
+    protected final BLiveFurnaceInventory.FurnaceItemSlot fuel =
+            new BLiveFurnaceInventory.FurnaceItemSlot(FUEL_POSITION);
+    protected final BLiveFurnaceInventory.FurnaceItemSlot smelting =
+            new BLiveFurnaceInventory.FurnaceItemSlot(SMELTING_POSITION);
 
 
     public BLiveFurnaceInventory(org.bukkit.block.Furnace furnace){

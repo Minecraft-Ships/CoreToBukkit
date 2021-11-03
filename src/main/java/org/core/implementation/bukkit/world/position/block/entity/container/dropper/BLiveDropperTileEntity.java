@@ -9,7 +9,7 @@ import org.core.world.position.impl.sync.SyncBlockPosition;
 
 public class BLiveDropperTileEntity implements LiveDropperTileEntity {
 
-    protected org.bukkit.block.Dropper dropper;
+    protected final org.bukkit.block.Dropper dropper;
 
     @Deprecated
     public BLiveDropperTileEntity(org.bukkit.block.BlockState state){

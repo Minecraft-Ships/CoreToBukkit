@@ -7,7 +7,7 @@ import org.core.implementation.bukkit.inventory.inventories.snapshot.block.dispe
 
 public class BLiveDispenserInventory extends BLiveDispenserBasedInventory implements DispenserInventory {
 
-    org.bukkit.block.Dispenser dispenser;
+    final org.bukkit.block.Dispenser dispenser;
 
     public BLiveDispenserInventory(org.bukkit.block.Dispenser dispenser){
         this.dispenser = dispenser;

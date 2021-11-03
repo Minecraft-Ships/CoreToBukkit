@@ -24,7 +24,7 @@ public class BSkullEntity extends AbstractLiveTileEntity implements LiveSkull {
 
     @Override
     public Optional<User> getOwner() {
-        OfflinePlayer user = getBukkitTileEntity().getOwningPlayer();
+        OfflinePlayer user = this.getBukkitTileEntity().getOwningPlayer();
         if (user == null){
             return Optional.empty();
         }

@@ -6,7 +6,7 @@ import java.util.Optional;
 
 public class BOpenableKeyedData implements OpenableKeyedData {
 
-    private org.bukkit.block.data.Openable data;
+    private final org.bukkit.block.data.Openable data;
 
     public BOpenableKeyedData(org.bukkit.block.data.Openable data){
         this.data = data;

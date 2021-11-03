@@ -8,23 +8,29 @@ import org.core.inventory.parts.snapshot.SlotSnapshot;
 import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 public class BChestInventorySnapshot extends ChestInventorySnapshot {
 
-    protected Set<SlotSnapshot> slots = new HashSet<>();
+    protected final Set<SlotSnapshot> slots = new HashSet<>();
 
-    public BChestInventorySnapshot(){
+    public BChestInventorySnapshot() {
 
     }
 
-    public BChestInventorySnapshot(ChestInventory inventory){
+    public BChestInventorySnapshot(ChestInventory inventory) {
         this.position = inventory.getPosition();
-        inventory.getSlots().stream().forEach(s -> this.slots.add(s.createSnapshot()));
+        this.slots.addAll(inventory.getSlots().stream().map(Slot::createSnapshot).collect(Collectors.toSet()));
     }
 
     @Override
     public Optional<Slot> getSlot(int slotPos) {
-        return this.getSlots().stream().filter(s -> s.getPosition().isPresent()).filter(s -> s.getPosition().get() == slotPos).findAny();
+        return this
+                .getSlots()
+                .stream()
+                .filter(s -> s.getPosition().isPresent())
+                .filter(s -> s.getPosition().get()==slotPos)
+                .findAny();
     }
 
     @Override

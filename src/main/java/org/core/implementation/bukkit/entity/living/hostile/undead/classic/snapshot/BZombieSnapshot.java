@@ -15,7 +15,7 @@ import org.core.world.position.impl.sync.SyncExactPosition;
 public class BZombieSnapshot extends BEntitySnapshot<LiveClassicZombie> implements ClassicZombieSnapshot {
 
     protected boolean isAdult;
-    protected BClassicZombieInventorySnapshot inventory;
+    protected BClassicZombieInventorySnapshot<LiveClassicZombie> inventory;
 
     public BZombieSnapshot(SyncExactPosition position) {
         super(position);
@@ -24,13 +24,13 @@ public class BZombieSnapshot extends BEntitySnapshot<LiveClassicZombie> implemen
     public BZombieSnapshot(LiveClassicZombie zombie) {
         super(zombie);
         this.isAdult = zombie.isAdult();
-        this.inventory = new BClassicZombieInventorySnapshot(zombie.getInventory());
+        this.inventory = new BClassicZombieInventorySnapshot<>(zombie.getInventory());
     }
 
     public BZombieSnapshot(ClassicZombieSnapshot zombie) {
         super(zombie);
         this.isAdult = zombie.isAdult();
-        this.inventory = new BClassicZombieInventorySnapshot(zombie.getInventory());
+        this.inventory = new BClassicZombieInventorySnapshot<>(zombie.getInventory());
     }
 
 
@@ -52,7 +52,7 @@ public class BZombieSnapshot extends BEntitySnapshot<LiveClassicZombie> implemen
     }
 
     @Override
-    public BClassicZombieInventorySnapshot getInventory() {
+    public BClassicZombieInventorySnapshot<LiveClassicZombie> getInventory() {
         return this.inventory;
     }
 

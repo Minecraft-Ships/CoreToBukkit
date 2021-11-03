@@ -15,6 +15,7 @@ import org.core.world.position.block.details.BlockDetails;
 import org.core.world.position.block.details.BlockSnapshot;
 import org.core.world.position.block.entity.LiveTileEntity;
 import org.core.world.position.flags.PositionFlag;
+import org.core.world.position.impl.Position;
 import org.core.world.position.impl.sync.SyncBlockPosition;
 import org.core.world.position.impl.sync.SyncExactPosition;
 import org.core.world.position.impl.sync.SyncPosition;
@@ -23,7 +24,7 @@ import java.util.Optional;
 
 public class BExactPosition extends BAbstractPosition<Double> implements SyncExactPosition {
 
-    protected org.bukkit.Location location;
+    protected final org.bukkit.Location location;
 
     public BExactPosition(double x, double y, double z, org.bukkit.World world) {
         this(new Location(world, x, y, z));
@@ -55,7 +56,7 @@ public class BExactPosition extends BAbstractPosition<Double> implements SyncExa
 
     @Override
     public BlockSnapshot.SyncBlockSnapshot getBlockDetails() {
-        return toBlockPosition().getBlockDetails();
+        return this.toBlockPosition().getBlockDetails();
     }
 
     @Override
@@ -66,13 +67,13 @@ public class BExactPosition extends BAbstractPosition<Double> implements SyncExa
 
     @Override
     public SyncPosition<Double> setBlock(BlockDetails details, LivePlayer... player) {
-        toBlockPosition().setBlock(details, player);
+        this.toBlockPosition().setBlock(details, player);
         return this;
     }
 
     @Override
     public SyncPosition<Double> resetBlock(LivePlayer... player) {
-        toBlockPosition().resetBlock(player);
+        this.toBlockPosition().resetBlock(player);
         return this;
     }
 
@@ -88,7 +89,7 @@ public class BExactPosition extends BAbstractPosition<Double> implements SyncExa
 
     @Override
     public SyncPosition<Double> destroy() {
-        toBlockPosition().destroy();
+        this.toBlockPosition().destroy();
         return this;
     }
 
@@ -97,7 +98,7 @@ public class BExactPosition extends BAbstractPosition<Double> implements SyncExa
         if (!(value instanceof SyncPosition)) {
             return false;
         }
-        SyncPosition<? extends Number> pos = (SyncPosition<? extends Number>) value;
-        return pos.getPosition().equals(getPosition());
+        Position<? extends Number> pos = (Position<? extends Number>) value;
+        return pos.getPosition().equals(this.getPosition());
     }
 }

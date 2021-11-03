@@ -14,7 +14,7 @@ import java.util.List;
 
 public class BSignEntitySnapshot implements SignTileEntitySnapshot {
 
-    protected List<AText> lines;
+    protected final List<AText> lines;
 
     public BSignEntitySnapshot(SignTileEntity entity) {
         this(entity.getText());

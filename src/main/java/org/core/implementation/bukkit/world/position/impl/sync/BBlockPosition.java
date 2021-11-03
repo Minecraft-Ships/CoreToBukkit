@@ -37,7 +37,7 @@ import java.util.stream.Stream;
 
 public class BBlockPosition extends BAbstractPosition<Integer> implements SyncBlockPosition {
 
-    protected org.bukkit.block.Block block;
+    protected final org.bukkit.block.Block block;
 
     public BBlockPosition(int x, int y, int z, @NotNull org.bukkit.World world) {
         this(world.getBlockAt(x, y, z));

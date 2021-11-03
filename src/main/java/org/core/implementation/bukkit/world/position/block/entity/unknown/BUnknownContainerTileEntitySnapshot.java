@@ -14,7 +14,7 @@ import java.util.Collection;
 
 public class BUnknownContainerTileEntitySnapshot implements UnknownContainerTileEntitySnapshot {
 
-    protected UnknownBlockAttachedInventorySnapshot inventory;
+    protected final UnknownBlockAttachedInventorySnapshot inventory;
 
     public BUnknownContainerTileEntitySnapshot(SyncBlockPosition position, BlockType... types){
         this.inventory = new BUnknownBlockAttachedInventorySnapshot(position, types);

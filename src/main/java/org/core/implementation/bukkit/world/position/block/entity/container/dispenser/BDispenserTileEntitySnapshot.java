@@ -14,7 +14,7 @@ import java.util.Collections;
 
 public class BDispenserTileEntitySnapshot implements DispenserTileEntitySnapshot {
 
-    protected DispenserInventorySnapshot dis;
+    protected final DispenserInventorySnapshot dis;
 
     public BDispenserTileEntitySnapshot(){
         this.dis = new BDispenserInventorySnapshot();

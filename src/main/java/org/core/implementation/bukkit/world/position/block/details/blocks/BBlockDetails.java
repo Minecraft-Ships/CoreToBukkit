@@ -2,6 +2,12 @@ package org.core.implementation.bukkit.world.position.block.details.blocks;
 
 import org.core.TranslateCore;
 import org.core.implementation.bukkit.world.position.block.BBlockType;
+import org.core.implementation.bukkit.world.position.block.details.blocks.data.BDirectionalData;
+import org.core.implementation.bukkit.world.position.block.details.blocks.data.BRotationalData;
+import org.core.implementation.bukkit.world.position.block.details.blocks.data.keyed.BAttachableKeyedData;
+import org.core.implementation.bukkit.world.position.block.details.blocks.data.keyed.BMultiDirectionalKeyedData;
+import org.core.implementation.bukkit.world.position.block.details.blocks.data.keyed.BOpenableKeyedData;
+import org.core.implementation.bukkit.world.position.block.details.blocks.data.keyed.BWaterLoggedKeyedData;
 import org.core.implementation.bukkit.world.position.impl.async.BAsyncBlockPosition;
 import org.core.implementation.bukkit.world.position.impl.sync.BBlockPosition;
 import org.core.world.position.block.BlockType;
@@ -14,12 +20,6 @@ import org.core.world.position.block.entity.TileEntitySnapshot;
 import org.core.world.position.impl.BlockPosition;
 import org.core.world.position.impl.async.ASyncBlockPosition;
 import org.core.world.position.impl.sync.SyncBlockPosition;
-import org.core.implementation.bukkit.world.position.block.details.blocks.data.BDirectionalData;
-import org.core.implementation.bukkit.world.position.block.details.blocks.data.BRotationalData;
-import org.core.implementation.bukkit.world.position.block.details.blocks.data.keyed.BAttachableKeyedData;
-import org.core.implementation.bukkit.world.position.block.details.blocks.data.keyed.BMultiDirectionalKeyedData;
-import org.core.implementation.bukkit.world.position.block.details.blocks.data.keyed.BOpenableKeyedData;
-import org.core.implementation.bukkit.world.position.block.details.blocks.data.keyed.BWaterLoggedKeyedData;
 
 import java.util.Optional;
 
@@ -46,7 +46,7 @@ public class BBlockDetails implements BlockDetails, IBBlockDetails {
         this.data = data;
         this.async = async;
         if (!async) {
-            TranslateCore.getPlatform().getDefaultTileEntity(getType()).ifPresent(t -> tileEntitySnapshot = t);
+            TranslateCore.getPlatform().getDefaultTileEntity(this.getType()).ifPresent(t -> this.tileEntitySnapshot = t);
         }
     }
 
@@ -89,15 +89,15 @@ public class BBlockDetails implements BlockDetails, IBBlockDetails {
     @Override
     public <T extends BlockPosition> BlockSnapshot<T> createSnapshot(T position) {
         if (position instanceof SyncBlockPosition) {
-            return (BlockSnapshot<T>) createSnapshot((SyncBlockPosition) position);
+            return (BlockSnapshot<T>) this.createSnapshot((SyncBlockPosition) position);
         }
-        return (BlockSnapshot<T>) createSnapshot((ASyncBlockPosition) position);
+        return (BlockSnapshot<T>) this.createSnapshot((ASyncBlockPosition) position);
     }
 
     @Override
     public BlockSnapshot.AsyncBlockSnapshot createSnapshot(ASyncBlockPosition position) {
-        AsyncBlockStateSnapshot snapshot = new AsyncBlockStateSnapshot(position, this.getBukkitData());
-        if (this.tileEntitySnapshot != null) {
+        BlockSnapshot.AsyncBlockSnapshot snapshot = new AsyncBlockStateSnapshot(position, this.getBukkitData());
+        if (this.tileEntitySnapshot!=null) {
             snapshot.set(TileEntityKeyedData.class, this.tileEntitySnapshot);
         }
         return snapshot;
@@ -121,7 +121,7 @@ public class BBlockDetails implements BlockDetails, IBBlockDetails {
 
     @Override
     public <T> Optional<T> get(Class<? extends KeyedData<T>> data) {
-        Optional<KeyedData<T>> opKey = getKey(data);
+        Optional<KeyedData<T>> opKey = this.getKey(data);
         if (opKey.isPresent()) {
             return opKey.get().getData();
         }
@@ -130,7 +130,7 @@ public class BBlockDetails implements BlockDetails, IBBlockDetails {
 
     @Override
     public <T> BlockDetails set(Class<? extends KeyedData<T>> data, T value) {
-        Optional<KeyedData<T>> opKey = getKey(data);
+        Optional<KeyedData<T>> opKey = this.getKey(data);
         opKey.ifPresent(k -> k.setData(value));
         return this;
     }

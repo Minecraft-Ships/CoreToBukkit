@@ -7,7 +7,7 @@ import org.core.implementation.bukkit.world.position.impl.BAbstractPosition;
 @Deprecated
 public class UnknownEntitySnapshot<T extends org.bukkit.entity.Entity> extends BEntitySnapshot<UnknownLiveEntity<T>> {
 
-    protected BEntityType.UnknownType<T> type;
+    protected final BEntityType.UnknownType<T> type;
 
     public UnknownEntitySnapshot(UnknownLiveEntity<T> entity) {
         super(entity);
@@ -16,7 +16,7 @@ public class UnknownEntitySnapshot<T extends org.bukkit.entity.Entity> extends B
 
     public UnknownEntitySnapshot(EntitySnapshot<UnknownLiveEntity<T>> entity) {
         super(entity);
-        this.type = (BEntityType.UnknownType) entity.getType();
+        this.type = (BEntityType.UnknownType<T>) (Object) entity.getType();
     }
 
     @Override

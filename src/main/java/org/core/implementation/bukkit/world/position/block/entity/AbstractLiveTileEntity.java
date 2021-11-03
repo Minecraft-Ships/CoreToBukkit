@@ -6,14 +6,14 @@ import org.core.world.position.impl.sync.SyncBlockPosition;
 
 public abstract class AbstractLiveTileEntity implements LiveTileEntity {
 
-    protected org.bukkit.block.BlockState state;
+    protected final org.bukkit.block.BlockState state;
 
-    public AbstractLiveTileEntity(org.bukkit.block.BlockState state){
+    public AbstractLiveTileEntity(org.bukkit.block.BlockState state) {
         this.state = state;
     }
 
     @Override
     public SyncBlockPosition getPosition() {
-        return new BBlockPosition(state.getBlock());
+        return new BBlockPosition(this.state.getBlock());
     }
 }

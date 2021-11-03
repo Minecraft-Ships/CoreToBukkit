@@ -19,7 +19,7 @@ public abstract class BEntitySnapshot<T extends LiveEntity> implements EntitySna
     protected double yaw;
     protected double roll;
     protected SyncExactPosition position;
-    protected Collection<EntitySnapshot<? extends LiveEntity>> passengers = new HashSet<>();
+    protected final Collection<EntitySnapshot<? extends LiveEntity>> passengers = new HashSet<>();
     protected boolean hasGravity;
     protected boolean isOnGround;
     protected Vector3<Double> velocity;

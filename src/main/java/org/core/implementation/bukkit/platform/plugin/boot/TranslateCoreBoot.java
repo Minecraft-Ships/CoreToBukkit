@@ -7,6 +7,7 @@ import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.SimplePluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.core.TranslateCore;
+import org.core.adventureText.AText;
 import org.core.command.CommandRegister;
 import org.core.implementation.bukkit.CoreToBukkit;
 import org.core.implementation.bukkit.command.BCommand;
@@ -25,7 +26,7 @@ import java.util.stream.Collectors;
 
 public class TranslateCoreBoot extends JavaPlugin {
 
-    private final SortedSet<CorePlugin> plugins = new TreeSet<>();
+    private final Collection<CorePlugin> plugins = new TreeSet<>();
     private final CoreToBukkit core;
 
     public TranslateCoreBoot() {
@@ -50,8 +51,8 @@ public class TranslateCoreBoot extends JavaPlugin {
             if (pluginManager instanceof SimplePluginManager) {
                 SimplePluginManager spm = (SimplePluginManager) pluginManager;
                 try {
-                    CommandMap map = getFromField(spm, "commandMap", CommandMap.class);
-                    Map<String, Plugin> lookup = getFromField(spm, "lookupNames", (Class<Map<String, Plugin>>) (Object) Map.class);
+                    CommandMap map = this.getFromField(spm, "commandMap", CommandMap.class);
+                    Map<String, Plugin> lookup = this.getFromField(spm, "lookupNames", (Class<Map<String, Plugin>>) (Object) Map.class);
                     lookup.put(plugin.getPluginName(), (Plugin) plugin.getPlatformLauncher());
 
                     CommandRegister cmdReg = new CommandRegister();
@@ -68,13 +69,13 @@ public class TranslateCoreBoot extends JavaPlugin {
             return;
         }
         File folder = this.core.getRawPlatform().getTranslatePluginsFolder();
-        this.plugins.addAll(loadPlugins(folder));
+        this.plugins.addAll(this.loadPlugins(folder));
     }
 
     @Override
     public void onEnable() {
-        core.init2(this);
-        plugins.forEach(plugin -> {
+        this.core.init2(this);
+        this.plugins.forEach(plugin -> {
             plugin.onCoreReady();
             Bukkit.getScheduler().runTask((Plugin) plugin.getPlatformLauncher(), plugin::onCoreFinishedInit);
         });
@@ -104,9 +105,10 @@ public class TranslateCoreBoot extends JavaPlugin {
             Set<CoreBukkitPluginWrapper> bukkitPlugins = plugins.parallelStream().map(CoreBukkitPluginWrapper::new).collect(Collectors.toSet());
             SimplePluginManager spm = (SimplePluginManager) pluginManager;
             try {
-                CommandMap map = getFromField(spm, "commandMap", CommandMap.class);
-                List<Plugin> spmPlugins = getFromField(spm, "plugins", (Class<? extends List<Plugin>>) (Object) List.class);
-                Map<String, Plugin> lookup = getFromField(spm, "lookupNames", (Class<Map<String, Plugin>>) (Object) Map.class);
+                CommandMap map = this.getFromField(spm, "commandMap", CommandMap.class);
+                List<Plugin> spmPlugins = this.getFromField(spm, "plugins",
+                        (Class<? extends List<Plugin>>) (Object) List.class);
+                Map<String, Plugin> lookup = this.getFromField(spm, "lookupNames", (Class<Map<String, Plugin>>) (Object) Map.class);
                 spmPlugins.addAll(bukkitPlugins);
                 lookup.putAll(spmPlugins.stream().collect(Collectors.toMap(Plugin::getName, (plugin) -> plugin)));
 
@@ -126,7 +128,8 @@ public class TranslateCoreBoot extends JavaPlugin {
                 e.printStackTrace();
             }
         }
-        System.err.println("SimplePluginManager was not used or a error occurred above. Plugins will not be treated as first party -> this may break compatibility");
+
+        TranslateCore.getConsole().sendMessage(AText.ofPlain("SimplePluginManager was not used or a error occurred above. Plugins will not be treated as first party -> this may break compatibility"));
         plugins.parallelStream().forEach(plugin -> plugin.onConstruct(TranslateCoreBoot.this));
         return plugins;
     }

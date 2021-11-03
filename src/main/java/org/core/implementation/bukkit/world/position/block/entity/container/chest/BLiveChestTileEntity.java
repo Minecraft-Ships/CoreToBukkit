@@ -10,21 +10,21 @@ import org.core.world.position.block.entity.container.chest.LiveChestTileEntity;
 public class BLiveChestTileEntity extends AbstractLiveTileEntity implements LiveChestTileEntity {
 
     @Deprecated
-    public BLiveChestTileEntity(org.bukkit.block.BlockState state){
-        this((org.bukkit.block.Chest)state);
+    public BLiveChestTileEntity(org.bukkit.block.BlockState state) {
+        this((org.bukkit.block.Chest) state);
     }
 
     public BLiveChestTileEntity(org.bukkit.block.Chest state) {
         super(state);
     }
 
-    public Chest getBukkitTileEntity(){
+    public Chest getBukkitTileEntity() {
         return (Chest) this.state;
     }
 
     @Override
     public ChestInventory getInventory() {
-        return new BLiveChestInventory(getBukkitTileEntity());
+        return new BLiveChestInventory(this.getBukkitTileEntity());
     }
 
     @Override

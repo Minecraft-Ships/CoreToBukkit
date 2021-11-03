@@ -19,7 +19,7 @@ import java.util.Set;
 
 public abstract class BLiveEntity<T extends org.bukkit.entity.Entity> implements LiveEntity {
 
-    protected T entity;
+    protected final T entity;
 
     public BLiveEntity(T entity) {
         this.entity = entity;
@@ -59,7 +59,7 @@ public abstract class BLiveEntity<T extends org.bukkit.entity.Entity> implements
     public BLiveEntity<T> setPitch(double value) {
         org.bukkit.Location loc = this.entity.getLocation();
         loc.setPitch((float) value);
-        entity.teleport(loc);
+        this.entity.teleport(loc);
         return this;
     }
 
@@ -67,7 +67,7 @@ public abstract class BLiveEntity<T extends org.bukkit.entity.Entity> implements
     public BLiveEntity<T> setYaw(double value) {
         org.bukkit.Location loc = this.entity.getLocation();
         loc.setYaw((float) value);
-        entity.teleport(loc);
+        this.entity.teleport(loc);
         return this;
     }
 
@@ -118,7 +118,7 @@ public abstract class BLiveEntity<T extends org.bukkit.entity.Entity> implements
 
     @Override
     public SyncExactPosition getPosition() {
-        return new BExactPosition(entity.getLocation().getX(), entity.getLocation().getY(), entity.getLocation().getZ(), entity.getWorld());
+        return new BExactPosition(this.entity.getLocation().getX(), this.entity.getLocation().getY(), this.entity.getLocation().getZ(), this.entity.getWorld());
     }
 
     @Override

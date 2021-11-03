@@ -16,7 +16,7 @@ import java.util.Set;
 public abstract class BLiveDispenserBasedInventory implements LiveDispenserBasedInventory {
 
     protected abstract org.bukkit.block.Container getBukkitBlockState();
-    protected DispenserBasedGrid grid = new DispenserBasedGrid() {
+    protected final DispenserBasedGrid grid = new DispenserBasedGrid() {
         @Override
         protected Container getContainer() {
             return BLiveDispenserBasedInventory.this.getBukkitBlockState();
@@ -30,17 +30,17 @@ public abstract class BLiveDispenserBasedInventory implements LiveDispenserBased
 
     @Override
     public BlockType[] getAllowedBlockType() {
-        return new BlockType[]{new BBlockType(getBukkitBlockState().getType())};
+        return new BlockType[]{new BBlockType(this.getBukkitBlockState().getType())};
     }
 
     @Override
     public SyncBlockPosition getPosition() {
-        return new BBlockPosition(getBukkitBlockState().getBlock());
+        return new BBlockPosition(this.getBukkitBlockState().getBlock());
     }
 
     @Override
     public Set<Slot> getSlots() {
-        return getItems().getSlots();
+        return this.getItems().getSlots();
     }
 
     @Override

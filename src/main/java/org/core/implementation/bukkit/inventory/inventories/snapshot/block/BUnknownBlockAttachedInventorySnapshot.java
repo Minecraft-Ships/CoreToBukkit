@@ -15,9 +15,9 @@ import java.util.Set;
 
 public class BUnknownBlockAttachedInventorySnapshot implements UnknownBlockAttachedInventorySnapshot {
 
-    protected Set<SlotSnapshot> slots = new HashSet<>();
-    protected BlockType[] types;
-    protected SyncBlockPosition position;
+    protected final Set<SlotSnapshot> slots = new HashSet<>();
+    protected final BlockType[] types;
+    protected final SyncBlockPosition position;
 
     public BUnknownBlockAttachedInventorySnapshot(SyncBlockPosition position, BlockType... types){
         this.types = types;
@@ -57,7 +57,7 @@ public class BUnknownBlockAttachedInventorySnapshot implements UnknownBlockAttac
 
     @Override
     public void apply() {
-        Optional<LiveTileEntity> opTile = getPosition().getTileEntity();
+        Optional<LiveTileEntity> opTile = this.getPosition().getTileEntity();
         if(!opTile.isPresent()){
             return;
         }
@@ -65,8 +65,8 @@ public class BUnknownBlockAttachedInventorySnapshot implements UnknownBlockAttac
         if(!(lte instanceof LiveUnknownBlockAttachedInventory)){
             return;
         }
-        LiveUnknownBlockAttachedInventory lubai = (LiveUnknownBlockAttachedInventory)lte;
-        apply(lubai);
+        UnknownBlockAttachedInventory lubai = (UnknownBlockAttachedInventory) lte;
+        this.apply(lubai);
     }
 
     @Override

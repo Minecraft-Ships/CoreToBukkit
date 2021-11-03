@@ -6,7 +6,7 @@ import org.core.world.position.block.entity.banner.pattern.PatternLayerType;
 
 public class BPatternLayerType implements PatternLayerType {
 
-    org.bukkit.block.banner.PatternType type;
+    final org.bukkit.block.banner.PatternType type;
 
     public BPatternLayerType(org.bukkit.block.banner.PatternType type){
         this.type = type;
@@ -14,12 +14,12 @@ public class BPatternLayerType implements PatternLayerType {
 
     @Override
     public PatternLayer createLayer(DyeType type) {
-        return null;
+        throw new RuntimeException("Not implemented yet");
     }
 
     @Override
     public String getId() {
-        return "minecraft:" + getName().toLowerCase();
+        return "minecraft:" + this.getName().toLowerCase();
     }
 
     @Override

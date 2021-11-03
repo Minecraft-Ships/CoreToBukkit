@@ -7,7 +7,7 @@ import org.core.inventory.inventories.snapshots.block.dispenser.DropperInventory
 
 public class BLiveDropperInventory extends BLiveDispenserBasedInventory implements DropperInventory {
 
-    org.bukkit.block.Dropper dropper;
+    final org.bukkit.block.Dropper dropper;
 
     public BLiveDropperInventory(org.bukkit.block.Dropper dropper){
         this.dropper = dropper;

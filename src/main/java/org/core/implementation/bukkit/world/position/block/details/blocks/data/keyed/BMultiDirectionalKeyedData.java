@@ -11,7 +11,7 @@ import java.util.Optional;
 
 public class BMultiDirectionalKeyedData implements MultiDirectionalKeyedData {
 
-    protected org.bukkit.block.data.MultipleFacing data;
+    protected final org.bukkit.block.data.MultipleFacing data;
 
     public BMultiDirectionalKeyedData(org.bukkit.block.data.MultipleFacing data) {
         this.data = data;
@@ -28,11 +28,7 @@ public class BMultiDirectionalKeyedData implements MultiDirectionalKeyedData {
     public void setData(Collection<Direction> value) {
         this.data.getAllowedFaces().forEach(d -> {
             Direction dir = DirectionUtils.toDirection(d);
-            if(value.stream().anyMatch(direction -> direction.equals(dir))){
-                this.data.setFace(d, true);
-            }else{
-                this.data.setFace(d, false);
-            }
+            this.data.setFace(d, value.stream().anyMatch(direction -> direction.equals(dir)));
         });
     }
 

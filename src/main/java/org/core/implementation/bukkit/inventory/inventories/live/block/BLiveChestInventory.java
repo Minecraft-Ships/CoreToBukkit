@@ -18,7 +18,7 @@ public class BLiveChestInventory implements LiveChestInventory {
 
     public class ChestSlot implements Slot {
 
-        protected int pos;
+        protected final int pos;
 
         public ChestSlot(int pos){
             this.pos = pos;
@@ -52,8 +52,8 @@ public class BLiveChestInventory implements LiveChestInventory {
         }
     }
 
-    protected org.bukkit.block.Chest chest;
-    protected Set<Slot> slots = new HashSet<>();
+    protected final org.bukkit.block.Chest chest;
+    protected final Set<Slot> slots = new HashSet<>();
 
     public BLiveChestInventory(org.bukkit.block.Chest chest){
         this.chest = chest;

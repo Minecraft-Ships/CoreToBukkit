@@ -9,10 +9,10 @@ import java.util.Collections;
 
 public class EntityExplosion implements Explosion.EntityExplosion {
 
-    protected Entity source;
-    protected Collection<SyncBlockPosition> affected;
+    protected final Entity<?> source;
+    protected final Collection<SyncBlockPosition> affected;
 
-    public EntityExplosion(Entity entity, Collection<SyncBlockPosition> affected){
+    public EntityExplosion(Entity<?> entity, Collection<SyncBlockPosition> affected) {
         this.source = entity;
         this.affected = affected;
     }
@@ -23,7 +23,7 @@ public class EntityExplosion implements Explosion.EntityExplosion {
     }
 
     @Override
-    public Entity getSource() {
+    public Entity<?> getSource() {
         return this.source;
     }
 }

@@ -9,7 +9,7 @@ import org.core.world.position.impl.sync.SyncBlockPosition;
 
 public class BLiveDispenserTileEntity implements LiveDispenserTileEntity {
 
-    protected org.bukkit.block.Dispenser dispenser;
+    protected final org.bukkit.block.Dispenser dispenser;
 
     @Deprecated
     public BLiveDispenserTileEntity(org.bukkit.block.BlockState state){

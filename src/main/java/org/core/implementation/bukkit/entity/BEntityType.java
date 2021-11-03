@@ -50,11 +50,11 @@ import org.core.implementation.bukkit.entity.scene.live.BLiveItemFrame;
 import org.core.implementation.bukkit.entity.scene.snapshot.BDroppedItemSnapshot;
 import org.core.implementation.bukkit.entity.scene.snapshot.BItemFrameSnapshot;
 
-public interface BEntityType <E extends LiveEntity, S extends EntitySnapshot<E>> extends EntityType<E, S> {
+public interface BEntityType<E extends LiveEntity, S extends EntitySnapshot<E>> extends EntityType<E, S> {
 
     org.bukkit.entity.EntityType getBukkitEntityType();
 
-    class CreeperType implements BEntityType<LiveCreeperEntity, CreeperEntitySnapshot>{
+    class CreeperType implements BEntityType<LiveCreeperEntity, CreeperEntitySnapshot> {
 
         @Override
         public org.bukkit.entity.EntityType getBukkitEntityType() {
@@ -73,7 +73,7 @@ public interface BEntityType <E extends LiveEntity, S extends EntitySnapshot<E>>
 
         @Override
         public String getId() {
-            return "minecraft:" + getName().toLowerCase();
+            return "minecraft:" + this.getName().toLowerCase();
         }
 
         @Override
@@ -82,7 +82,7 @@ public interface BEntityType <E extends LiveEntity, S extends EntitySnapshot<E>>
         }
     }
 
-    class ParrotType implements BEntityType<LiveParrot, ParrotSnapshot>{
+    class ParrotType implements BEntityType<LiveParrot, ParrotSnapshot> {
 
         @Override
         public org.bukkit.entity.EntityType getBukkitEntityType() {
@@ -101,7 +101,7 @@ public interface BEntityType <E extends LiveEntity, S extends EntitySnapshot<E>>
 
         @Override
         public String getId() {
-            return "minecraft:" + getName().toLowerCase();
+            return "minecraft:" + this.getName().toLowerCase();
         }
 
         @Override
@@ -110,7 +110,7 @@ public interface BEntityType <E extends LiveEntity, S extends EntitySnapshot<E>>
         }
     }
 
-    class BatType implements BEntityType<LiveBat, BatSnapshot>{
+    class BatType implements BEntityType<LiveBat, BatSnapshot> {
 
         @Override
         public org.bukkit.entity.EntityType getBukkitEntityType() {
@@ -129,7 +129,7 @@ public interface BEntityType <E extends LiveEntity, S extends EntitySnapshot<E>>
 
         @Override
         public String getId() {
-            return "minecraft:" + getName().toLowerCase();
+            return "minecraft:" + this.getName().toLowerCase();
         }
 
         @Override
@@ -138,7 +138,7 @@ public interface BEntityType <E extends LiveEntity, S extends EntitySnapshot<E>>
         }
     }
 
-    class SnowballType implements BEntityType<LiveSnowballEntity, SnowballEntitySnapshot>{
+    class SnowballType implements BEntityType<LiveSnowballEntity, SnowballEntitySnapshot> {
 
         @Override
         public org.bukkit.entity.EntityType getBukkitEntityType() {
@@ -157,7 +157,7 @@ public interface BEntityType <E extends LiveEntity, S extends EntitySnapshot<E>>
 
         @Override
         public String getId() {
-            return "minecraft:" + getName().toLowerCase();
+            return "minecraft:" + this.getName().toLowerCase();
         }
 
         @Override
@@ -166,7 +166,7 @@ public interface BEntityType <E extends LiveEntity, S extends EntitySnapshot<E>>
         }
     }
 
-    class DroppedItemType implements BEntityType<LiveDroppedItem, DroppedItemSnapshot>{
+    class DroppedItemType implements BEntityType<LiveDroppedItem, DroppedItemSnapshot> {
 
         @Override
         public org.bukkit.entity.EntityType getBukkitEntityType() {
@@ -185,7 +185,7 @@ public interface BEntityType <E extends LiveEntity, S extends EntitySnapshot<E>>
 
         @Override
         public String getId() {
-            return "minecraft:" + getName().toLowerCase();
+            return "minecraft:" + this.getName().toLowerCase();
         }
 
         @Override
@@ -194,7 +194,7 @@ public interface BEntityType <E extends LiveEntity, S extends EntitySnapshot<E>>
         }
     }
 
-    class PlayerType implements BEntityType<LivePlayer, PlayerSnapshot>{
+    class PlayerType implements BEntityType<LivePlayer, PlayerSnapshot> {
 
         @Override
         public org.bukkit.entity.EntityType getBukkitEntityType() {
@@ -213,7 +213,7 @@ public interface BEntityType <E extends LiveEntity, S extends EntitySnapshot<E>>
 
         @Override
         public String getId() {
-            return "minecraft:" + getName().toLowerCase();
+            return "minecraft:" + this.getName().toLowerCase();
         }
 
         @Override
@@ -222,7 +222,7 @@ public interface BEntityType <E extends LiveEntity, S extends EntitySnapshot<E>>
         }
     }
 
-    class HumanType implements BEntityType<LiveHuman, HumanSnapshot>{
+    class HumanType implements BEntityType<LiveHuman, HumanSnapshot> {
 
         @Override
         public org.bukkit.entity.EntityType getBukkitEntityType() {
@@ -241,7 +241,7 @@ public interface BEntityType <E extends LiveEntity, S extends EntitySnapshot<E>>
 
         @Override
         public String getId() {
-            return "minecraft:" + getName().toLowerCase();
+            return "minecraft:" + this.getName().toLowerCase();
         }
 
         @Override
@@ -269,7 +269,7 @@ public interface BEntityType <E extends LiveEntity, S extends EntitySnapshot<E>>
 
         @Override
         public String getId() {
-            return "minecraft:" + getName().toLowerCase();
+            return "minecraft:" + this.getName().toLowerCase();
         }
 
         @Override
@@ -278,7 +278,7 @@ public interface BEntityType <E extends LiveEntity, S extends EntitySnapshot<E>>
         }
     }
 
-    class ItemFrameType implements BEntityType<LiveItemFrame, ItemFrameSnapshot>{
+    class ItemFrameType implements BEntityType<LiveItemFrame, ItemFrameSnapshot> {
 
         @Override
         public org.bukkit.entity.EntityType getBukkitEntityType() {
@@ -297,7 +297,7 @@ public interface BEntityType <E extends LiveEntity, S extends EntitySnapshot<E>>
 
         @Override
         public String getId() {
-            return "minecraft:" + getName().toLowerCase();
+            return "minecraft:" + this.getName().toLowerCase();
         }
 
         @Override
@@ -306,7 +306,7 @@ public interface BEntityType <E extends LiveEntity, S extends EntitySnapshot<E>>
         }
     }
 
-    class CowType implements BEntityType<LiveCow, CowSnapshot>{
+    class CowType implements BEntityType<LiveCow, CowSnapshot> {
 
         @Override
         public org.bukkit.entity.EntityType getBukkitEntityType() {
@@ -325,7 +325,7 @@ public interface BEntityType <E extends LiveEntity, S extends EntitySnapshot<E>>
 
         @Override
         public String getId() {
-            return "minecraft:" + getName().toLowerCase();
+            return "minecraft:" + this.getName().toLowerCase();
         }
 
         @Override
@@ -334,7 +334,7 @@ public interface BEntityType <E extends LiveEntity, S extends EntitySnapshot<E>>
         }
     }
 
-    class ChickenType implements BEntityType<LiveChicken, ChickenSnapshot>{
+    class ChickenType implements BEntityType<LiveChicken, ChickenSnapshot> {
 
         @Override
         public org.bukkit.entity.EntityType getBukkitEntityType() {
@@ -353,7 +353,7 @@ public interface BEntityType <E extends LiveEntity, S extends EntitySnapshot<E>>
 
         @Override
         public String getId() {
-            return "minecraft:" + getName().toLowerCase();
+            return "minecraft:" + this.getName().toLowerCase();
         }
 
         @Override
@@ -362,7 +362,7 @@ public interface BEntityType <E extends LiveEntity, S extends EntitySnapshot<E>>
         }
     }
 
-    class ZombieType implements BEntityType<LiveClassicZombie, ClassicZombieSnapshot>{
+    class ZombieType implements BEntityType<LiveClassicZombie, ClassicZombieSnapshot> {
 
         @Override
         public org.bukkit.entity.EntityType getBukkitEntityType() {
@@ -381,7 +381,7 @@ public interface BEntityType <E extends LiveEntity, S extends EntitySnapshot<E>>
 
         @Override
         public String getId() {
-            return "minecraft:" + getName().toLowerCase();
+            return "minecraft:" + this.getName().toLowerCase();
         }
 
         @Override
@@ -390,11 +390,11 @@ public interface BEntityType <E extends LiveEntity, S extends EntitySnapshot<E>>
         }
     }
 
-    class UnknownType <T extends org.bukkit.entity.Entity> implements BEntityType<UnknownLiveEntity<T>, UnknownEntitySnapshot<T>> {
+    class UnknownType<T extends org.bukkit.entity.Entity> implements BEntityType<UnknownLiveEntity<T>, UnknownEntitySnapshot<T>> {
 
-        protected org.bukkit.entity.EntityType type;
+        protected final org.bukkit.entity.EntityType type;
 
-        public UnknownType(org.bukkit.entity.EntityType type){
+        public UnknownType(org.bukkit.entity.EntityType type) {
             this.type = type;
         }
 
@@ -415,12 +415,12 @@ public interface BEntityType <E extends LiveEntity, S extends EntitySnapshot<E>>
 
         @Override
         public String getId() {
-            return type.getKey().toString();
+            return this.type.getKey().toString();
         }
 
         @Override
         public String getName() {
-            return type.getKey().getNamespace();
+            return this.type.getKey().getNamespace();
         }
     }
 }

@@ -6,22 +6,22 @@ import org.bukkit.entity.ItemFrame;
 import org.core.entity.scene.itemframe.LiveItemFrame;
 import org.core.exceptions.DirectionNotSupported;
 import org.core.implementation.bukkit.entity.BLiveEntity;
+import org.core.implementation.bukkit.entity.scene.snapshot.BItemFrameSnapshot;
+import org.core.implementation.bukkit.inventory.inventories.live.entity.BLiveItemFrameSlot;
+import org.core.implementation.bukkit.inventory.item.stack.BAbstractItemStack;
 import org.core.implementation.bukkit.utils.DirectionUtils;
 import org.core.inventory.item.stack.ItemStack;
 import org.core.inventory.parts.Slot;
 import org.core.world.direction.Direction;
 import org.core.world.direction.FourFacingDirection;
-import org.core.implementation.bukkit.entity.scene.snapshot.BItemFrameSnapshot;
-import org.core.implementation.bukkit.inventory.inventories.live.entity.BLiveItemFrameSlot;
-import org.core.implementation.bukkit.inventory.item.stack.BAbstractItemStack;
 
 import java.util.stream.Stream;
 
 public class BLiveItemFrame extends BLiveEntity<ItemFrame> implements LiveItemFrame {
 
     @Deprecated
-    public BLiveItemFrame(Entity entity){
-        this((org.bukkit.entity.ItemFrame)entity);
+    public BLiveItemFrame(Entity entity) {
+        this((org.bukkit.entity.ItemFrame) entity);
     }
 
     public BLiveItemFrame(org.bukkit.entity.ItemFrame entity) {
@@ -35,13 +35,13 @@ public class BLiveItemFrame extends BLiveEntity<ItemFrame> implements LiveItemFr
 
     @Override
     public void setItem(ItemStack stack) {
-        this.getBukkitEntity().setItem(((BAbstractItemStack)stack).getBukkitItem());
+        this.getBukkitEntity().setItem(((BAbstractItemStack) stack).getBukkitItem());
     }
 
     @Override
     public Direction getItemRotation() {
-        Rotation rotation = getBukkitEntity().getRotation();
-        switch(rotation){
+        Rotation rotation = this.getBukkitEntity().getRotation();
+        switch (rotation) {
             case NONE:
             case FLIPPED:
                 return FourFacingDirection.SOUTH;
@@ -60,8 +60,8 @@ public class BLiveItemFrame extends BLiveEntity<ItemFrame> implements LiveItemFr
 
     @Override
     public boolean getItemRotationFlip() {
-        Rotation rotation = getBukkitEntity().getRotation();
-        switch (rotation){
+        Rotation rotation = this.getBukkitEntity().getRotation();
+        switch (rotation) {
             case NONE:
             case CLOCKWISE_135:
             case CLOCKWISE:
@@ -78,36 +78,36 @@ public class BLiveItemFrame extends BLiveEntity<ItemFrame> implements LiveItemFr
 
     @Override
     public BLiveItemFrame setItemRotation(Direction direction, boolean flip) throws DirectionNotSupported {
-        if(!Stream.of(getDirections()).anyMatch(d -> d.equals(direction))) {
+        if (Stream.of(this.getDirections()).noneMatch(d -> d.equals(direction))) {
             throw new DirectionNotSupported(direction, "ItemFrame");
         }
         org.bukkit.Rotation rotation = null;
-        if(direction.equals(FourFacingDirection.NORTH)){
+        if (direction.equals(FourFacingDirection.NORTH)) {
             if (flip) {
                 rotation = Rotation.FLIPPED;
-            }else{
+            } else {
                 rotation = Rotation.NONE;
             }
-        }else if(direction.equals(FourFacingDirection.EAST)){
+        } else if (direction.equals(FourFacingDirection.EAST)) {
             if (flip) {
                 rotation = Rotation.FLIPPED_45;
-            }else{
+            } else {
                 rotation = Rotation.CLOCKWISE_45;
             }
-        }else if(direction.equals(FourFacingDirection.SOUTH)){
+        } else if (direction.equals(FourFacingDirection.SOUTH)) {
             if (flip) {
                 rotation = Rotation.COUNTER_CLOCKWISE;
-            }else{
+            } else {
                 rotation = Rotation.CLOCKWISE;
             }
-        }else if(direction.equals(FourFacingDirection.WEST)){
+        } else if (direction.equals(FourFacingDirection.WEST)) {
             if (flip) {
                 rotation = Rotation.COUNTER_CLOCKWISE_45;
-            }else{
+            } else {
                 rotation = Rotation.CLOCKWISE_135;
             }
         }
-        getBukkitEntity().setRotation(rotation);
+        this.getBukkitEntity().setRotation(rotation);
         return this;
     }
 
@@ -123,17 +123,17 @@ public class BLiveItemFrame extends BLiveEntity<ItemFrame> implements LiveItemFr
 
     @Override
     public Direction getDirection() {
-        return DirectionUtils.toDirection(getBukkitEntity().getAttachedFace());
+        return DirectionUtils.toDirection(this.getBukkitEntity().getAttachedFace());
     }
 
     @Override
     public BLiveItemFrame setDirection(Direction direction) throws DirectionNotSupported {
-        for(Direction dir : getDirections()){
-            if(dir.equals(direction)){
+        for (Direction dir : this.getDirections()) {
+            if (dir.equals(direction)) {
                 throw new DirectionNotSupported(direction, "ItemFrame");
             }
         }
-        getBukkitEntity().setFacingDirection(DirectionUtils.toFace(direction.getOpposite()));
+        this.getBukkitEntity().setFacingDirection(DirectionUtils.toFace(direction.getOpposite()));
         return this;
     }
 

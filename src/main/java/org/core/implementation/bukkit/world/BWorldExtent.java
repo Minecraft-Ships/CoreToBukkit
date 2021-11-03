@@ -4,6 +4,11 @@ import org.bukkit.Chunk;
 import org.bukkit.block.BlockState;
 import org.core.TranslateCore;
 import org.core.entity.LiveEntity;
+import org.core.implementation.bukkit.platform.BukkitPlatform;
+import org.core.implementation.bukkit.world.position.impl.async.BAsyncBlockPosition;
+import org.core.implementation.bukkit.world.position.impl.async.BAsyncExactPosition;
+import org.core.implementation.bukkit.world.position.impl.sync.BBlockPosition;
+import org.core.implementation.bukkit.world.position.impl.sync.BExactPosition;
 import org.core.vector.type.Vector3;
 import org.core.world.ChunkExtent;
 import org.core.world.WorldExtent;
@@ -12,11 +17,6 @@ import org.core.world.position.impl.async.ASyncBlockPosition;
 import org.core.world.position.impl.async.ASyncExactPosition;
 import org.core.world.position.impl.sync.SyncBlockPosition;
 import org.core.world.position.impl.sync.SyncExactPosition;
-import org.core.implementation.bukkit.platform.BukkitPlatform;
-import org.core.implementation.bukkit.world.position.impl.async.BAsyncBlockPosition;
-import org.core.implementation.bukkit.world.position.impl.async.BAsyncExactPosition;
-import org.core.implementation.bukkit.world.position.impl.sync.BBlockPosition;
-import org.core.implementation.bukkit.world.position.impl.sync.BExactPosition;
 
 import java.util.HashSet;
 import java.util.Optional;
@@ -27,13 +27,13 @@ import java.util.stream.Stream;
 
 public class BWorldExtent implements WorldExtent {
 
-    protected org.bukkit.World world;
+    protected final org.bukkit.World world;
 
-    public BWorldExtent(org.bukkit.World world){
+    public BWorldExtent(org.bukkit.World world) {
         this.world = world;
     }
 
-    public org.bukkit.World getBukkitWorld(){
+    public org.bukkit.World getBukkitWorld() {
         return this.world;
     }
 
@@ -67,7 +67,7 @@ public class BWorldExtent implements WorldExtent {
         Set<LiveEntity> entities = new HashSet<>();
         this.world.getEntities().forEach(e -> {
             LiveEntity entity = ((BukkitPlatform) TranslateCore.getPlatform()).createEntityInstance(e);
-            if(entity == null){
+            if (entity==null) {
                 System.err.println("Entity could not be converted: " + e.getType().name() + " | " + e.getName());
                 return;
             }
@@ -79,7 +79,7 @@ public class BWorldExtent implements WorldExtent {
     @Override
     public Set<LiveTileEntity> getTileEntities() {
         Set<LiveTileEntity> set = new HashSet<>();
-        for (org.bukkit.Chunk chunk : this.world.getLoadedChunks()){
+        for (org.bukkit.Chunk chunk : this.world.getLoadedChunks()) {
             for (BlockState state : chunk.getTileEntities()) {
                 ((BukkitPlatform) TranslateCore.getPlatform()).createTileEntityInstance(state).ifPresent(set::add);
             }
@@ -99,7 +99,7 @@ public class BWorldExtent implements WorldExtent {
 
     @Override
     public String getPlatformUniqueId() {
-        return getName();
+        return this.getName();
     }
 
     @Override
@@ -110,7 +110,7 @@ public class BWorldExtent implements WorldExtent {
     @Override
     public Optional<ChunkExtent> getChunk(Vector3<Integer> vector) {
         Chunk chunk = this.world.getChunkAt(vector.getX(), vector.getZ());
-        if(chunk == null){
+        if (chunk==null) {
             return Optional.empty();
         }
         return Optional.of(new BChunkExtent(chunk));
@@ -124,10 +124,10 @@ public class BWorldExtent implements WorldExtent {
     }
 
     @Override
-    public boolean equals(Object obj){
-        if(!(obj instanceof WorldExtent)){
+    public boolean equals(Object obj) {
+        if (!(obj instanceof WorldExtent)) {
             return false;
         }
-        return ((WorldExtent)obj).getName().equals(this.getName());
+        return ((WorldExtent) obj).getName().equals(this.getName());
     }
 }

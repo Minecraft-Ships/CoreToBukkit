@@ -9,13 +9,13 @@ public class BEntityInteractEvent {
 
     public static class PlayerInteractWithBlock implements EntityInteractEvent.WithBlock.AsPlayer {
 
-        protected SyncBlockPosition position;
-        protected LivePlayer player;
-        protected Direction direction;
-        protected int click;
+        protected final SyncBlockPosition position;
+        protected final LivePlayer player;
+        protected final Direction direction;
+        protected final int click;
         protected boolean cancelled;
 
-        public PlayerInteractWithBlock(SyncBlockPosition position, int click, Direction clickedFace, LivePlayer player){
+        public PlayerInteractWithBlock(SyncBlockPosition position, int click, Direction clickedFace, LivePlayer player) {
             this.player = player;
             this.position = position;
             this.direction = clickedFace;

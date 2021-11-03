@@ -6,7 +6,7 @@ import org.core.event.events.connection.ClientConnectionEvent;
 
 public class AbstractLeaveEvent implements ClientConnectionEvent.Leave {
 
-    protected LivePlayer player;
+    protected final LivePlayer player;
     protected AText leaveMessage;
 
     public AbstractLeaveEvent(LivePlayer player, AText leaveMessage) {

@@ -2,7 +2,6 @@ package org.core.implementation.bukkit.entity.living.animal.live;
 
 import org.bukkit.entity.Chicken;
 import org.bukkit.entity.Entity;
-import org.core.entity.EntitySnapshot;
 import org.core.entity.living.animal.chicken.LiveChicken;
 import org.core.implementation.bukkit.entity.BLiveEntity;
 import org.core.implementation.bukkit.entity.living.animal.snapshot.BChickenSnapshot;
@@ -40,7 +39,7 @@ public class BLiveChicken extends BLiveEntity<Chicken> implements LiveChicken {
 
 
     @Override
-    public EntitySnapshot createSnapshot() {
+    public BChickenSnapshot createSnapshot() {
         return new BChickenSnapshot(this);
     }
 }

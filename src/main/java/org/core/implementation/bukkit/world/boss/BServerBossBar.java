@@ -18,7 +18,7 @@ import java.util.Set;
 
 public class BServerBossBar implements ServerBossBar {
 
-    org.bukkit.boss.BossBar bossBar;
+    final org.bukkit.boss.BossBar bossBar;
 
     public BServerBossBar() {
         this(Bukkit.createBossBar("<Unset Message>", BarColor.PURPLE, BarStyle.SOLID));

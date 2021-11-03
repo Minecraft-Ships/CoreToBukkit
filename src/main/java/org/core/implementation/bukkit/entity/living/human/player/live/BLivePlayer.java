@@ -44,7 +44,7 @@ public class BLivePlayer extends BLiveEntity<Player> implements LivePlayer {
 
     @Override
     public boolean isViewingInventory() {
-        return getBukkitEntity().getOpenInventory()!=null;
+        return this.getBukkitEntity().getOpenInventory()!=null;
     }
 
     @Override
@@ -54,70 +54,70 @@ public class BLivePlayer extends BLiveEntity<Player> implements LivePlayer {
 
     @Override
     public int getFoodLevel() {
-        return getBukkitEntity().getFoodLevel();
+        return this.getBukkitEntity().getFoodLevel();
     }
 
     @Override
     public double getExhaustionLevel() {
-        return getBukkitEntity().getExhaustion();
+        return this.getBukkitEntity().getExhaustion();
     }
 
     @Override
     public double getSaturationLevel() {
-        return getBukkitEntity().getSaturation();
+        return this.getBukkitEntity().getSaturation();
     }
 
     @Override
     public String getName() {
-        return getBukkitEntity().getName();
+        return this.getBukkitEntity().getName();
     }
 
     @Override
     public UUID getUniqueId() {
-        return getBukkitEntity().getUniqueId();
+        return this.getBukkitEntity().getUniqueId();
     }
 
     @Override
     public boolean isSneaking() {
-        return getBukkitEntity().isSneaking();
+        return this.getBukkitEntity().isSneaking();
     }
 
     @Override
     public LivePlayer setFood(int value) throws IndexOutOfBoundsException {
         if (value > 20) {
-            throw new IndexOutOfBoundsException();
+            throw new IndexOutOfBoundsException("Food level cannot be above 20");
         }
-        getBukkitEntity().setFoodLevel(value);
+        this.getBukkitEntity().setFoodLevel(value);
         return this;
     }
 
     @Override
     public LivePlayer setExhaustionLevel(double value) throws IndexOutOfBoundsException {
         if (value > 20) {
-            throw new IndexOutOfBoundsException();
+            throw new IndexOutOfBoundsException("Exhaustion Level cannot be above 20");
         }
-        getBukkitEntity().setExhaustion((float) value);
+        this.getBukkitEntity().setExhaustion((float) value);
         return this;
     }
 
     @Override
     public LivePlayer setSaturationLevel(double value) throws IndexOutOfBoundsException {
         if (value > 20) {
-            throw new IndexOutOfBoundsException();
+            throw new IndexOutOfBoundsException("Saturation level cannot be above 20");
         }
-        getBukkitEntity().setSaturation((float) value);
+        this.getBukkitEntity().setSaturation((float) value);
         return this;
     }
 
     @Override
     public LivePlayer setSneaking(boolean sneaking) {
-        getBukkitEntity().setSneaking(sneaking);
+        this.getBukkitEntity().setSneaking(sneaking);
         return this;
     }
 
     @Override
     public boolean hasPermission(String permission) {
-        org.bukkit.entity.Player player = getBukkitEntity();
+        org.bukkit.entity.Player player = this.getBukkitEntity();
         boolean truePerm = player.hasPermission(permission);
         if (truePerm) {
             return true;
@@ -154,24 +154,24 @@ public class BLivePlayer extends BLiveEntity<Player> implements LivePlayer {
 
     @Override
     public BLivePlayer setGravity(boolean check) {
-        getBukkitEntity().setGravity(check);
+        this.getBukkitEntity().setGravity(check);
         return this;
     }
 
     @Override
     public boolean hasGravity() {
-        return getBukkitEntity().hasGravity();
+        return this.getBukkitEntity().hasGravity();
     }
 
     @Override
     public CommandViewer sendMessage(AText message, UUID uuid) {
-        getBukkitEntity().sendMessage(uuid, message.toLegacy());
+        this.getBukkitEntity().sendMessage(uuid, message.toLegacy());
         return this;
     }
 
     @Override
     public CommandViewer sendMessage(AText message) {
-        Player player = getBukkitEntity();
+        Player player = this.getBukkitEntity();
         try {
             Class<?> componentClass = Class.forName("net.kyori.adventure.text.Component");
             Method method = player.getClass().getMethod("sendMessage", componentClass);
@@ -184,7 +184,7 @@ public class BLivePlayer extends BLiveEntity<Player> implements LivePlayer {
 
     @Override
     public boolean sudo(String wholeCommand) {
-        return Bukkit.dispatchCommand(getBukkitEntity(), wholeCommand);
+        return Bukkit.dispatchCommand(this.getBukkitEntity(), wholeCommand);
     }
 
     @Override

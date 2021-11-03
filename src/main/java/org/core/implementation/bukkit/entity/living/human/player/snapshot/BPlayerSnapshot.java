@@ -16,7 +16,7 @@ import java.util.UUID;
 public class BPlayerSnapshot extends BEntitySnapshot<LivePlayer> implements PlayerSnapshot {
 
     protected String name;
-    protected PlayerInventorySnapshot inventorySnapshot;
+    protected final PlayerInventorySnapshot inventorySnapshot;
     protected int foodLevel;
     protected double exhaustionLevel;
     protected double saturationLevel;

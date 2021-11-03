@@ -7,7 +7,7 @@ import org.core.world.position.block.entity.banner.pattern.PatternLayerType;
 
 public class BPatternLayer implements PatternLayer {
 
-    protected org.bukkit.block.banner.Pattern pattern;
+    protected final org.bukkit.block.banner.Pattern pattern;
 
     public BPatternLayer(org.bukkit.block.banner.Pattern pattern){
         this.pattern = pattern;

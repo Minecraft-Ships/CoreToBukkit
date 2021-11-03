@@ -14,16 +14,16 @@ import java.util.Collections;
 public class BSignChangeEvent implements SignChangeEvent.ByPlayer {
 
     protected boolean isCancelled;
-    protected SignTileEntitySnapshot original;
+    protected final SignTileEntitySnapshot original;
     protected SignTileEntitySnapshot to;
-    protected SyncBlockPosition position;
-    protected LivePlayer player;
+    protected final SyncBlockPosition position;
+    protected final LivePlayer player;
 
     public BSignChangeEvent(LivePlayer player, SyncBlockPosition position, AText... text) {
         this(player, position, Arrays.asList(text));
     }
 
-    public BSignChangeEvent(LivePlayer player, SyncBlockPosition position, Collection<AText> lines) {
+    public BSignChangeEvent(LivePlayer player, SyncBlockPosition position, Collection<? extends AText> lines) {
         this.position = position;
         this.original = new BSignEntitySnapshot(lines);
         this.player = player;

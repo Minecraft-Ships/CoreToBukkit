@@ -11,7 +11,7 @@ import java.util.List;
 
 public class BPatternLayers implements PatternLayers {
 
-    protected org.bukkit.block.Banner banner;
+    protected final org.bukkit.block.Banner banner;
 
     public BPatternLayers(org.bukkit.block.Banner banner){
         this.banner = banner;
@@ -20,12 +20,12 @@ public class BPatternLayers implements PatternLayers {
     @Override
     public List<PatternLayer> getLayers() {
         List<PatternLayer> set = new ArrayList<>();
-        this.banner.getPatterns().stream().forEach(p -> set.add(new BPatternLayer(p)));
+        this.banner.getPatterns().forEach(p -> set.add(new BPatternLayer(p)));
         return set;
     }
 
     @Override
-    public PatternLayers addLayers(Collection<PatternLayer> layers) {
+    public PatternLayers addLayers(Collection<? extends PatternLayer> layers) {
         layers.forEach(l -> this.banner.addPattern(((BPatternLayer)l).pattern));
         return this;
     }

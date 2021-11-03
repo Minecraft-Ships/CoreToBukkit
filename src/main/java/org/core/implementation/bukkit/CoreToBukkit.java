@@ -24,10 +24,10 @@ import java.io.File;
 
 public class CoreToBukkit extends TranslateCore.CoreImplementation {
 
-    protected BukkitPlatform platform = new BukkitPlatform();
-    protected BEventManager manager = new BEventManager();
-    protected BServer server = new BServer();
-    protected PlatformConsole console = new PlatformConsole();
+    protected final BukkitPlatform platform = new BukkitPlatform();
+    protected final BEventManager manager = new BEventManager();
+    protected final BServer server = new BServer();
+    protected final PlatformConsole console = new PlatformConsole();
 
     public CoreToBukkit() {
         this.init();

@@ -9,13 +9,13 @@ import java.util.UUID;
 
 public class BUser implements User {
 
-    protected OfflinePlayer user;
+    protected final OfflinePlayer user;
 
-    public BUser(OfflinePlayer player){
+    public BUser(OfflinePlayer player) {
         this.user = player;
     }
 
-    public OfflinePlayer getBukkitUser(){
+    public OfflinePlayer getBukkitUser() {
         return this.user;
     }
 

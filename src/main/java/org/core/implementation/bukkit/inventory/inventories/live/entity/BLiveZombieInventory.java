@@ -1,6 +1,5 @@
 package org.core.implementation.bukkit.inventory.inventories.live.entity;
 
-import org.bukkit.entity.Entity;
 import org.bukkit.inventory.EntityEquipment;
 import org.core.entity.LiveEntity;
 import org.core.entity.living.hostile.undead.Zombie;
@@ -122,10 +121,10 @@ public class BLiveZombieInventory<Z extends Zombie<LiveEntity> & LiveEntity> imp
 
         }
 
-        protected ZombieHelmetSlot helmet = new ZombieHelmetSlot();
-        protected ZombieArmorSlot armor = new ZombieArmorSlot();
-        protected ZombieLeggingsSlot legging = new ZombieLeggingsSlot();
-        protected ZombieBootsSlot boots = new ZombieBootsSlot();
+        protected final ZombieHelmetSlot helmet = new ZombieHelmetSlot();
+        protected final ZombieArmorSlot armor = new ZombieArmorSlot();
+        protected final ZombieLeggingsSlot legging = new ZombieLeggingsSlot();
+        protected final ZombieBootsSlot boots = new ZombieBootsSlot();
 
         @Override
         public ZombieHelmetSlot getHelmetSlot() {
@@ -216,7 +215,7 @@ public class BLiveZombieInventory<Z extends Zombie<LiveEntity> & LiveEntity> imp
 
     @Override
     public ZombieInventorySnapshot<Z> createSnapshot() {
-        return new BClassicZombieInventorySnapshot<Z>(this);
+        return new BClassicZombieInventorySnapshot<>(this);
     }
 
     @Override
@@ -240,7 +239,7 @@ public class BLiveZombieInventory<Z extends Zombie<LiveEntity> & LiveEntity> imp
     }
 
     private Optional<EntityEquipment> getEquipment() {
-        return Optional.ofNullable(((BLiveEntity<org.bukkit.entity.Zombie>)this.zombie).getBukkitEntity().getEquipment());
+        return Optional.ofNullable(((BLiveEntity<org.bukkit.entity.Zombie>) this.zombie).getBukkitEntity().getEquipment());
     }
 
 }

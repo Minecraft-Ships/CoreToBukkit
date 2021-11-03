@@ -15,9 +15,9 @@ import java.util.stream.Collectors;
 
 public class BEventLaunch {
 
-    protected Plugin plugin;
-    protected EventListener listener;
-    protected Method method;
+    protected final Plugin plugin;
+    protected final EventListener listener;
+    protected final Method method;
     protected long beforeTime;
     protected long afterTime;
 

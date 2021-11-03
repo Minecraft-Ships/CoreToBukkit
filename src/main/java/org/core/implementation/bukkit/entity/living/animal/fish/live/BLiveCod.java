@@ -1,7 +1,6 @@
 package org.core.implementation.bukkit.entity.living.animal.fish.live;
 
 import org.bukkit.entity.Cod;
-import org.core.entity.EntitySnapshot;
 import org.core.entity.EntityType;
 import org.core.entity.EntityTypes;
 import org.core.entity.living.fish.cod.CodSnapshot;

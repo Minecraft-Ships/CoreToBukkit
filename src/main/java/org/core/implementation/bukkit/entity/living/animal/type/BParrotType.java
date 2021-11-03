@@ -4,13 +4,13 @@ import org.core.entity.living.animal.parrot.ParrotType;
 
 public class BParrotType implements ParrotType {
 
-    protected org.bukkit.entity.Parrot.Variant type;
+    protected final org.bukkit.entity.Parrot.Variant type;
 
-    public BParrotType(org.bukkit.entity.Parrot.Variant variant){
+    public BParrotType(org.bukkit.entity.Parrot.Variant variant) {
         this.type = variant;
     }
 
-    public org.bukkit.entity.Parrot.Variant getType(){
+    public org.bukkit.entity.Parrot.Variant getType() {
         return this.type;
     }
 

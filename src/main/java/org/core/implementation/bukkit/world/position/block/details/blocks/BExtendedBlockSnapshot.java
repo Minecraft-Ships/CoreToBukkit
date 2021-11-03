@@ -12,7 +12,7 @@ import java.util.Optional;
 
 public class BExtendedBlockSnapshot extends BBlockDetails implements BlockSnapshot.SyncBlockSnapshot {
 
-    protected SyncBlockPosition position;
+    protected final SyncBlockPosition position;
 
     public BExtendedBlockSnapshot(BBlockPosition position) {
         super(position);

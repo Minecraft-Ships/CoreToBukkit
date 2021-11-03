@@ -15,7 +15,7 @@ import java.util.stream.Collectors;
 
 public abstract class BAbstractItemStack implements ItemStack {
 
-    protected org.bukkit.inventory.ItemStack stack;
+    protected final org.bukkit.inventory.ItemStack stack;
 
     public BAbstractItemStack(org.bukkit.inventory.ItemStack stack) {
         this.stack = stack;

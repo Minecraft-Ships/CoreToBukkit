@@ -7,10 +7,10 @@ import org.core.world.position.impl.sync.SyncExactPosition;
 public class BEntitySpawnEvent implements EntitySpawnEvent {
 
     boolean cancel;
-    LiveEntity entity;
-    SyncExactPosition position;
+    final LiveEntity entity;
+    final SyncExactPosition position;
 
-    public BEntitySpawnEvent(SyncExactPosition position, LiveEntity entity){
+    public BEntitySpawnEvent(SyncExactPosition position, LiveEntity entity) {
         this.entity = entity;
         this.position = position;
     }

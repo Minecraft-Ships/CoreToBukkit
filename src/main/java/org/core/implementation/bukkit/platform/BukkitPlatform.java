@@ -3,6 +3,7 @@ package org.core.implementation.bukkit.platform;
 import org.bukkit.Bukkit;
 import org.bukkit.DyeColor;
 import org.bukkit.Material;
+import org.bukkit.Tag;
 import org.bukkit.boss.BarColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.ConsoleCommandSender;
@@ -76,16 +77,18 @@ import java.util.stream.Stream;
 
 public class BukkitPlatform implements Platform {
 
-    protected Set<EntityType<? extends LiveEntity, ? extends EntitySnapshot<? extends LiveEntity>>> entityTypes = new HashSet<>();
-    protected Map<Class<? extends org.bukkit.entity.Entity>, Class<? extends LiveEntity>> entityToEntity = new HashMap<>();
-    protected Map<Class<? extends org.bukkit.block.BlockState>, Class<? extends LiveTileEntity>> blockStateToTileEntity = new HashMap<>();
-    protected Set<TileEntitySnapshot<? extends TileEntity>> defaultTileEntities = new HashSet<>();
-    protected Set<BlockGroup> blockGroups = new HashSet<>();
+    protected final Set<EntityType<? extends LiveEntity, ? extends EntitySnapshot<? extends LiveEntity>>> entityTypes =
+            new HashSet<>();
+    protected final Map<Class<? extends org.bukkit.entity.Entity>, Class<? extends LiveEntity>> entityToEntity =
+            new HashMap<>();
+    protected final Map<Class<? extends org.bukkit.block.BlockState>, Class<? extends LiveTileEntity>> blockStateToTileEntity = new HashMap<>();
+    protected final Set<TileEntitySnapshot<? extends TileEntity>> defaultTileEntities = new HashSet<>();
+    protected final Set<BlockGroup> blockGroups = new HashSet<>();
     @Deprecated
-    protected
+    protected final
     Set<UnspecificParser<?>> parsers = new HashSet<>();
-    protected Set<BlockType> blockTypes = new HashSet<>();
-    protected Set<ItemType> itemTypes = new HashSet<>();
+    protected final Set<BlockType> blockTypes = new HashSet<>();
+    protected final Set<ItemType> itemTypes = new HashSet<>();
 
     public void init() {
         for (Material material : Material.values()) {
@@ -107,7 +110,7 @@ public class BukkitPlatform implements Platform {
             this.entityTypes.addAll(bsp.getSpecificEntityTypes());
             this.blockStateToTileEntity.putAll(bsp.getSpecificStateToTile());
         });
-        Class<org.bukkit.Tag> classTag = org.bukkit.Tag.class;
+        Class<org.bukkit.Tag<?>> classTag = (Class<Tag<?>>) (Object) org.bukkit.Tag.class;
         for (Field field : classTag.getFields()) {
             if (!field.getType().isAssignableFrom(classTag)) {
                 continue;
@@ -139,7 +142,7 @@ public class BukkitPlatform implements Platform {
         } else if (source instanceof org.bukkit.entity.Entity) {
             return (ProjectileSource) this.createEntityInstance((org.bukkit.entity.Entity) source);
         } else if (source instanceof org.bukkit.projectiles.BlockProjectileSource) {
-            return (ProjectileSource) this.createTileEntityInstance(((org.bukkit.projectiles.BlockProjectileSource) source).getBlock().getState()).get();
+            return (ProjectileSource) this.createTileEntityInstance(((org.bukkit.projectiles.BlockProjectileSource) source).getBlock().getState()).orElseThrow(() -> new RuntimeException("Unknown projectile source of " + source.getClass().getSimpleName()));
         }
         throw new RuntimeException("Unknown projectile source of " + source.getClass().getSimpleName());
     }
@@ -203,7 +206,7 @@ public class BukkitPlatform implements Platform {
     }
 
     public Optional<LiveTileEntity> createTileEntityInstance(org.bukkit.block.BlockState state) {
-        Optional<Map.Entry<Class<? extends org.bukkit.block.BlockState>, Class<? extends LiveTileEntity>>> opEntry = blockStateToTileEntity.entrySet().stream().filter(e -> e.getKey().isInstance(state)).findAny();
+        Optional<Map.Entry<Class<? extends org.bukkit.block.BlockState>, Class<? extends LiveTileEntity>>> opEntry = this.blockStateToTileEntity.entrySet().stream().filter(e -> e.getKey().isInstance(state)).findAny();
         if (!opEntry.isPresent()) {
             if (state instanceof org.bukkit.block.Container) {
                 return Optional.of(new BLiveUnknownContainerTileEntity((org.bukkit.block.Container) state));
@@ -245,7 +248,7 @@ public class BukkitPlatform implements Platform {
     @Override
     @Deprecated
     public <T> UnspecificParser<T> get(UnspecificParsers<T> parsers) {
-        return (UnspecificParser<T>) this.getUnspecifiedParser(parsers.getId()).get();
+        return (UnspecificParser<T>) this.getUnspecifiedParser(parsers.getId()).orElseThrow(() -> new IllegalStateException("Could not find " + parsers.getId()));
     }
 
     @Override
@@ -400,20 +403,12 @@ public class BukkitPlatform implements Platform {
 
     @Override
     public Collection<BossColour> getBossColours() {
-        Set<BossColour> set = new HashSet<>();
-        for (BarColor color : BarColor.values()) {
-            set.add(new BBossColour(color));
-        }
-        return set;
+        return Stream.of(BarColor.values()).map(BBossColour::new).collect(Collectors.toSet());
     }
 
     @Override
     public Collection<ParrotType> getParrotType() {
-        Collection<ParrotType> list = new ArrayList<>();
-        for (org.bukkit.entity.Parrot.Variant variant : org.bukkit.entity.Parrot.Variant.values()) {
-            list.add(new BParrotType(variant));
-        }
-        return Collections.unmodifiableCollection(list);
+        return Stream.of(Parrot.Variant.values()).map(BParrotType::new).collect(Collectors.toSet());
     }
 
     @Override
@@ -490,11 +485,10 @@ public class BukkitPlatform implements Platform {
 
     @Override
     public Set<Plugin> getPlugins() {
-        Set<Plugin> plugins = new HashSet<>();
-        for (org.bukkit.plugin.Plugin plugin : Bukkit.getPluginManager().getPlugins()) {
-            plugins.add(new BPlugin(plugin));
-        }
-        return plugins;
+        return Arrays
+                .stream(Bukkit.getPluginManager().getPlugins())
+                .map(BPlugin::new)
+                .collect(Collectors.toSet());
     }
 
     @Override
