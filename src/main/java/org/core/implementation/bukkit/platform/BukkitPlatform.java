@@ -40,6 +40,7 @@ import org.core.inventory.item.ItemType;
 import org.core.inventory.item.data.dye.DyeType;
 import org.core.inventory.item.data.dye.DyeTypes;
 import org.core.inventory.item.type.ItemTypeCommon;
+import org.core.permission.CorePermission;
 import org.core.permission.Permission;
 import org.core.platform.Platform;
 import org.core.platform.PlatformDetails;
@@ -431,12 +432,15 @@ public class BukkitPlatform implements Platform {
 
     @Override
     public @NotNull Permission register(@NotNull String permissionNode) {
-        if (Bukkit.getServer().getPluginManager().getPermission(permissionNode)==null) {
-            Permission permission = new BukkitPermission(permissionNode);
-            Bukkit.getServer().getPluginManager().addPermission(new org.bukkit.permissions.Permission(permissionNode));
-            return permission;
+        return this.register(new CorePermission(false, permissionNode.split("\\.")));
+    }
+
+    @Override
+    public @NotNull CorePermission register(CorePermission permissionNode) {
+        if (Bukkit.getServer().getPluginManager().getPermission(permissionNode.getPermissionValue())==null) {
+            Bukkit.getServer().getPluginManager().addPermission(new org.bukkit.permissions.Permission(permissionNode.getPermissionValue()));
         }
-        return new BukkitPermission(permissionNode);
+        return permissionNode;
     }
 
 
