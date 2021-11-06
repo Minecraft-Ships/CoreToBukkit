@@ -13,6 +13,7 @@ import org.core.implementation.bukkit.entity.living.human.player.snapshot.BPlaye
 import org.core.implementation.bukkit.inventory.inventories.live.entity.BLivePlayerInventory;
 import org.core.implementation.bukkit.world.position.impl.sync.BBlockPosition;
 import org.core.inventory.inventories.general.entity.PlayerInventory;
+import org.core.permission.Permission;
 import org.core.source.viewer.CommandViewer;
 import org.core.world.position.impl.BlockPosition;
 
@@ -145,6 +146,11 @@ public class BLivePlayer extends BLiveEntity<Player> implements LivePlayer {
             return Optional.empty();
         }
         return Optional.of(new BBlockPosition(block));
+    }
+
+    @Override
+    public boolean hasPermission(Permission permission) {
+        return this.getBukkitEntity().hasPermission(permission.getPermissionValue());
     }
 
     @Override
