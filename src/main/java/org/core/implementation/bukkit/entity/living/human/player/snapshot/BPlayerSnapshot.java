@@ -109,22 +109,19 @@ public class BPlayerSnapshot extends BEntitySnapshot<LivePlayer> implements Play
     }
 
     @Override
-    public PlayerSnapshot setFood(int value) throws IndexOutOfBoundsException {
-        if (value > 20) {
-            throw new IndexOutOfBoundsException("Food level cannot be above 20");
-        }
+    public PlayerSnapshot setFood(int value) {
         this.foodLevel = value;
         return this;
     }
 
     @Override
-    public PlayerSnapshot setExhaustionLevel(double value) throws IndexOutOfBoundsException {
+    public PlayerSnapshot setExhaustionLevel(double value){
         this.exhaustionLevel = value;
         return this;
     }
 
     @Override
-    public PlayerSnapshot setSaturationLevel(double value) throws IndexOutOfBoundsException {
+    public PlayerSnapshot setSaturationLevel(double value) {
         this.saturationLevel = value;
         return this;
     }

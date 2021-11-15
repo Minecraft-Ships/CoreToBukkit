@@ -85,27 +85,18 @@ public class BLivePlayer extends BLiveEntity<Player> implements LivePlayer {
 
     @Override
     public LivePlayer setFood(int value) throws IndexOutOfBoundsException {
-        if (value > 20) {
-            throw new IndexOutOfBoundsException("Food level cannot be above 20");
-        }
         this.getBukkitEntity().setFoodLevel(value);
         return this;
     }
 
     @Override
     public LivePlayer setExhaustionLevel(double value) throws IndexOutOfBoundsException {
-        if (value > 20) {
-            throw new IndexOutOfBoundsException("Exhaustion Level cannot be above 20");
-        }
         this.getBukkitEntity().setExhaustion((float) value);
         return this;
     }
 
     @Override
     public LivePlayer setSaturationLevel(double value) throws IndexOutOfBoundsException {
-        if (value > 20) {
-            throw new IndexOutOfBoundsException("Saturation level cannot be above 20");
-        }
         this.getBukkitEntity().setSaturation((float) value);
         return this;
     }
