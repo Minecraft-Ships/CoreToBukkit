@@ -1,9 +1,6 @@
 package org.core.implementation.bukkit.platform;
 
-import org.bukkit.Bukkit;
-import org.bukkit.DyeColor;
-import org.bukkit.Material;
-import org.bukkit.Tag;
+import org.bukkit.*;
 import org.bukkit.boss.BarColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.ConsoleCommandSender;
@@ -29,6 +26,7 @@ import org.core.implementation.bukkit.inventory.item.BItemType;
 import org.core.implementation.bukkit.inventory.item.data.dye.BItemDyeType;
 import org.core.implementation.bukkit.permission.BukkitPermission;
 import org.core.implementation.bukkit.platform.plugin.BPlugin;
+import org.core.implementation.bukkit.platform.structure.BukkitStructurePlatform;
 import org.core.implementation.bukkit.platform.version.BukkitSpecificPlatform;
 import org.core.implementation.bukkit.world.boss.colour.BBossColour;
 import org.core.implementation.bukkit.world.position.block.BBlockType;
@@ -66,6 +64,7 @@ import org.core.world.position.flags.physics.ApplyPhysicsFlags;
 import org.core.world.position.impl.sync.SyncBlockPosition;
 import org.core.world.position.impl.sync.SyncExactPosition;
 import org.core.world.structure.Structure;
+import org.core.world.structure.StructureBuilder;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
@@ -90,6 +89,18 @@ public class BukkitPlatform implements Platform {
     Set<UnspecificParser<?>> parsers = new HashSet<>();
     protected final Set<BlockType> blockTypes = new HashSet<>();
     protected final Set<ItemType> itemTypes = new HashSet<>();
+    private final BukkitStructurePlatform structurePlatform;
+
+    public BukkitPlatform() {
+        BukkitStructurePlatform structurePlatform1;
+        try {
+            Server.class.getDeclaredMethod("getStructureManager");
+            structurePlatform1 = new BukkitStructurePlatform();
+        } catch (NoSuchMethodException e) {
+            structurePlatform1 = null;
+        }
+        this.structurePlatform = structurePlatform1;
+    }
 
     public void init() {
         for (Material material : Material.values()) {
@@ -428,6 +439,15 @@ public class BukkitPlatform implements Platform {
     @Override
     public Collection<Structure> getStructures() {
         throw new RuntimeException("Not implemented yet");
+    }
+
+    @Override
+    public @NotNull Structure register(StructureBuilder builder) {
+        if (this.structurePlatform==null) {
+            throw new RuntimeException("Structure support requires Bukkit 1.17 that was build after the 5th Oct 2021. In " +
+                    "particular the commit of c01e2f07e99");
+        }
+        return this.structurePlatform.register(builder);
     }
 
     @Override

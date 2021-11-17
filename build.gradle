@@ -22,7 +22,7 @@ jar {
 }
 
 dependencies {
-    compileOnly 'com.destroystokyo.paper:paper-api:1.16.5-R0.1-SNAPSHOT'
+    compileOnly 'io.papermc.paper:paper-api:1.17.1-R0.1-SNAPSHOT'
     compileOnly 'com.github.MilkBowl:VaultAPI:1.7'
     api project(":TranslateCore")
     compileOnly group: 'net.kyori', name: 'examination-api', version: '1.1.0'
