@@ -7,6 +7,7 @@ import org.core.implementation.bukkit.world.structure.BStructure;
 import org.core.world.structure.Structure;
 import org.core.world.structure.StructureBuilder;
 
+import java.util.List;
 import java.util.stream.Collectors;
 
 public class BukkitStructurePlatform {
@@ -32,13 +33,14 @@ public class BukkitStructurePlatform {
         }
 
         org.bukkit.structure.Structure structure = this.manager.createStructure();
+        List<PaletteStructure> blockList = builder
+                .getBlocks()
+                .stream()
+                .map(PaletteStructure::new)
+                .collect(Collectors.toList());
         structure
                 .getPalettes()
-                .addAll(builder
-                        .getBlocks()
-                        .stream()
-                        .map(PaletteStructure::new)
-                        .collect(Collectors.toList()));
+                .addAll(blockList);
 
         this.manager.registerStructure(namespaceKey, structure);
         return new BStructure(structure);
