@@ -235,14 +235,16 @@ public class BukkitPlatform implements Platform {
     }
 
     private org.bukkit.Material getMaterial(String id) {
-        for (org.bukkit.Material material : org.bukkit.Material.values()) {
-            if ((material.isBlock()) || (!material.isItem())) {
-                if (material.getKey().toString().equals(id)) {
-                    return material;
-                }
-            }
-        }
-        throw new RuntimeException("Unknown material with id of '" + id + "' is your plugin too new?");
+        return Arrays
+                .stream(Material.values())
+                .parallel()
+                .filter(material -> material
+                        .getKey()
+                        .toString()
+                        .equals(id))
+                .findAny()
+                .orElseThrow(() -> new RuntimeException("Unknown material with id of '" + id + "' is your plugin too " +
+                        "new?"));
     }
 
 

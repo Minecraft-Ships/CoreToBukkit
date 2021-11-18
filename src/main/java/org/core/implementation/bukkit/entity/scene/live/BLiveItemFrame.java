@@ -55,7 +55,7 @@ public class BLiveItemFrame extends BLiveEntity<ItemFrame> implements LiveItemFr
             case COUNTER_CLOCKWISE_45:
                 return FourFacingDirection.WEST;
         }
-        return null;
+        throw new RuntimeException("Unknown rotation of " + rotation.name());
     }
 
     @Override

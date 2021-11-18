@@ -25,7 +25,7 @@ public class BCommand implements TabExecutor {
     }
 
     @Override
-    public boolean onCommand(@NotNull CommandSender commandSender, @NotNull Command command, String s, String[] strings) {
+    public boolean onCommand(@NotNull CommandSender commandSender, @NotNull Command command, @NotNull String s, String[] strings) {
         CommandSource source = ((BukkitPlatform) TranslateCore.getPlatform()).getSource(commandSender);
         try {
             return this.command.run(source, strings);

@@ -29,7 +29,7 @@ public class BlockStateSnapshot implements BlockSnapshot.SyncBlockSnapshot, IBBl
 
     @Override
     public AsyncBlockSnapshot asAsynced() {
-        return null;
+        return new AsyncBlockStateSnapshot(this);
     }
 
     private class BTileEntityKeyedData implements TileEntityKeyedData {

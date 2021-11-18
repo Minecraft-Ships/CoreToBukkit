@@ -7,6 +7,7 @@ import org.core.implementation.bukkit.inventory.item.BItemType;
 import org.core.inventory.item.ItemType;
 import org.core.inventory.item.stack.ItemStack;
 import org.core.inventory.item.stack.ItemStackSnapshot;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.Collection;
 import java.util.Collections;
@@ -26,7 +27,7 @@ public abstract class BAbstractItemStack implements ItemStack {
     }
 
     @Override
-    public ItemType getType() {
+    public @NotNull ItemType getType() {
         return new BItemType(this.stack.getType());
     }
 

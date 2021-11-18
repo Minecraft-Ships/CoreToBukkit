@@ -1,5 +1,6 @@
 package org.core.implementation.bukkit.world.position.block.details.blocks;
 
+import org.bukkit.block.data.BlockData;
 import org.core.TranslateCore;
 import org.core.implementation.bukkit.world.position.block.BBlockType;
 import org.core.implementation.bukkit.world.position.block.details.blocks.data.BDirectionalData;
@@ -41,6 +42,12 @@ public class BBlockDetails implements BlockDetails, IBBlockDetails {
     private org.bukkit.block.data.BlockData data;
     private TileEntitySnapshot<? extends TileEntity> tileEntitySnapshot;
     private final boolean async;
+
+    protected BBlockDetails(BlockData data, TileEntitySnapshot<? extends TileEntity> tileEntitySnapshot, boolean async){
+        this.data = data;
+        this.tileEntitySnapshot = tileEntitySnapshot;
+        this.async = async;
+    }
 
     public BBlockDetails(org.bukkit.block.data.BlockData data, boolean async) {
         this.data = data;

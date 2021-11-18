@@ -137,7 +137,12 @@ public class BukkitListener implements Listener {
     @EventHandler(priority = org.bukkit.event.EventPriority.HIGHEST)
     public static void onPlayerQuitEvent(PlayerQuitEvent event) {
         LivePlayer player = (LivePlayer) ((BukkitPlatform) TranslateCore.getPlatform()).createEntityInstance(event.getPlayer());
-        AText message = AText.ofLegacy(event.getQuitMessage());
+        String originalMessage = event.getQuitMessage();
+
+        AText message = null;
+        if (originalMessage!=null) {
+            message = AText.ofLegacy(originalMessage);
+        }
         BKickEvent kickEvent = new BKickEvent(player, message);
         call(EventPriority.HIGHEST, kickEvent);
         AText text = kickEvent.getLeavingMessage();

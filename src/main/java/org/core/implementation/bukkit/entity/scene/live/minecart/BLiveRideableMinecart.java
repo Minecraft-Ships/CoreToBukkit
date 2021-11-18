@@ -18,11 +18,12 @@ public class BLiveRideableMinecart extends BLiveMinecart<org.bukkit.entity.minec
 
     @Override
     public <E extends LiveEntity> EntityType<E, ? extends EntitySnapshot<E>> getType() {
-        return null;
+        throw new RuntimeException("Not implemented yet");
     }
 
     @Override
     public EntitySnapshot<? extends LiveEntity> createSnapshot() {
-        return null;
+        throw new RuntimeException("Not implemented yet");
+
     }
 }

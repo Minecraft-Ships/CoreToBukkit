@@ -405,12 +405,12 @@ public interface BEntityType<E extends LiveEntity, S extends EntitySnapshot<E>> 
 
         @Override
         public Class<UnknownLiveEntity<T>> getEntityClass() {
-            return null;
+            return (Class<UnknownLiveEntity<T>>)(Object)UnknownLiveEntity.class;
         }
 
         @Override
         public Class<UnknownEntitySnapshot<T>> getSnapshotClass() {
-            return null;
+            return (Class<UnknownEntitySnapshot<T>>)(Object) UnknownEntitySnapshot.class;
         }
 
         @Override
