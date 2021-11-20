@@ -65,9 +65,11 @@ import org.core.world.position.impl.sync.SyncBlockPosition;
 import org.core.world.position.impl.sync.SyncExactPosition;
 import org.core.world.structure.Structure;
 import org.core.world.structure.StructureBuilder;
+import org.core.world.structure.StructureFileBuilder;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
+import java.io.IOException;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.util.*;
@@ -440,11 +442,23 @@ public class BukkitPlatform implements Platform {
 
     @Override
     public Collection<Structure> getStructures() {
-        throw new RuntimeException("Not implemented yet");
+        if (this.structurePlatform==null) {
+            return Collections.emptyList();
+        }
+        return this.structurePlatform.getStructure();
     }
 
     @Override
     public @NotNull Structure register(StructureBuilder builder) {
+        if (this.structurePlatform==null) {
+            throw new RuntimeException("Structure support requires Bukkit 1.17 that was build after the 5th Oct 2021. In " +
+                    "particular the commit of c01e2f07e99");
+        }
+        return this.structurePlatform.register(builder);
+    }
+
+    @Override
+    public @NotNull Structure register(StructureFileBuilder builder) throws IOException {
         if (this.structurePlatform==null) {
             throw new RuntimeException("Structure support requires Bukkit 1.17 that was build after the 5th Oct 2021. In " +
                     "particular the commit of c01e2f07e99");

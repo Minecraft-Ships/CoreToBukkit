@@ -43,7 +43,11 @@ public class BBlockDetails implements BlockDetails, IBBlockDetails {
     private TileEntitySnapshot<? extends TileEntity> tileEntitySnapshot;
     private final boolean async;
 
-    protected BBlockDetails(BlockData data, TileEntitySnapshot<? extends TileEntity> tileEntitySnapshot, boolean async){
+    public BBlockDetails(BlockData data, TileEntitySnapshot<? extends TileEntity> tileEntitySnapshot) {
+        this(data, tileEntitySnapshot, true);
+    }
+
+    protected BBlockDetails(BlockData data, TileEntitySnapshot<? extends TileEntity> tileEntitySnapshot, boolean async) {
         this.data = data;
         this.tileEntitySnapshot = tileEntitySnapshot;
         this.async = async;
