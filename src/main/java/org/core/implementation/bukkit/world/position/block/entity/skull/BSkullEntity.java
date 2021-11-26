@@ -36,6 +36,7 @@ public class BSkullEntity extends AbstractLiveTileEntity implements LiveSkull {
         BUser user2 = (BUser)user;
         org.bukkit.OfflinePlayer user3 = user2.getBukkitUser();
         this.getBukkitTileEntity().setOwningPlayer(user3);
+        this.getBukkitTileEntity().update();
         return this;
     }
 
