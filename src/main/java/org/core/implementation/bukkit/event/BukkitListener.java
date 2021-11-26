@@ -213,6 +213,8 @@ public class BukkitListener implements Listener {
             call(EventPriority.NORMAL, event2);
             if (event2.isCancelled()) {
                 iterator.remove();
+                event.setCancelled(true);
+                return;
             }
         }
     }
