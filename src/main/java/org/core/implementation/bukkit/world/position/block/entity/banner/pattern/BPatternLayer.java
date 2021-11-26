@@ -7,10 +7,14 @@ import org.core.world.position.block.entity.banner.pattern.PatternLayerType;
 
 public class BPatternLayer implements PatternLayer {
 
-    protected final org.bukkit.block.banner.Pattern pattern;
+    private final org.bukkit.block.banner.Pattern pattern;
 
-    public BPatternLayer(org.bukkit.block.banner.Pattern pattern){
+    public BPatternLayer(org.bukkit.block.banner.Pattern pattern) {
         this.pattern = pattern;
+    }
+
+    public org.bukkit.block.banner.Pattern getBukkitValue() {
+        return this.pattern;
     }
 
     @Override
@@ -20,7 +24,7 @@ public class BPatternLayer implements PatternLayer {
 
     @Override
     public PatternLayer setColour(DyeType type) {
-        org.bukkit.DyeColor colour = ((BItemDyeType)type).getBukkitDye();
+        org.bukkit.DyeColor colour = ((BItemDyeType) type).getBukkitDye();
         return new BPatternLayer(new org.bukkit.block.banner.Pattern(colour, this.pattern.getPattern()));
     }
 
@@ -31,6 +35,6 @@ public class BPatternLayer implements PatternLayer {
 
     @Override
     public PatternLayer setPattern(PatternLayerType type) {
-        return new BPatternLayer(new org.bukkit.block.banner.Pattern(this.pattern.getColor(), ((BPatternLayerType)type).type));
+        return new BPatternLayer(new org.bukkit.block.banner.Pattern(this.pattern.getColor(), ((BPatternLayerType) type).type));
     }
 }

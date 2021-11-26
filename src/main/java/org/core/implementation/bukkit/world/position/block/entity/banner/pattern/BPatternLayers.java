@@ -13,7 +13,7 @@ public class BPatternLayers implements PatternLayers {
 
     protected final org.bukkit.block.Banner banner;
 
-    public BPatternLayers(org.bukkit.block.Banner banner){
+    public BPatternLayers(org.bukkit.block.Banner banner) {
         this.banner = banner;
     }
 
@@ -26,29 +26,33 @@ public class BPatternLayers implements PatternLayers {
 
     @Override
     public PatternLayers addLayers(Collection<? extends PatternLayer> layers) {
-        layers.forEach(l -> this.banner.addPattern(((BPatternLayer)l).pattern));
+        layers.forEach(l -> this.banner.addPattern(((BPatternLayer) l).getBukkitValue()));
+        this.banner.update();
         return this;
     }
 
     @Override
     public PatternLayers addLayer(int A, PatternLayer layer) {
         List<Pattern> list = this.banner.getPatterns();
-        list.add(A, ((BPatternLayer)layer).pattern);
+        list.add(A, ((BPatternLayer) layer).getBukkitValue());
         this.banner.setPatterns(list);
+        this.banner.update();
         return this;
     }
 
     @Override
     public PatternLayers removeLayer(int layer) {
         this.banner.removePattern(layer);
+        this.banner.update();
         return this;
     }
 
     @Override
     public PatternLayers removeLayers() {
-        for(int A = this.banner.numberOfPatterns(); A > 0; A--){
+        for (int A = this.banner.numberOfPatterns(); A > 0; A--) {
             this.banner.removePattern(A);
         }
+        this.banner.update();
         return this;
     }
 
