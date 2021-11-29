@@ -5,6 +5,8 @@ import org.core.implementation.bukkit.world.position.impl.sync.BBlockPosition;
 import org.core.world.position.block.details.BlockSnapshot;
 import org.core.world.position.block.details.data.keyed.KeyedData;
 import org.core.world.position.block.details.data.keyed.TileEntityKeyedData;
+import org.core.world.position.block.entity.TileEntity;
+import org.core.world.position.block.entity.TileEntitySnapshot;
 import org.core.world.position.impl.Position;
 import org.core.world.position.impl.sync.SyncBlockPosition;
 
@@ -24,6 +26,12 @@ public class BExtendedBlockSnapshot extends BBlockDetails implements BlockSnapsh
         this.position = position;
     }
 
+    private BExtendedBlockSnapshot(SyncBlockPosition position, BlockData data,
+                                   TileEntitySnapshot<? extends TileEntity> tileEntity) {
+        super(data, tileEntity, false);
+        this.position = position;
+    }
+
     @Override
     protected <T> Optional<KeyedData<T>> getKey(Class<? extends KeyedData<T>> data) {
         if (data.isAssignableFrom(TileEntityKeyedData.class)) {
@@ -39,7 +47,8 @@ public class BExtendedBlockSnapshot extends BBlockDetails implements BlockSnapsh
 
     @Override
     public BExtendedBlockSnapshot createCopyOf() {
-        return new BExtendedBlockSnapshot(this.position, this.getBukkitData().clone());
+        return new BExtendedBlockSnapshot(this.position, this.getBukkitData().clone(),
+                this.get(KeyedData.TILED_ENTITY).orElse(null));
     }
 
     @Override

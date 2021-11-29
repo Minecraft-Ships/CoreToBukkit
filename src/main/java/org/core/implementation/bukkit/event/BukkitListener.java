@@ -27,6 +27,7 @@ import org.core.event.HEvent;
 import org.core.event.events.entity.EntityInteractEvent;
 import org.core.implementation.bukkit.entity.scene.live.BLiveDroppedItem;
 import org.core.implementation.bukkit.event.events.block.AbstractBlockChangeEvent;
+import org.core.implementation.bukkit.event.events.block.AbstractExplosionEvent;
 import org.core.implementation.bukkit.event.events.block.tileentity.BSignChangeEvent;
 import org.core.implementation.bukkit.event.events.connection.BJoinedEvent;
 import org.core.implementation.bukkit.event.events.connection.BKickEvent;
@@ -36,6 +37,7 @@ import org.core.implementation.bukkit.event.events.entity.BEntitySpawnEvent;
 import org.core.implementation.bukkit.platform.BukkitPlatform;
 import org.core.implementation.bukkit.utils.DirectionUtils;
 import org.core.implementation.bukkit.world.expload.EntityExplosion;
+import org.core.implementation.bukkit.world.expload.EntityExplosionSnapshot;
 import org.core.implementation.bukkit.world.position.block.details.blocks.BBlockDetails;
 import org.core.implementation.bukkit.world.position.block.details.blocks.BlockStateSnapshot;
 import org.core.implementation.bukkit.world.position.impl.sync.BBlockPosition;
@@ -217,6 +219,10 @@ public class BukkitListener implements Listener {
                 return;
             }
         }
+
+        EntityExplosionSnapshot explosionSnapshot = new EntityExplosionSnapshot(explosion);
+        AbstractExplosionEvent.Post event3 = new AbstractExplosionEvent.Post(explosionSnapshot);
+        call(EventPriority.NORMAL, event3);
     }
 
     @EventHandler
