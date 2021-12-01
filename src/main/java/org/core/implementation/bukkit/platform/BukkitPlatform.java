@@ -501,7 +501,13 @@ public class BukkitPlatform implements Platform {
                 version = version.split(" ")[0];
             }
             String[] versionString = version.split(Pattern.quote("."));
-            return new CorePluginVersion(Integer.parseInt(versionString[0]), Integer.parseInt(versionString[1]), Integer.parseInt(versionString[2]));
+            int major = Integer.parseInt(versionString[0]);
+            int minor = Integer.parseInt(versionString[1]);
+            int patch = 0;
+            if (versionString.length >= 3) {
+                patch = Integer.parseInt(versionString[2]);
+            }
+            return new CorePluginVersion(major, minor, patch);
         } catch (ArrayIndexOutOfBoundsException e) {
             //fix for Pukkit (Pocket Edition of Spigot)
             if (version.startsWith("v")) {
