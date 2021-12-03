@@ -25,16 +25,6 @@ public abstract class BLiveEntity<T extends org.bukkit.entity.Entity> implements
         this.entity = entity;
     }
 
-    /*@Deprecated
-    public BLiveEntity(EntitySnapshot<? extends LiveEntity> snapshot){
-        org.bukkit.Location location = ((BExactPosition)snapshot.getPosition()).getBukkitLocation();
-        org.bukkit.entity.EntityType type = ((BEntityType<LiveEntity, ? extends EntitySnapshot<? extends LiveEntity>>)snapshot.getType()).getBukkitEntityType();
-        location.setPitch((float)this.getPitch());
-        location.setYaw((float)this.getYaw());
-        this.entity = (T)location.getWorld().spawnEntity(location, type);
-        ((BEntitySnapshot<? extends LiveEntity>)snapshot).applyDefaults(this);
-    }*/
-
     public T getBukkitEntity() {
         return this.entity;
     }
