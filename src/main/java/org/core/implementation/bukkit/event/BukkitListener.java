@@ -156,7 +156,10 @@ public class BukkitListener implements Listener {
             } catch (IllegalAccessException | InvocationTargetException | NoSuchMethodException ignored) {
             }
         }
-        event.setQuitMessage(kickEvent.getLeavingMessage().toLegacy());
+        AText leavingMessage = kickEvent.getLeavingMessage();
+        if (leavingMessage!=null) {
+            event.setQuitMessage(leavingMessage.toLegacy());
+        }
     }
 
     @EventHandler
