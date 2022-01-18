@@ -12,9 +12,20 @@ public class BScheduler implements Scheduler {
 
         @Override
         public void run() {
-            BScheduler.this.taskToRun.run();
+            try {
+                BScheduler.this.taskToRun.run();
+            } catch (Throwable e) {
+                System.err.println("Schedule error:");
+                System.err.println("Schedule: " + BScheduler.this.displayName);
+                System.err.println("Parent: " + BScheduler.this.parent);
+                System.err.println("Stack:");
+                e.printStackTrace();
+            }
             Scheduler scheduler = BScheduler.this.runAfter;
             if (scheduler!=null) {
+                if (scheduler instanceof BScheduler) {
+                    ((BScheduler) scheduler).parent = BScheduler.this.parent;
+                }
                 scheduler.run();
             }
         }
@@ -29,6 +40,7 @@ public class BScheduler implements Scheduler {
     protected final String displayName;
     protected final boolean async;
     protected final Plugin plugin;
+    private String parent;
 
     protected int task;
 
