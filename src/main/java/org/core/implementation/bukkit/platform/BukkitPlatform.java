@@ -70,7 +70,6 @@ import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
 import java.io.IOException;
-import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.util.*;
 import java.util.regex.Pattern;
@@ -124,28 +123,12 @@ public class BukkitPlatform implements Platform {
             this.entityTypes.addAll(bsp.getSpecificEntityTypes());
             this.blockStateToTileEntity.putAll(bsp.getSpecificStateToTile());
         });
-        Class<org.bukkit.Tag<?>> classTag = (Class<Tag<?>>) (Object) org.bukkit.Tag.class;
-        for (Field field : classTag.getFields()) {
-            if (!field.getType().isAssignableFrom(classTag)) {
-                continue;
-            }
-            Set<BlockType> blockType = new HashSet<>();
-            try {
-                org.bukkit.Tag<?> tag = (org.bukkit.Tag<?>) field.get(null);
-                tag.getValues().forEach(v -> {
-                    if (!(v instanceof Material)) {
-                        return;
-                    }
-                    Material m = (Material) v;
-                    if (m.isBlock()) {
-                        blockType.add(new BBlockType(m));
-                    }
-                });
-            } catch (IllegalAccessException e) {
-                e.printStackTrace();
-            }
-            this.blockGroups.add(new BBlockGroup(field.getName(), blockType.toArray(new BlockType[0])));
-        }
+
+        Bukkit.getTags(Tag.REGISTRY_BLOCKS, Material.class).forEach(tag -> this.blockGroups.add(
+                new BBlockGroup(
+                        tag.getKey().value(),
+                        tag.getValues().stream().map(BBlockType::new)
+                                .distinct().toArray(BlockType[]::new))));
         this.blockGroups.addAll(BlockGroups.values());
 
     }
