@@ -124,6 +124,11 @@ public class BWorldExtent implements WorldExtent {
     }
 
     @Override
+    public int getMinimumBlockHeight() {
+        return this.world.getMinHeight();
+    }
+
+    @Override
     public boolean equals(Object obj) {
         if (!(obj instanceof WorldExtent)) {
             return false;
