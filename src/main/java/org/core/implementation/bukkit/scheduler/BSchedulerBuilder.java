@@ -6,6 +6,7 @@ import org.core.schedule.SchedulerBuilder;
 import org.core.schedule.unit.TimeUnit;
 
 import java.util.Optional;
+import java.util.function.Consumer;
 
 public class BSchedulerBuilder implements SchedulerBuilder {
 
@@ -13,7 +14,7 @@ public class BSchedulerBuilder implements SchedulerBuilder {
     protected TimeUnit delayUnit;
     protected Integer iteration;
     protected TimeUnit iterationUnit;
-    protected Runnable executor;
+    protected Consumer<Scheduler> executor;
     protected Scheduler runAfter;
     protected String displayName;
     protected boolean async;
@@ -63,13 +64,13 @@ public class BSchedulerBuilder implements SchedulerBuilder {
     }
 
     @Override
-    public SchedulerBuilder setExecutor(Runnable runnable) {
+    public SchedulerBuilder setRunner(Consumer<Scheduler> runnable) {
         this.executor = runnable;
         return this;
     }
 
     @Override
-    public Runnable getExecutor() {
+    public Consumer<Scheduler> getRunner() {
         return this.executor;
     }
 
