@@ -125,7 +125,7 @@ public class BWorldExtent implements WorldExtent {
 
     @Override
     public int getMinimumBlockHeight() {
-        return this.world.getMinHeight();
+        return 0;
     }
 
     @Override

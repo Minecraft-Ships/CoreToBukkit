@@ -5,7 +5,6 @@ import org.bukkit.Server;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.file.FileConfiguration;
-import org.bukkit.generator.BiomeProvider;
 import org.bukkit.generator.ChunkGenerator;
 import org.bukkit.plugin.InvalidDescriptionException;
 import org.bukkit.plugin.PluginDescriptionFile;
@@ -147,10 +146,6 @@ public class CoreBukkitPluginWrapper implements org.bukkit.plugin.Plugin {
     @Deprecated
     public ChunkGenerator getDefaultWorldGenerator(@NotNull String worldName, @Nullable String id) {
         throw new RuntimeException("No World Generator");
-    }
-
-    public @Nullable BiomeProvider getDefaultBiomeProvider(@NotNull String s, @Nullable String s1) {
-        throw new RuntimeException("No Biome Provider");
     }
 
     @NotNull

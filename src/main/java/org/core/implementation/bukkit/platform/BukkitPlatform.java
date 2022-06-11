@@ -26,7 +26,6 @@ import org.core.implementation.bukkit.inventory.item.BItemType;
 import org.core.implementation.bukkit.inventory.item.data.dye.BItemDyeType;
 import org.core.implementation.bukkit.permission.BukkitPermission;
 import org.core.implementation.bukkit.platform.plugin.BPlugin;
-import org.core.implementation.bukkit.platform.structure.BukkitStructurePlatform;
 import org.core.implementation.bukkit.platform.version.BukkitSpecificPlatform;
 import org.core.implementation.bukkit.world.boss.colour.BBossColour;
 import org.core.implementation.bukkit.world.position.block.BBlockType;
@@ -90,18 +89,6 @@ public class BukkitPlatform implements Platform {
     Set<UnspecificParser<?>> parsers = new HashSet<>();
     protected final Set<BlockType> blockTypes = new HashSet<>();
     protected final Set<ItemType> itemTypes = new HashSet<>();
-    private final BukkitStructurePlatform structurePlatform;
-
-    public BukkitPlatform() {
-        BukkitStructurePlatform structurePlatform1;
-        try {
-            Server.class.getDeclaredMethod("getStructureManager");
-            structurePlatform1 = new BukkitStructurePlatform();
-        } catch (NoSuchMethodException e) {
-            structurePlatform1 = null;
-        }
-        this.structurePlatform = structurePlatform1;
-    }
 
     public void init() {
         for (Material material : Material.values()) {
@@ -124,11 +111,15 @@ public class BukkitPlatform implements Platform {
             this.blockStateToTileEntity.putAll(bsp.getSpecificStateToTile());
         });
 
-        Bukkit.getTags(Tag.REGISTRY_BLOCKS, Material.class).forEach(tag -> this.blockGroups.add(
-                new BBlockGroup(
-                        tag.getKey().value(),
-                        tag.getValues().stream().map(BBlockType::new)
-                                .distinct().toArray(BlockType[]::new))));
+        Bukkit.getTags(Tag.REGISTRY_BLOCKS, Material.class).forEach(tag -> {
+            NamespacedKey key = tag.getKey();
+            String value = key.toString().split(":", 2)[1];
+            this.blockGroups.add(
+                    new BBlockGroup(
+                            value,
+                            tag.getValues().stream().map(BBlockType::new)
+                                    .distinct().toArray(BlockType[]::new)));
+        });
         this.blockGroups.addAll(BlockGroups.values());
 
     }
@@ -425,29 +416,22 @@ public class BukkitPlatform implements Platform {
 
     @Override
     public Collection<Structure> getStructures() {
-        if (this.structurePlatform==null) {
-            return Collections.emptyList();
-        }
-        return this.structurePlatform.getStructure();
+        return Collections.emptyList();
     }
 
     @Override
     public @NotNull Structure register(StructureBuilder builder) {
-        if (this.structurePlatform==null) {
-            throw new RuntimeException("Structure support requires Bukkit 1.17 that was build after the 5th Oct 2021. In " +
-                    "particular the commit of c01e2f07e99");
-        }
-        return this.structurePlatform.register(builder);
+        throw new RuntimeException("Structure support requires Bukkit 1.17 that was build after the 5th Oct 2021. In " +
+                "particular the commit of c01e2f07e99");
+
     }
 
     @Override
     public @NotNull Structure register(StructureFileBuilder builder) throws IOException {
-        if (this.structurePlatform==null) {
-            throw new RuntimeException("Structure support requires Bukkit 1.17 that was build after the 5th Oct 2021. In " +
-                    "particular the commit of c01e2f07e99");
-        }
-        return this.structurePlatform.register(builder);
+        throw new RuntimeException("Structure support requires Bukkit 1.17 that was build after the 5th Oct 2021. In " +
+                "particular the commit of c01e2f07e99");
     }
+
 
     @Override
     public @NotNull Permission register(@NotNull String permissionNode) {
