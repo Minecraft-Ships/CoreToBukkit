@@ -2,6 +2,7 @@ package org.core.implementation.bukkit.world.position.impl;
 
 import org.bukkit.Location;
 import org.core.implementation.bukkit.world.BWorldExtent;
+import org.core.vector.type.Vector3;
 import org.core.world.position.impl.Position;
 
 public abstract class BAbstractPosition<T extends Number> implements Position<T> {
@@ -15,11 +16,15 @@ public abstract class BAbstractPosition<T extends Number> implements Position<T>
     }
 
     @Override
+    public Vector3<Integer> getChunkPosition() {
+        return Vector3.valueOf(this.getX().intValue() >> 4, 0, this.getZ().intValue() >> 4);
+    }
+
+    @Override
     public boolean equals(Object obj) {
-        if (!(obj instanceof Position)) {
+        if (!(obj instanceof Position<? extends Number> pos)) {
             return false;
         }
-        Position<? extends Number> pos = (Position<? extends Number>) obj;
         if (!pos.getX().equals(this.getX())) {
             return false;
         }

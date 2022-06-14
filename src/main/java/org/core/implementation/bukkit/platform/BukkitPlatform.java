@@ -124,11 +124,14 @@ public class BukkitPlatform implements Platform {
             this.blockStateToTileEntity.putAll(bsp.getSpecificStateToTile());
         });
 
-        Bukkit.getTags(Tag.REGISTRY_BLOCKS, Material.class).forEach(tag -> this.blockGroups.add(
-                new BBlockGroup(
-                        tag.getKey().value(),
-                        tag.getValues().stream().map(BBlockType::new)
-                                .distinct().toArray(BlockType[]::new))));
+        Bukkit.getTags(Tag.REGISTRY_BLOCKS, Material.class).forEach(tag -> {
+            String value = tag.getKey().toString().substring(tag.getKey().getNamespace().length() + 1);
+            this.blockGroups.add(
+                    new BBlockGroup(
+                            value,
+                            tag.getValues().stream().map(BBlockType::new)
+                                    .distinct().toArray(BlockType[]::new)));
+        });
         this.blockGroups.addAll(BlockGroups.values());
 
     }
