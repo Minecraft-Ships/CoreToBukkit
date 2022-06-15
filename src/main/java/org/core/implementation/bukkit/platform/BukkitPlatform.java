@@ -1,6 +1,9 @@
 package org.core.implementation.bukkit.platform;
 
-import org.bukkit.*;
+import org.bukkit.Bukkit;
+import org.bukkit.DyeColor;
+import org.bukkit.Material;
+import org.bukkit.Tag;
 import org.bukkit.boss.BarColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.ConsoleCommandSender;
@@ -112,8 +115,7 @@ public class BukkitPlatform implements Platform {
         });
 
         Bukkit.getTags(Tag.REGISTRY_BLOCKS, Material.class).forEach(tag -> {
-            NamespacedKey key = tag.getKey();
-            String value = key.toString().split(":", 2)[1];
+            String value = tag.getKey().toString().substring(tag.getKey().getNamespace().length() + 1);
             this.blockGroups.add(
                     new BBlockGroup(
                             value,

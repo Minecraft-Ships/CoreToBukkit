@@ -1,7 +1,6 @@
 package org.core.implementation.bukkit.world.position.impl.async;
 
 import org.bukkit.Bukkit;
-import org.bukkit.Chunk;
 import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.core.entity.living.human.player.LivePlayer;
@@ -36,12 +35,6 @@ public class BAsyncBlockPosition extends BAbstractPosition<Integer> implements A
 
     public Block getBukkitBlock() {
         return this.block;
-    }
-
-    @Override
-    public Vector3<Integer> getChunkPosition() {
-        Chunk chunk = this.block.getChunk();
-        return Vector3.valueOf(chunk.getX(), 0, chunk.getZ());
     }
 
     @Override

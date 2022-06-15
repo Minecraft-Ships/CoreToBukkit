@@ -35,11 +35,6 @@ public class BExactPosition extends BAbstractPosition<Double> implements SyncExa
     }
 
     @Override
-    public Vector3<Integer> getChunkPosition() {
-        return Vector3.valueOf(this.location.getChunk().getX(), 0, this.location.getChunk().getZ());
-    }
-
-    @Override
     public Vector3<Double> getPosition() {
         return Vector3.valueOf(this.location.getX(), this.location.getY(), this.location.getZ());
     }

@@ -1,7 +1,6 @@
 package org.core.implementation.bukkit.world.position.impl.async;
 
 import org.bukkit.Bukkit;
-import org.bukkit.Chunk;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.core.entity.living.human.player.LivePlayer;
@@ -34,11 +33,6 @@ public class BAsyncExactPosition extends BAbstractPosition<Double> implements AS
         this.location = location;
     }
 
-    @Override
-    public Vector3<Integer> getChunkPosition() {
-        Chunk chunk = this.location.getChunk();
-        return Vector3.valueOf(chunk.getX(), 0, chunk.getZ());
-    }
 
     @Override
     public WorldExtent getWorld() {

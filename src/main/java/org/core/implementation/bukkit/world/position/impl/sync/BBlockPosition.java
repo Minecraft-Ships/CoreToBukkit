@@ -48,11 +48,6 @@ public class BBlockPosition extends BAbstractPosition<Integer> implements SyncBl
     }
 
     @Override
-    public Vector3<Integer> getChunkPosition() {
-        return Vector3.valueOf(this.block.getChunk().getX(), 0, this.block.getChunk().getZ());
-    }
-
-    @Override
     public Vector3<Integer> getPosition() {
         return Vector3.valueOf(this.block.getX(), this.block.getY(), this.block.getZ());
     }

@@ -41,6 +41,11 @@ public class TranslateCoreBoot extends JavaPlugin {
     }
 
     @Override
+    public void onDisable() {
+        this.plugins.forEach(CorePlugin::onShutdown);
+    }
+
+    @Override
     public void onLoad() {
         Optional<Class<? extends CorePlugin>> opLauncher = TranslateCore.getStandAloneLauncher();
         if (opLauncher.isPresent()) {
