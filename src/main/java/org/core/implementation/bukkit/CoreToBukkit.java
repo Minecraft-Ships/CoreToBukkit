@@ -67,11 +67,6 @@ public class CoreToBukkit extends TranslateCore.CoreImplementation {
     }
 
     @Override
-    public SchedulerBuilder createRawSchedulerBuilder() {
-        return new BSchedulerBuilder();
-    }
-
-    @Override
     public ConfigurationStream.ConfigurationFile createRawConfigurationFile(File file, ConfigurationFormat type) {
         if (file == null) {
             throw new IllegalStateException("File cannot be null");
