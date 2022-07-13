@@ -4,6 +4,7 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabExecutor;
 import org.core.TranslateCore;
+import org.core.command.BaseCommandLauncher;
 import org.core.command.CommandLauncher;
 import org.core.exceptions.NotEnoughArguments;
 import org.core.implementation.bukkit.platform.BukkitPlatform;
@@ -14,13 +15,13 @@ import java.util.List;
 
 public class BCommand implements TabExecutor {
 
-    private final CommandLauncher command;
+    private final BaseCommandLauncher command;
 
-    public BCommand(CommandLauncher command) {
+    public BCommand(BaseCommandLauncher command) {
         this.command = command;
     }
 
-    public CommandLauncher getWrapper() {
+    public BaseCommandLauncher getWrapper() {
         return this.command;
     }
 

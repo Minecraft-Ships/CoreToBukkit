@@ -1,5 +1,6 @@
 package org.core.implementation.bukkit.scheduler;
 
+import org.core.TranslateCore;
 import org.core.platform.plugin.Plugin;
 import org.core.schedule.Scheduler;
 import org.core.schedule.SchedulerBuilder;
@@ -109,13 +110,20 @@ public class BSchedulerBuilder implements SchedulerBuilder {
 
     @Override
     public Scheduler build(Plugin plugin) {
-        if (this.executor==null) {
+        if (this.executor == null) {
             throw new IllegalArgumentException("No Executor in build");
         }
-        if (this.delay!=null && this.delayUnit==null) {
+        if (this.delay != null && this.delayUnit == null) {
             throw new IllegalArgumentException("Invalid delayUnit in build");
         }
-        return new BScheduler(this, plugin);
+        Scheduler scheduler;
+        if (this.iteration == null && this.async && (this.delay == null || this.delay == 0)) {
+            scheduler = new BThreadScheduler(this, plugin);
+        } else {
+            scheduler = new BNativeScheduler(this, plugin);
+        }
+        ((BScheduleManager) TranslateCore.getScheduleManager()).register(scheduler);
+        return scheduler;
     }
 
 

@@ -12,10 +12,12 @@ import org.core.implementation.bukkit.event.BukkitListener;
 import org.core.implementation.bukkit.platform.BServer;
 import org.core.implementation.bukkit.platform.BukkitPlatform;
 import org.core.implementation.bukkit.platform.PlatformConsole;
+import org.core.implementation.bukkit.scheduler.BScheduleManager;
 import org.core.implementation.bukkit.scheduler.BSchedulerBuilder;
 import org.core.implementation.bukkit.world.boss.BServerBossBar;
 import org.core.platform.Platform;
 import org.core.platform.PlatformServer;
+import org.core.schedule.ScheduleManager;
 import org.core.schedule.SchedulerBuilder;
 import org.core.source.command.ConsoleSource;
 import org.core.world.boss.ServerBossBar;
@@ -25,6 +27,7 @@ import java.io.File;
 public class CoreToBukkit extends TranslateCore.CoreImplementation {
 
     protected final BukkitPlatform platform = new BukkitPlatform();
+    protected final ScheduleManager schedule = new BScheduleManager();
     protected final BEventManager manager = new BEventManager();
     protected final BServer server = new BServer();
     protected final PlatformConsole console = new PlatformConsole();
@@ -49,6 +52,11 @@ public class CoreToBukkit extends TranslateCore.CoreImplementation {
     }
 
     @Override
+    public ScheduleManager getRawScheduleManager() {
+        return this.schedule;
+    }
+
+    @Override
     public EventManager getRawEventManager() {
         return this.manager;
     }
@@ -65,10 +73,10 @@ public class CoreToBukkit extends TranslateCore.CoreImplementation {
 
     @Override
     public ConfigurationStream.ConfigurationFile createRawConfigurationFile(File file, ConfigurationFormat type) {
-        if (file==null) {
+        if (file == null) {
             throw new IllegalStateException("File cannot be null");
         }
-        if (type==null) {
+        if (type == null) {
             throw new IllegalStateException("ConfigurationFormat cannot be null");
         }
         boolean check = false;

@@ -9,6 +9,8 @@ import org.bukkit.plugin.java.JavaPlugin;
 import org.core.TranslateCore;
 import org.core.adventureText.AText;
 import org.core.command.CommandRegister;
+import org.core.command.commands.TranslateCoreCommands;
+import org.core.command.commands.timings.TimingsCommand;
 import org.core.implementation.bukkit.CoreToBukkit;
 import org.core.implementation.bukkit.command.BCommand;
 import org.core.implementation.bukkit.command.BCommandWrapper;
@@ -53,12 +55,15 @@ public class TranslateCoreBoot extends JavaPlugin {
             CorePlugin plugin = CommonLoad.loadStandAlonePlugin(pluginClass);
             plugin.onConstruct(this);
             PluginManager pluginManager = Bukkit.getPluginManager();
-            if (pluginManager instanceof SimplePluginManager) {
-                SimplePluginManager spm = (SimplePluginManager) pluginManager;
+            if (pluginManager instanceof SimplePluginManager spm) {
                 try {
-                    CommandMap map = this.getFromField(spm, "commandMap", CommandMap.class);
-                    Map<String, Plugin> lookup = this.getFromField(spm, "lookupNames", (Class<Map<String, Plugin>>) (Object) Map.class);
+                    CommandMap map = this.getFromField(spm, "commandMap");
+                    Map<String, Plugin> lookup = this.getFromField(spm, "lookupNames");
                     lookup.put(plugin.getPluginName(), (Plugin) plugin.getPlatformLauncher());
+
+
+                    map.register("TranslateCore", new BCommandWrapper(new BCommand(new TranslateCoreCommands(new TimingsCommand()))));
+
 
                     CommandRegister cmdReg = new CommandRegister();
                     plugin.onRegisterCommands(cmdReg);
@@ -86,9 +91,10 @@ public class TranslateCoreBoot extends JavaPlugin {
         });
     }
 
-    private <T> T getFromField(Object from, String field, Class<T> type) throws NoSuchFieldException, IllegalAccessException {
+    private <T> T getFromField(Object from, String field) throws NoSuchFieldException, IllegalAccessException {
         Field jField = from.getClass().getDeclaredField(field);
         jField.setAccessible(true);
+        //noinspection unchecked
         return (T) jField.get(from);
     }
 
@@ -101,19 +107,17 @@ public class TranslateCoreBoot extends JavaPlugin {
             }
         }
         File[] files = folder.listFiles();
-        if (files==null) {
+        if (files == null) {
             return Collections.emptyList();
         }
         List<CorePlugin> plugins = CommonLoad.loadPlugin(this.getClassLoader(), files);
         PluginManager pluginManager = Bukkit.getPluginManager();
-        if (pluginManager instanceof SimplePluginManager) {
+        if (pluginManager instanceof SimplePluginManager spm) {
             Set<CoreBukkitPluginWrapper> bukkitPlugins = plugins.parallelStream().map(CoreBukkitPluginWrapper::new).collect(Collectors.toSet());
-            SimplePluginManager spm = (SimplePluginManager) pluginManager;
             try {
-                CommandMap map = this.getFromField(spm, "commandMap", CommandMap.class);
-                List<Plugin> spmPlugins = this.getFromField(spm, "plugins",
-                        (Class<? extends List<Plugin>>) (Object) List.class);
-                Map<String, Plugin> lookup = this.getFromField(spm, "lookupNames", (Class<Map<String, Plugin>>) (Object) Map.class);
+                CommandMap map = this.getFromField(spm, "commandMap");
+                List<Plugin> spmPlugins = this.getFromField(spm, "plugins");
+                Map<String, Plugin> lookup = this.getFromField(spm, "lookupNames");
                 spmPlugins.addAll(bukkitPlugins);
                 lookup.putAll(spmPlugins.stream().collect(Collectors.toMap(Plugin::getName, (plugin) -> plugin)));
 

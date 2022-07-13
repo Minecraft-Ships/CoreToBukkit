@@ -1,6 +1,7 @@
 package org.core.implementation.bukkit.scheduler;
 
 import org.bukkit.Bukkit;
+import org.core.TranslateCore;
 import org.core.platform.plugin.Plugin;
 import org.core.schedule.Scheduler;
 import org.core.schedule.SchedulerBuilder;
@@ -10,36 +11,37 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.function.Consumer;
 
-public class BScheduler implements Scheduler {
+public class BNativeScheduler implements Scheduler.Native {
 
     private class RunAfterScheduler implements Runnable {
 
         @Override
         public void run() {
             try {
-                BScheduler.this.taskToRun.accept(BScheduler.this);
+                BNativeScheduler.this.taskToRun.accept(BNativeScheduler.this);
             } catch (Throwable e) {
                 e.printStackTrace();
             }
-            Scheduler scheduler = BScheduler.this.runAfter;
-            if (scheduler!=null) {
-                if (scheduler instanceof BScheduler) {
-                    ((BScheduler) scheduler).parent = BScheduler.this.parent;
+            ((BScheduleManager) TranslateCore.getScheduleManager()).unregister(BNativeScheduler.this);
+            Scheduler scheduler = BNativeScheduler.this.runAfter;
+            if (scheduler != null) {
+                if (scheduler instanceof BNativeScheduler) {
+                    ((BNativeScheduler) scheduler).parent = BNativeScheduler.this.parent;
                 }
                 scheduler.run();
             }
-            Bukkit.getScheduler().cancelTask(BScheduler.this.task);
+            Bukkit.getScheduler().cancelTask(BNativeScheduler.this.task);
         }
 
         @Override
         public String toString() {
             String str =
-                    BScheduler.this.displayName + ": Delay(Time: " + BScheduler.this.delayCount + " Unit: " + BScheduler.this.delayTimeUnit +
-                            ") Iteration: (Time: " + BScheduler.this.iteration + " Unit: " + BScheduler.this.iterationTimeUnit + ") Plugin: " + BScheduler.this.plugin.getPluginId() + " ID:" + BScheduler.this.task;
-            if (BScheduler.this.runAfter==null) {
+                    BNativeScheduler.this.displayName + ": Delay(Time: " + BNativeScheduler.this.delayCount + " Unit: " + BNativeScheduler.this.delayTimeUnit +
+                            ") Iteration: (Time: " + BNativeScheduler.this.iteration + " Unit: " + BNativeScheduler.this.iterationTimeUnit + ") Plugin: " + BNativeScheduler.this.plugin.getPluginId() + " ID:" + BNativeScheduler.this.task;
+            if (BNativeScheduler.this.runAfter == null) {
                 return str + " ToRunAfter: None";
-            } else if (BScheduler.this.runAfter instanceof BScheduler) {
-                return str + " ToRunAfter: " + ((BScheduler) BScheduler.this.runAfter).task;
+            } else if (BNativeScheduler.this.runAfter instanceof BNativeScheduler) {
+                return str + " ToRunAfter: " + ((BNativeScheduler) BNativeScheduler.this.runAfter).task;
             }
             return str + " ToRunAfter: Unknown";
 
@@ -60,7 +62,7 @@ public class BScheduler implements Scheduler {
 
     protected int task;
 
-    public BScheduler(@NotNull SchedulerBuilder builder, @NotNull Plugin plugin) {
+    public BNativeScheduler(@NotNull SchedulerBuilder builder, @NotNull Plugin plugin) {
         this.taskToRun = builder.getRunner();
         this.iteration = builder.getIteration().orElse(null);
         this.iterationTimeUnit = builder.getIterationUnit().orElse(TimeUnit.MINECRAFT_TICKS);
@@ -73,24 +75,44 @@ public class BScheduler implements Scheduler {
     }
 
     @Override
+    public String getDisplayName() {
+        return this.displayName;
+    }
+
+    @Override
+    public Plugin getPlugin() {
+        return this.plugin;
+    }
+
+    @Override
     public void run() {
         long ticks = (long) this.delayTimeUnit.toTicks(this.delayCount);
         Integer iter = null;
-        if (this.iteration!=null) {
-            if (this.iterationTimeUnit==null) {
+        if (this.iteration != null) {
+            if (this.iterationTimeUnit == null) {
                 throw new RuntimeException("Iteration time was set however the timeunit was not");
             }
             iter = (int) this.iterationTimeUnit.toTicks(this.iteration);
         }
         Runnable runAfterScheduler = new RunAfterScheduler();
-        if (iter==null) {
+        if (iter == null) {
             if (this.async) {
                 this.task =
-                        Bukkit.getScheduler().scheduleAsyncDelayedTask((org.bukkit.plugin.Plugin) this.plugin.getPlatformLauncher(), runAfterScheduler, ticks);
+                        Bukkit
+                                .getScheduler()
+                                .scheduleAsyncDelayedTask(
+                                        (org.bukkit.plugin.Plugin) this.plugin.getPlatformLauncher(),
+                                        runAfterScheduler,
+                                        ticks);
                 return;
             }
             this.task =
-                    Bukkit.getScheduler().scheduleSyncDelayedTask((org.bukkit.plugin.Plugin) this.plugin.getPlatformLauncher(), runAfterScheduler, ticks);
+                    Bukkit
+                            .getScheduler()
+                            .scheduleSyncDelayedTask(
+                                    (org.bukkit.plugin.Plugin) this.plugin.getPlatformLauncher(),
+                                    runAfterScheduler,
+                                    ticks);
 
             return;
         }
@@ -130,10 +152,10 @@ public class BScheduler implements Scheduler {
     @Override
     public String toString() {
         String str = this.displayName + ": Delay(Time: " + this.delayCount + " Unit: " + this.delayTimeUnit + ") Iteration: (Time: " + this.iteration + " Unit: " + this.iterationTimeUnit + ") Plugin: " + this.plugin.getPluginId() + " ID:" + this.task;
-        if (this.runAfter==null) {
+        if (this.runAfter == null) {
             return str + " ToRunAfter: None";
-        } else if (this.runAfter instanceof BScheduler) {
-            return str + " ToRunAfter: " + ((BScheduler) this.runAfter).task;
+        } else if (this.runAfter instanceof BNativeScheduler) {
+            return str + " ToRunAfter: " + ((BNativeScheduler) this.runAfter).task;
         }
         return str + " ToRunAfter: Unknown";
 
