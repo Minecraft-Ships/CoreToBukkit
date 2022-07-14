@@ -9,6 +9,8 @@ import org.core.schedule.unit.TimeUnit;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.time.LocalTime;
+import java.util.Optional;
 import java.util.function.Consumer;
 
 public class BNativeScheduler implements Scheduler.Native {
@@ -17,6 +19,7 @@ public class BNativeScheduler implements Scheduler.Native {
 
         @Override
         public void run() {
+            BNativeScheduler.this.startRunner = LocalTime.now();
             try {
                 BNativeScheduler.this.taskToRun.accept(BNativeScheduler.this);
             } catch (Throwable e) {
@@ -31,6 +34,7 @@ public class BNativeScheduler implements Scheduler.Native {
                 scheduler.run();
             }
             Bukkit.getScheduler().cancelTask(BNativeScheduler.this.task);
+            BNativeScheduler.this.endTime = LocalTime.now();
         }
 
         @Override
@@ -60,6 +64,10 @@ public class BNativeScheduler implements Scheduler.Native {
     protected final @NotNull Plugin plugin;
     private @Nullable String parent;
 
+    private LocalTime endTime;
+    private LocalTime startSchedule;
+    private LocalTime startRunner;
+
     protected int task;
 
     public BNativeScheduler(@NotNull SchedulerBuilder builder, @NotNull Plugin plugin) {
@@ -75,6 +83,26 @@ public class BNativeScheduler implements Scheduler.Native {
     }
 
     @Override
+    public Optional<LocalTime> getStartScheduleTime() {
+        return Optional.ofNullable(this.startSchedule);
+    }
+
+    @Override
+    public Optional<LocalTime> getStartRunnerTime() {
+        return Optional.ofNullable(this.startRunner);
+    }
+
+    @Override
+    public Optional<LocalTime> getEndTime() {
+        return Optional.ofNullable(this.endTime);
+    }
+
+    @Override
+    public boolean isAsync() {
+        return this.async;
+    }
+
+    @Override
     public String getDisplayName() {
         return this.displayName;
     }
@@ -86,6 +114,7 @@ public class BNativeScheduler implements Scheduler.Native {
 
     @Override
     public void run() {
+        this.startSchedule = LocalTime.now();
         long ticks = (long) this.delayTimeUnit.toTicks(this.delayCount);
         Integer iter = null;
         if (this.iteration != null) {

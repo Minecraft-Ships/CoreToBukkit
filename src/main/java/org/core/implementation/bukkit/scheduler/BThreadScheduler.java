@@ -5,6 +5,7 @@ import org.core.platform.plugin.Plugin;
 import org.core.schedule.Scheduler;
 import org.core.schedule.SchedulerBuilder;
 
+import java.time.LocalTime;
 import java.util.Optional;
 import java.util.function.Consumer;
 
@@ -14,12 +15,15 @@ public class BThreadScheduler implements Scheduler.Threaded {
 
         @Override
         public void run() {
+            BThreadScheduler.this.startRunner = LocalTime.now();
             BThreadScheduler.this.run.accept(BThreadScheduler.this);
             if (BThreadScheduler.this.runAfter == null) {
+                BThreadScheduler.this.endRunner = LocalTime.now();
                 return;
             }
             ((BScheduleManager) TranslateCore.getScheduleManager()).unregister(BThreadScheduler.this);
             BThreadScheduler.this.runAfter.run();
+            BThreadScheduler.this.endRunner = LocalTime.now();
         }
     }
 
@@ -27,6 +31,9 @@ public class BThreadScheduler implements Scheduler.Threaded {
     private final Plugin plugin;
     private final String displayName;
     private final Scheduler runAfter;
+    private LocalTime startSchedule;
+    private LocalTime startRunner;
+    private LocalTime endRunner;
     private Thread thread;
 
     public BThreadScheduler(SchedulerBuilder builder, Plugin plugin) {
@@ -42,6 +49,26 @@ public class BThreadScheduler implements Scheduler.Threaded {
     }
 
     @Override
+    public Optional<LocalTime> getStartScheduleTime() {
+        return Optional.ofNullable(this.startSchedule);
+    }
+
+    @Override
+    public Optional<LocalTime> getStartRunnerTime() {
+        return Optional.ofNullable(this.startRunner);
+    }
+
+    @Override
+    public Optional<LocalTime> getEndTime() {
+        return Optional.ofNullable(this.endRunner);
+    }
+
+    @Override
+    public boolean isAsync() {
+        return true;
+    }
+
+    @Override
     public String getDisplayName() {
         return this.displayName;
     }
@@ -54,6 +81,7 @@ public class BThreadScheduler implements Scheduler.Threaded {
     @Override
     public void run() {
         if (thread == null) {
+            this.startSchedule = LocalTime.now();
             this.thread = new Thread(BasicRunner::new);
             this.thread.start();
             return;
