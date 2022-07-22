@@ -115,7 +115,7 @@ public class BNativeScheduler implements Scheduler.Native {
     @Override
     public void run() {
         this.startSchedule = LocalTime.now();
-        long ticks = (long) this.delayTimeUnit.toTicks(this.delayCount);
+        /*long ticks = (long) this.delayTimeUnit.toTicks(this.delayCount);
         Integer iter = null;
         if (this.iteration != null) {
             if (this.iterationTimeUnit == null) {
@@ -165,7 +165,7 @@ public class BNativeScheduler implements Scheduler.Native {
                                 ticks,
                                 iter);
 
-
+*/
     }
 
     @Override
