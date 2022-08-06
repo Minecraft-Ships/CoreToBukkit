@@ -45,7 +45,7 @@ public class BLivePlayer extends BLiveEntity<Player> implements LivePlayer {
 
     @Override
     public boolean isViewingInventory() {
-        return this.getBukkitEntity().getOpenInventory()!=null;
+        return this.getBukkitEntity().getOpenInventory() != null;
     }
 
     @Override
@@ -108,6 +108,7 @@ public class BLivePlayer extends BLiveEntity<Player> implements LivePlayer {
     }
 
     @Override
+    @Deprecated(forRemoval = true)
     public boolean hasPermission(String permission) {
         org.bukkit.entity.Player player = this.getBukkitEntity();
         boolean truePerm = player.hasPermission(permission);
@@ -117,7 +118,7 @@ public class BLivePlayer extends BLiveEntity<Player> implements LivePlayer {
         String[] blocks = permission.split("\\.");
         StringBuilder buffer = null;
         for (String block : blocks) {
-            if (buffer==null) {
+            if (buffer == null) {
                 buffer = new StringBuilder(block);
             } else {
                 buffer.append(".").append(block);
@@ -133,7 +134,7 @@ public class BLivePlayer extends BLiveEntity<Player> implements LivePlayer {
     @Override
     public Optional<BlockPosition> getBlockLookingAt(int scanLength) {
         Block block = this.getBukkitEntity().getTargetBlockExact(scanLength);
-        if (block==null) {
+        if (block == null) {
             return Optional.empty();
         }
         return Optional.of(new BBlockPosition(block));
@@ -173,7 +174,8 @@ public class BLivePlayer extends BLiveEntity<Player> implements LivePlayer {
             Class<?> componentClass = Class.forName("net.kyori.adventure.text.Component");
             Method method = player.getClass().getMethod("sendMessage", componentClass);
             method.invoke(player, ((AdventureText) message).getComponent());
-        } catch (ClassCastException | ClassNotFoundException | NoSuchMethodException | InvocationTargetException | IllegalAccessException e) {
+        } catch (ClassCastException | ClassNotFoundException | NoSuchMethodException | InvocationTargetException |
+                 IllegalAccessException e) {
             player.sendMessage(message.toLegacy());
         }
         return this;

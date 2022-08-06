@@ -58,7 +58,8 @@ public class BServer implements PlatformServer {
                 .filter(bs -> bs.get(TileEntityKeyedData.class).isPresent())
                 .collect(Collectors.toSet());
         Scheduler syncedSchedule = TranslateCore
-                .createSchedulerBuilder()
+                .getScheduleManager()
+                .schedule()
                 .setDelay(0)
                 .setDelayUnit(TimeUnit.MINECRAFT_TICKS)
                 .setDisplayName("BlockSnapshotApplyEntities")
@@ -78,11 +79,12 @@ public class BServer implements PlatformServer {
                 .build(plugin);
 
         Scheduler asyncedSchedule = TranslateCore
-                .createSchedulerBuilder()
+                .getScheduleManager()
+                .schedule()
                 .setDisplayName("BlockSnapshotAsyncedEnd")
                 .setDelayUnit(TimeUnit.MINECRAFT_TICKS)
                 .setDelay(0)
-                .setExecutor(() -> {
+                .setRunner((sch) -> {
                     for (BlockSnapshot.AsyncBlockSnapshot blockSnapshot : collection) {
                         Block block = ((BAsyncBlockPosition) blockSnapshot.getPosition()).getBukkitBlock();
                         try {

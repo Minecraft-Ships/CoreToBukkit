@@ -16,14 +16,19 @@ public class ItemStackParser implements UnspecificParser<ItemStack> {
 
     @Override
     public void set(ConfigurationStream file, ItemStack value, ConfigurationNode node) {
-        ((YAMLConfigurationFile) file).getYaml().set(ArrayUtils.toString(".", t -> t, node.getPath()), ((BAbstractItemStack) value).getBukkitItem());
+        ((YAMLConfigurationFile) file)
+                .getYaml()
+                .set(
+                        String.join(".", node.getPath()),
+                        ((BAbstractItemStack) value).getBukkitItem());
     }
 
     @Override
     public Optional<ItemStack> parse(ConfigurationStream file, ConfigurationNode node) {
-        org.bukkit.inventory.@Nullable ItemStack stack = ((YAMLConfigurationFile) file).getYaml().getItemStack(ArrayUtils.toString(".", t -> t,
-                node.getPath()));
-        if (stack==null) {
+        org.bukkit.inventory.ItemStack stack = ((YAMLConfigurationFile) file)
+                .getYaml()
+                .getItemStack(String.join(".", node.getPath()));
+        if (stack == null) {
             return Optional.empty();
         }
         return Optional.of(new BLiveItemStack(stack));

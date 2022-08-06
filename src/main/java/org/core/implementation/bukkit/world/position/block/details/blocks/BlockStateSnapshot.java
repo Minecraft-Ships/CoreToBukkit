@@ -77,6 +77,7 @@ public class BlockStateSnapshot implements BlockSnapshot.SyncBlockSnapshot, IBBl
     }
 
     @Override
+    @Deprecated(forRemoval = true)
     public <T extends BlockPosition> BlockSnapshot<T> createSnapshot(T position) {
         if (position instanceof SyncBlockPosition) {
             return (BlockSnapshot<T>) this.createSnapshot((SyncBlockPosition) position);
