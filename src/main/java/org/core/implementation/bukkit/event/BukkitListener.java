@@ -1,6 +1,5 @@
 package org.core.implementation.bukkit.event;
 
-import org.array.utils.ArrayUtils;
 import org.bukkit.GameMode;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -74,7 +73,7 @@ public class BukkitListener implements Listener {
         List<BlockSnapshot<SyncBlockPosition>> collection = Collections.singletonList(new1.createSnapshot(position));
         AbstractBlockChangeEvent.PlaceBlockPlayerPostEvent event2 =
                 new AbstractBlockChangeEvent.PlaceBlockPlayerPostEvent(
-                position, old, new1, player, collection);
+                        position, old, new1, player, collection);
         call(EventPriority.NORMAL, event2);
         if (event2.isCancelled()) {
             event.setCancelled(true);
@@ -93,7 +92,7 @@ public class BukkitListener implements Listener {
 
         AbstractBlockChangeEvent.PlaceBlockPlayerPostEvent event2 =
                 new AbstractBlockChangeEvent.PlaceBlockPlayerPostEvent(
-                position, old, new1, player, collection);
+                        position, old, new1, player, collection);
         call(EventPriority.NORMAL, event2);
         if (event2.isCancelled()) {
             event.setCancelled(true);
@@ -123,20 +122,6 @@ public class BukkitListener implements Listener {
             event.setCancelled(true);
         }
     }
-
-    /*@EventHandler
-    public static void onItemDropFromBlock(BlockDropItemEvent event){
-        BBlockDetails preDetails = new BBlockDetails(event.getBlockState().getBlockData());
-        BBlockPosition position = new BBlockPosition(event.getBlock());
-        Map<org.bukkit.entity.Item, DroppedItemSnapshot> items = new HashMap<>();
-        event.getItems().forEach(i -> items.put(i, new BLiveDroppedItem(i).createSnapshot()));
-        BLivePlayer player = new BLivePlayer(event.getPlayer());
-        AbstractBlockChangeEvent.BreakBlockPostEvent event2 = new AbstractBlockChangeEvent.BreakBlockPostEvent
-        (preDetails, position, player, items.values());
-        call(event2);
-        event2.getItems().forEach(is -> items.entrySet().stream().filter(e -> e.getValue().equals(is)).forEach(e ->
-        event.getItems().remove(e.getKey())));
-    }*/
 
     @EventHandler(priority = org.bukkit.event.EventPriority.HIGHEST)
     public static void onPlayerKickedEvent(PlayerKickEvent event) {
@@ -200,15 +185,11 @@ public class BukkitListener implements Listener {
         if (event.getClickedBlock() == null || event.getHand() != EquipmentSlot.HAND) {
             return;
         }
-        int action = -1;
-        switch (event.getAction()) {
-            case RIGHT_CLICK_BLOCK:
-                action = EntityInteractEvent.PRIMARY_CLICK_ACTION;
-                break;
-            case LEFT_CLICK_BLOCK:
-                action = EntityInteractEvent.SECONDARY_CLICK_ACTION;
-                break;
-        }
+        int action = switch (event.getAction()) {
+            case RIGHT_CLICK_BLOCK -> EntityInteractEvent.PRIMARY_CLICK_ACTION;
+            case LEFT_CLICK_BLOCK -> EntityInteractEvent.SECONDARY_CLICK_ACTION;
+            default -> -1;
+        };
         BEntityInteractEvent.PlayerInteractWithBlock event1 = new BEntityInteractEvent.PlayerInteractWithBlock(
                 new BBlockPosition(event.getClickedBlock()), action, DirectionUtils.toDirection(event.getBlockFace()),
                 (LivePlayer) ((BukkitPlatform) TranslateCore.getPlatform()).createEntityInstance(event.getPlayer()));
@@ -232,7 +213,7 @@ public class BukkitListener implements Listener {
             SyncBlockPosition block = new BBlockPosition(iterator.next());
             AbstractBlockChangeEvent.BreakBlockChangeExplode event2 =
                     new AbstractBlockChangeEvent.BreakBlockChangeExplode(
-                    block, explosion);
+                            block, explosion);
             call(EventPriority.NORMAL, event2);
             if (event2.isCancelled()) {
                 iterator.remove();
@@ -262,8 +243,9 @@ public class BukkitListener implements Listener {
         }
         AbstractBlockChangeEvent.BreakBlockChangeEventPlayer event1 =
                 new AbstractBlockChangeEvent.BreakBlockChangeEventPlayer(
-                new BBlockPosition(event.getBlock()),
-                (LivePlayer) ((BukkitPlatform) TranslateCore.getPlatform()).createEntityInstance(event.getPlayer()));
+                        new BBlockPosition(event.getBlock()),
+                        (LivePlayer) ((BukkitPlatform) TranslateCore.getPlatform()).createEntityInstance(
+                                event.getPlayer()));
         call(EventPriority.NORMAL, event1);
         if (event1.isCancelled()) {
             event.setCancelled(event1.isCancelled());
@@ -312,10 +294,13 @@ public class BukkitListener implements Listener {
                 }
                 Class<?> class1 = parameters[0].getType();
                 if (!Event.class.isAssignableFrom(classEvent)) {
+                    String parameterNames = Arrays
+                            .stream(parameters)
+                            .map(p -> p.getType().getSimpleName() + " " + p.getName())
+                            .collect(Collectors.joining(", "));
                     System.err.println("Failed to know what to do: HEvent found on method, but no known event on " +
                             el.getClass().getName() + "." + method.getName() + "(" +
-                            ArrayUtils.toString(", ", p -> p.getType().getSimpleName() + " " + p.getName(),
-                                    parameters) + ")");
+                            parameterNames + ")");
                 }
                 if (class1.isAssignableFrom(classEvent)) {
                     methods.add(new BEventLaunch(key, el, method));

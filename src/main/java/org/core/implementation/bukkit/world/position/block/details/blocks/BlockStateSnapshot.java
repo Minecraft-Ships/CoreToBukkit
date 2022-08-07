@@ -15,7 +15,12 @@ import org.core.world.position.block.BlockType;
 import org.core.world.position.block.details.BlockDetails;
 import org.core.world.position.block.details.BlockSnapshot;
 import org.core.world.position.block.details.data.DirectionalData;
-import org.core.world.position.block.details.data.keyed.*;
+import org.core.world.position.block.details.data.keyed.AttachableKeyedData;
+import org.core.world.position.block.details.data.keyed.KeyedData;
+import org.core.world.position.block.details.data.keyed.MultiDirectionalKeyedData;
+import org.core.world.position.block.details.data.keyed.OpenableKeyedData;
+import org.core.world.position.block.details.data.keyed.TileEntityKeyedData;
+import org.core.world.position.block.details.data.keyed.WaterLoggedKeyedData;
 import org.core.world.position.block.entity.LiveTileEntity;
 import org.core.world.position.block.entity.TileEntity;
 import org.core.world.position.block.entity.TileEntitySnapshot;
@@ -148,7 +153,7 @@ public class BlockStateSnapshot implements BlockSnapshot.SyncBlockSnapshot, IBBl
         public void setData(TileEntitySnapshot<? extends TileEntity> value) {
             BukkitPlatform platform = (BukkitPlatform) TranslateCore.getPlatform();
             Optional<LiveTileEntity> opTile = platform.createTileEntityInstance(BlockStateSnapshot.this.state);
-            if (!opTile.isPresent()) {
+            if (opTile.isEmpty()) {
                 return;
             }
             this.apply(value, opTile.get());

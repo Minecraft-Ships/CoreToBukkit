@@ -36,10 +36,9 @@ public class BLivePlayer extends BLiveEntity<Player> implements LivePlayer {
 
     @Override
     public boolean equals(Object object) {
-        if (!(object instanceof BLivePlayer)) {
+        if (!(object instanceof BLivePlayer player2)) {
             return false;
         }
-        BLivePlayer player2 = (BLivePlayer) object;
         return player2.getBukkitEntity().equals(this.getBukkitEntity());
     }
 
@@ -109,13 +108,13 @@ public class BLivePlayer extends BLiveEntity<Player> implements LivePlayer {
 
     @Override
     @Deprecated(forRemoval = true)
-    public boolean hasPermission(String permission) {
+    public boolean hasPermission(String name) {
         org.bukkit.entity.Player player = this.getBukkitEntity();
-        boolean truePerm = player.hasPermission(permission);
+        boolean truePerm = player.hasPermission(name);
         if (truePerm) {
             return true;
         }
-        String[] blocks = permission.split("\\.");
+        String[] blocks = name.split("\\.");
         StringBuilder buffer = null;
         for (String block : blocks) {
             if (buffer == null) {
