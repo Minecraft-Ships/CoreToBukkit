@@ -15,13 +15,14 @@ import java.util.Set;
 
 public abstract class BLiveDispenserBasedInventory implements LiveDispenserBasedInventory {
 
-    protected abstract org.bukkit.block.Container getBukkitBlockState();
     protected final DispenserBasedGrid grid = new DispenserBasedGrid() {
         @Override
         protected Container getContainer() {
             return BLiveDispenserBasedInventory.this.getBukkitBlockState();
         }
     };
+
+    protected abstract org.bukkit.block.Container getBukkitBlockState();
 
     @Override
     public Grid3x3 getItems() {
@@ -45,6 +46,11 @@ public abstract class BLiveDispenserBasedInventory implements LiveDispenserBased
 
     @Override
     public Optional<Slot> getSlot(int slotPos) {
-        return this.getSlots().stream().filter(s -> s.getPosition().isPresent()).filter(s -> s.getPosition().get() == slotPos).findAny();
+        return this
+                .getSlots()
+                .stream()
+                .filter(s -> s.getPosition().isPresent())
+                .filter(s -> s.getPosition().get() == slotPos)
+                .findAny();
     }
 }

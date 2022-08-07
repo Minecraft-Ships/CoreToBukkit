@@ -7,13 +7,13 @@ import org.core.inventory.parts.snapshot.SlotSnapshot;
 
 public class BFurnaceInventorySnapshot extends FurnaceInventorySnapshot {
 
-    public BFurnaceInventorySnapshot(){
+    public BFurnaceInventorySnapshot() {
         this.fuelSlot = new SlotSnapshot(BLiveFurnaceInventory.FUEL_POSITION, null);
         this.resultsSlot = new SlotSnapshot(BLiveFurnaceInventory.RESULTS_POSITION, null);
         this.smeltingSlot = new SlotSnapshot(BLiveFurnaceInventory.SMELTING_POSITION, null);
     }
 
-    public BFurnaceInventorySnapshot(FurnaceInventory fi){
+    public BFurnaceInventorySnapshot(FurnaceInventory fi) {
         this.fuelSlot = fi.getFuelSlot().createSnapshot();
         this.resultsSlot = fi.getResultsSlot().createSnapshot();
         this.smeltingSlot = fi.getSmeltingSlot().createSnapshot();

@@ -14,9 +14,72 @@ import org.core.inventory.parts.Slot;
 
 import java.util.Optional;
 
-public abstract class BLiveEntityInventory<E extends LiveEntity, S extends EntitySnapshot<E>> implements BasicEntityInventory<E> {
+public abstract class BLiveEntityInventory<E extends LiveEntity, S extends EntitySnapshot<E>>
+        implements BasicEntityInventory<E> {
+
+    protected final E entity;
+    protected final BLiveEntityInventory<E, S>.ZombieArmorPart parts = new BLiveEntityInventory<E, S>.ZombieArmorPart();
+    protected final BLiveEntityInventory<E, S>.ZombieMainHandSlot mainHand =
+            new BLiveEntityInventory<E, S>.ZombieMainHandSlot();
+    protected final BLiveEntityInventory<E, S>.ZombieSecondaryHandSlot secondaryHand =
+            new BLiveEntityInventory<E, S>.ZombieSecondaryHandSlot();
+    public BLiveEntityInventory(E entity) {
+        this.entity = entity;
+    }
+
+    private org.bukkit.entity.LivingEntity getBukkitEntity() {
+        return ((BLiveEntity<? extends LivingEntity>) this.entity).getBukkitEntity();
+    }
+
+    @Override
+    public BLiveEntityInventory<E, S>.ZombieArmorPart getArmor() {
+        return this.parts;
+    }
+
+    @Override
+    public Slot getMainHoldingItem() {
+        return this.mainHand;
+    }
+
+    @Override
+    public Slot getOffHoldingItem() {
+        return this.secondaryHand;
+    }
+
+    private Optional<EntityEquipment> getEquipment() {
+        return Optional.ofNullable(this.getBukkitEntity().getEquipment());
+    }
 
     private class ZombieArmorPart implements ArmorPart {
+
+        final BLiveEntityInventory<E, S>.ZombieArmorPart.ZombieHelmetSlot helmet =
+                new BLiveEntityInventory<E, S>.ZombieArmorPart.ZombieHelmetSlot();
+        final BLiveEntityInventory<E, S>.ZombieArmorPart.ZombieArmorSlot armor =
+                new BLiveEntityInventory<E, S>.ZombieArmorPart.ZombieArmorSlot();
+        final BLiveEntityInventory<E, S>.ZombieArmorPart.ZombieLeggingsSlot leggings =
+                new BLiveEntityInventory<E, S>.ZombieArmorPart.ZombieLeggingsSlot();
+        final BLiveEntityInventory<E, S>.ZombieArmorPart.ZombieShoesSlot shoes =
+                new BLiveEntityInventory<E, S>.ZombieArmorPart.ZombieShoesSlot();
+
+        @Override
+        public Slot getHelmetSlot() {
+            return this.helmet;
+        }
+
+        @Override
+        public Slot getArmorSlot() {
+            return this.armor;
+        }
+
+        @Override
+        public Slot getLeggingsSlot() {
+            return this.leggings;
+        }
+
+        @Override
+        public Slot getShoesSlot() {
+            return this.shoes;
+        }
 
         private class ZombieHelmetSlot implements Slot {
 
@@ -97,35 +160,6 @@ public abstract class BLiveEntityInventory<E extends LiveEntity, S extends Entit
                 return this;
             }
         }
-
-        final BLiveEntityInventory<E, S>.ZombieArmorPart.ZombieHelmetSlot helmet =
-                new BLiveEntityInventory<E, S>.ZombieArmorPart.ZombieHelmetSlot();
-        final BLiveEntityInventory<E, S>.ZombieArmorPart.ZombieArmorSlot armor =
-                new BLiveEntityInventory<E, S>.ZombieArmorPart.ZombieArmorSlot();
-        final BLiveEntityInventory<E, S>.ZombieArmorPart.ZombieLeggingsSlot leggings =
-                new BLiveEntityInventory<E, S>.ZombieArmorPart.ZombieLeggingsSlot();
-        final BLiveEntityInventory<E, S>.ZombieArmorPart.ZombieShoesSlot shoes =
-                new BLiveEntityInventory<E, S>.ZombieArmorPart.ZombieShoesSlot();
-
-        @Override
-        public Slot getHelmetSlot() {
-            return this.helmet;
-        }
-
-        @Override
-        public Slot getArmorSlot() {
-            return this.armor;
-        }
-
-        @Override
-        public Slot getLeggingsSlot() {
-            return this.leggings;
-        }
-
-        @Override
-        public Slot getShoesSlot() {
-            return this.shoes;
-        }
     }
 
     private class ZombieMainHandSlot implements Slot {
@@ -166,40 +200,5 @@ public abstract class BLiveEntityInventory<E extends LiveEntity, S extends Entit
             BLiveEntityInventory.this.getEquipment().ifPresent(e -> e.setItemInOffHand(item));
             return this;
         }
-    }
-
-    protected final E entity;
-    protected final BLiveEntityInventory<E, S>.ZombieArmorPart parts = new BLiveEntityInventory<E, S>.ZombieArmorPart();
-    protected final BLiveEntityInventory<E, S>.ZombieMainHandSlot mainHand =
-            new BLiveEntityInventory<E, S>.ZombieMainHandSlot();
-    protected final BLiveEntityInventory<E, S>.ZombieSecondaryHandSlot secondaryHand =
-            new BLiveEntityInventory<E, S>.ZombieSecondaryHandSlot();
-
-
-    public BLiveEntityInventory(E entity) {
-        this.entity = entity;
-    }
-
-    private org.bukkit.entity.LivingEntity getBukkitEntity() {
-        return ((BLiveEntity<? extends LivingEntity>) this.entity).getBukkitEntity();
-    }
-
-    @Override
-    public BLiveEntityInventory<E, S>.ZombieArmorPart getArmor() {
-        return this.parts;
-    }
-
-    @Override
-    public Slot getMainHoldingItem() {
-        return this.mainHand;
-    }
-
-    @Override
-    public Slot getOffHoldingItem() {
-        return this.secondaryHand;
-    }
-
-    private Optional<EntityEquipment> getEquipment() {
-        return Optional.ofNullable(this.getBukkitEntity().getEquipment());
     }
 }

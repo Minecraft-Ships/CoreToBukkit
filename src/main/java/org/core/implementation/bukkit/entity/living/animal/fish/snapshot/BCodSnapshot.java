@@ -29,7 +29,9 @@ public class BCodSnapshot extends BEntitySnapshot<LiveCod> implements CodSnapsho
         org.bukkit.Location loc = ((BAbstractPosition<Double>) this.position).toBukkitLocation();
         loc.setPitch((float) this.pitch);
         loc.setYaw((float) this.yaw);
-        org.bukkit.entity.Cod cod = (org.bukkit.entity.Cod) loc.getWorld().spawnEntity(loc, org.bukkit.entity.EntityType.COD);
+        org.bukkit.entity.Cod cod = (org.bukkit.entity.Cod) loc
+                .getWorld()
+                .spawnEntity(loc, org.bukkit.entity.EntityType.COD);
         LiveCod coreCod = new BLiveCod(cod);
         this.applyDefaults(coreCod);
         return coreCod;

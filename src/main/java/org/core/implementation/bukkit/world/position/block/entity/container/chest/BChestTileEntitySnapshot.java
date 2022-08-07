@@ -16,11 +16,11 @@ public class BChestTileEntitySnapshot implements ChestTileEntitySnapshot {
 
     protected final ChestInventorySnapshot inventory;
 
-    public BChestTileEntitySnapshot(){
+    public BChestTileEntitySnapshot() {
         this.inventory = new BChestInventorySnapshot();
     }
 
-    public BChestTileEntitySnapshot(ChestTileEntity cte){
+    public BChestTileEntitySnapshot(ChestTileEntity cte) {
         this.inventory = cte.getInventory().createSnapshot();
     }
 

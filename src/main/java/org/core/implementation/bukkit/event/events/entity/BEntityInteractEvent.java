@@ -15,7 +15,8 @@ public class BEntityInteractEvent {
         protected final int click;
         protected boolean cancelled;
 
-        public PlayerInteractWithBlock(SyncBlockPosition position, int click, Direction clickedFace, LivePlayer player) {
+        public PlayerInteractWithBlock(SyncBlockPosition position, int click, Direction clickedFace,
+                LivePlayer player) {
             this.player = player;
             this.position = position;
             this.direction = clickedFace;

@@ -26,28 +26,15 @@ import java.util.Optional;
 
 public class BBlockDetails implements BlockDetails, IBBlockDetails {
 
-    protected class BTileEntityKeyedData implements TileEntityKeyedData {
-
-        @Override
-        public Optional<TileEntitySnapshot<? extends TileEntity>> getData() {
-            return Optional.ofNullable(BBlockDetails.this.tileEntitySnapshot);
-        }
-
-        @Override
-        public void setData(TileEntitySnapshot<? extends TileEntity> value) {
-            BBlockDetails.this.tileEntitySnapshot = value;
-        }
-    }
-
+    private final boolean async;
     private org.bukkit.block.data.BlockData data;
     private TileEntitySnapshot<? extends TileEntity> tileEntitySnapshot;
-    private final boolean async;
-
     public BBlockDetails(BlockData data, TileEntitySnapshot<? extends TileEntity> tileEntitySnapshot) {
         this(data, tileEntitySnapshot, true);
     }
 
-    protected BBlockDetails(BlockData data, TileEntitySnapshot<? extends TileEntity> tileEntitySnapshot, boolean async) {
+    protected BBlockDetails(BlockData data, TileEntitySnapshot<? extends TileEntity> tileEntitySnapshot,
+            boolean async) {
         this.data = data;
         this.tileEntitySnapshot = tileEntitySnapshot;
         this.async = async;
@@ -57,7 +44,10 @@ public class BBlockDetails implements BlockDetails, IBBlockDetails {
         this.data = data;
         this.async = async;
         if (!async) {
-            TranslateCore.getPlatform().getDefaultTileEntity(this.getType()).ifPresent(t -> this.tileEntitySnapshot = t);
+            TranslateCore
+                    .getPlatform()
+                    .getDefaultTileEntity(this.getType())
+                    .ifPresent(t -> this.tileEntitySnapshot = t);
         }
     }
 
@@ -109,7 +99,7 @@ public class BBlockDetails implements BlockDetails, IBBlockDetails {
     @Override
     public BlockSnapshot.AsyncBlockSnapshot createSnapshot(ASyncBlockPosition position) {
         BlockSnapshot.AsyncBlockSnapshot snapshot = new AsyncBlockStateSnapshot(position, this.getBukkitData());
-        if (this.tileEntitySnapshot!=null) {
+        if (this.tileEntitySnapshot != null) {
             snapshot.set(TileEntityKeyedData.class, this.tileEntitySnapshot);
         }
         return snapshot;
@@ -158,13 +148,17 @@ public class BBlockDetails implements BlockDetails, IBBlockDetails {
 
     protected <T> Optional<KeyedData<T>> getKey(Class<? extends KeyedData<T>> data) {
         KeyedData<T> key = null;
-        if (data.isAssignableFrom(WaterLoggedKeyedData.class) && this.data instanceof org.bukkit.block.data.Waterlogged) {
+        if (data.isAssignableFrom(WaterLoggedKeyedData.class) &&
+                this.data instanceof org.bukkit.block.data.Waterlogged) {
             key = (KeyedData<T>) new BWaterLoggedKeyedData((org.bukkit.block.data.Waterlogged) this.data);
-        } else if (data.isAssignableFrom(OpenableKeyedData.class) && (this.data instanceof org.bukkit.block.data.Openable)) {
+        } else if (data.isAssignableFrom(OpenableKeyedData.class) &&
+                (this.data instanceof org.bukkit.block.data.Openable)) {
             key = (KeyedData<T>) new BOpenableKeyedData((org.bukkit.block.data.Openable) this.data);
-        } else if (data.isAssignableFrom(AttachableKeyedData.class) && BAttachableKeyedData.getKeyedData(this).isPresent()) {
+        } else if (data.isAssignableFrom(AttachableKeyedData.class) &&
+                BAttachableKeyedData.getKeyedData(this).isPresent()) {
             key = (KeyedData<T>) BAttachableKeyedData.getKeyedData(this).get();
-        } else if (data.isAssignableFrom(MultiDirectionalKeyedData.class) && this.data instanceof org.bukkit.block.data.MultipleFacing) {
+        } else if (data.isAssignableFrom(MultiDirectionalKeyedData.class) &&
+                this.data instanceof org.bukkit.block.data.MultipleFacing) {
             key = (KeyedData<T>) new BMultiDirectionalKeyedData((org.bukkit.block.data.MultipleFacing) this.data);
         } else if (data.isAssignableFrom(TileEntityKeyedData.class)) {
             key = (KeyedData<T>) new BTileEntityKeyedData();
@@ -175,5 +169,18 @@ public class BBlockDetails implements BlockDetails, IBBlockDetails {
     @Override
     public BlockDetails createCopyOf() {
         return new BBlockDetails(this.data.clone(), this.async);
+    }
+
+    protected class BTileEntityKeyedData implements TileEntityKeyedData {
+
+        @Override
+        public Optional<TileEntitySnapshot<? extends TileEntity>> getData() {
+            return Optional.ofNullable(BBlockDetails.this.tileEntitySnapshot);
+        }
+
+        @Override
+        public void setData(TileEntitySnapshot<? extends TileEntity> value) {
+            BBlockDetails.this.tileEntitySnapshot = value;
+        }
     }
 }

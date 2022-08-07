@@ -27,7 +27,7 @@ public class BExtendedBlockSnapshot extends BBlockDetails implements BlockSnapsh
     }
 
     private BExtendedBlockSnapshot(SyncBlockPosition position, BlockData data,
-                                   TileEntitySnapshot<? extends TileEntity> tileEntity) {
+            TileEntitySnapshot<? extends TileEntity> tileEntity) {
         super(data, tileEntity, false);
         this.position = position;
     }

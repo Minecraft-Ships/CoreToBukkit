@@ -19,12 +19,12 @@ public class BUnknownBlockAttachedInventorySnapshot implements UnknownBlockAttac
     protected final BlockType[] types;
     protected final SyncBlockPosition position;
 
-    public BUnknownBlockAttachedInventorySnapshot(SyncBlockPosition position, BlockType... types){
+    public BUnknownBlockAttachedInventorySnapshot(SyncBlockPosition position, BlockType... types) {
         this.types = types;
         this.position = position;
     }
 
-    public BUnknownBlockAttachedInventorySnapshot(UnknownBlockAttachedInventory inv){
+    public BUnknownBlockAttachedInventorySnapshot(UnknownBlockAttachedInventory inv) {
         this.types = inv.getAllowedBlockType();
         this.position = inv.getPosition();
         inv.getSlots().forEach(i -> BUnknownBlockAttachedInventorySnapshot.this.slots.add(i.createSnapshot()));
@@ -46,8 +46,13 @@ public class BUnknownBlockAttachedInventorySnapshot implements UnknownBlockAttac
     }
 
     @Override
-    public Optional<Slot> getSlot(int slotPos){
-        return this.getSlots().stream().filter(s -> s.getPosition().isPresent()).filter(s -> s.getPosition().get() == slotPos).findFirst();
+    public Optional<Slot> getSlot(int slotPos) {
+        return this
+                .getSlots()
+                .stream()
+                .filter(s -> s.getPosition().isPresent())
+                .filter(s -> s.getPosition().get() == slotPos)
+                .findFirst();
     }
 
     @Override
@@ -58,11 +63,11 @@ public class BUnknownBlockAttachedInventorySnapshot implements UnknownBlockAttac
     @Override
     public void apply() {
         Optional<LiveTileEntity> opTile = this.getPosition().getTileEntity();
-        if(!opTile.isPresent()){
+        if (!opTile.isPresent()) {
             return;
         }
         LiveTileEntity lte = opTile.get();
-        if(!(lte instanceof LiveUnknownBlockAttachedInventory)){
+        if (!(lte instanceof LiveUnknownBlockAttachedInventory)) {
             return;
         }
         UnknownBlockAttachedInventory lubai = (UnknownBlockAttachedInventory) lte;
@@ -72,21 +77,21 @@ public class BUnknownBlockAttachedInventorySnapshot implements UnknownBlockAttac
     @Override
     public void apply(UnknownBlockAttachedInventory ubai) {
         boolean carryOn = false;
-        for(BlockType type1 : this.types){
-            for(BlockType type2 : ubai.getAllowedBlockType()){
-                if(type1.getId().equals(type2.getId())){
+        for (BlockType type1 : this.types) {
+            for (BlockType type2 : ubai.getAllowedBlockType()) {
+                if (type1.getId().equals(type2.getId())) {
                     carryOn = true;
                     break;
                 }
             }
-            if(carryOn){
+            if (carryOn) {
                 break;
             }
         }
-        if(!carryOn){
+        if (!carryOn) {
             return;
         }
-        for(SlotSnapshot slot : this.slots){
+        for (SlotSnapshot slot : this.slots) {
             slot.getItem().ifPresent(f -> ubai.getSlot(slot.getPosition().get()).get().setItem(f));
         }
     }

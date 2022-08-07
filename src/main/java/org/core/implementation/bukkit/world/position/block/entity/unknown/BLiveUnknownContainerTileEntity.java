@@ -19,6 +19,6 @@ public class BLiveUnknownContainerTileEntity extends AbstractLiveTileEntity impl
 
     @Override
     public UnknownBlockAttachedInventory getInventory() {
-        return new BLiveUnknownBlockAttachedInventory(((org.bukkit.block.Container)this.state));
+        return new BLiveUnknownBlockAttachedInventory(((org.bukkit.block.Container) this.state));
     }
 }

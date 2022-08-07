@@ -70,7 +70,10 @@ public class BEventLaunch {
                                             + "."
                                             + this.method.getName()
                                             + "("
-                                            + Arrays.stream(this.method.getParameters()).map(p -> p.getType().getSimpleName()).collect(Collectors.joining(", "))
+                                            + Arrays
+                                            .stream(this.method.getParameters())
+                                            .map(p -> p.getType().getSimpleName())
+                                            .collect(Collectors.joining(", "))
                                             + ")")
                             .withColour(NamedTextColours.RED));
             e.getTargetException().printStackTrace();
@@ -80,12 +83,16 @@ public class BEventLaunch {
                     .getConsole()
                     .sendMessage(AText
                             .ofPlain(
-                                    "Failed to know what to do: HEvent found on method, but exception found when running "
+                                    "Failed to know what to do: HEvent found on method, but exception found when " +
+                                            "running "
                                             + this.listener.getClass().getName()
                                             + "."
                                             + this.method.getName()
                                             + "("
-                                            + Arrays.stream(this.method.getParameters()).map(p -> p.getType().getSimpleName() + " " + p.getName()).collect(Collectors.joining(", "))
+                                            + Arrays
+                                            .stream(this.method.getParameters())
+                                            .map(p -> p.getType().getSimpleName() + " " + p.getName())
+                                            .collect(Collectors.joining(", "))
                                             + ") found in plugin: "
                                             + this.plugin.getPluginName()
                                             + " - Time taken for event to process: "

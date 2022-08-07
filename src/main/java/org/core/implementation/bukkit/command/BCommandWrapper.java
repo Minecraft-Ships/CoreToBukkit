@@ -12,7 +12,8 @@ public class BCommandWrapper extends Command {
     private final BCommand command;
 
     public BCommandWrapper(BCommand command) {
-        super(command.getWrapper().getName(), command.getWrapper().getDescription(), command.getWrapper().getName(), Collections.emptyList());
+        super(command.getWrapper().getName(), command.getWrapper().getDescription(), command.getWrapper().getName(),
+                Collections.emptyList());
         this.command = command;
     }
 
@@ -24,7 +25,8 @@ public class BCommandWrapper extends Command {
 
     @NotNull
     @Override
-    public List<String> tabComplete(@NotNull CommandSender sender, @NotNull String alias, @NotNull String[] args) throws IllegalArgumentException {
+    public List<String> tabComplete(@NotNull CommandSender sender, @NotNull String alias, @NotNull String[] args) throws
+            IllegalArgumentException {
         return this.command.onTabComplete(sender, this, alias, args);
     }
 

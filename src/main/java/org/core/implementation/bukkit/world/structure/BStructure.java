@@ -30,13 +30,13 @@ import java.util.stream.Collectors;
 
 public class BStructure implements Structure {
 
-    private final @NotNull org.bukkit.structure.Structure structure;
     public final @Nullable String name;
+    private final @NotNull org.bukkit.structure.Structure structure;
     private final @Nullable String key;
     private final @Nullable Plugin plugin;
 
     public BStructure(@NotNull org.bukkit.structure.Structure structure, @Nullable String name, @Nullable Plugin plugin,
-                      @Nullable String key) {
+            @Nullable String key) {
         this.structure = structure;
         this.name = name;
         this.plugin = plugin;
@@ -97,7 +97,7 @@ public class BStructure implements Structure {
 
     @Override
     public void place(StructurePlacementBuilder builder) {
-        if (builder.getPosition()==null) {
+        if (builder.getPosition() == null) {
             throw new IllegalArgumentException("Position cannot be null");
         }
         World bukkitWorld = ((BWorldExtent) builder.getPosition().getWorld()).getBukkitWorld();

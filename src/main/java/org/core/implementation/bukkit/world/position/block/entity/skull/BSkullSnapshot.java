@@ -9,17 +9,20 @@ import org.core.world.position.block.entity.skull.Skull;
 import org.core.world.position.block.entity.skull.SkullSnapshot;
 import org.core.world.position.block.grouptype.versions.BlockGroups1V13;
 
-import java.util.*;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.Optional;
 
 public class BSkullSnapshot implements SkullSnapshot {
 
     private User owner;
 
-    public BSkullSnapshot(Skull skull){
+    public BSkullSnapshot(Skull skull) {
         this.owner = skull.getOwner().orElse(null);
     }
 
-    public BSkullSnapshot(User user){
+    public BSkullSnapshot(User user) {
         this.owner = user;
     }
 

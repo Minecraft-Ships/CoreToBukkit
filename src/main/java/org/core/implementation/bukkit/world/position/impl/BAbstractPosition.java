@@ -8,7 +8,8 @@ import org.core.world.position.impl.Position;
 public abstract class BAbstractPosition<T extends Number> implements Position<T> {
 
     public org.bukkit.Location toBukkitLocation() {
-        return new Location(((BWorldExtent) this.getWorld()).getBukkitWorld(), this.getX().doubleValue(), this.getY().doubleValue(), this.getZ().doubleValue());
+        return new Location(((BWorldExtent) this.getWorld()).getBukkitWorld(), this.getX().doubleValue(),
+                this.getY().doubleValue(), this.getZ().doubleValue());
     }
 
     public org.bukkit.block.Block toBukkitBlock() {

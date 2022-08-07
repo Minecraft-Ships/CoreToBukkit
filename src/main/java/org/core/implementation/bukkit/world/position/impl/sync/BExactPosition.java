@@ -74,11 +74,13 @@ public class BExactPosition extends BAbstractPosition<Double> implements SyncExa
 
     @Override
     public Optional<LiveTileEntity> getTileEntity() {
-        return ((BukkitPlatform) TranslateCore.getPlatform()).createTileEntityInstance(this.location.getBlock().getState());
+        return ((BukkitPlatform) TranslateCore.getPlatform()).createTileEntityInstance(
+                this.location.getBlock().getState());
     }
 
     @Override
-    public <E extends LiveEntity, S extends EntitySnapshot<E>> Optional<S> createEntity(EntityType<E, ? extends S> type) {
+    public <E extends LiveEntity, S extends EntitySnapshot<E>> Optional<S> createEntity(
+            EntityType<E, ? extends S> type) {
         return ((BukkitPlatform) TranslateCore.getPlatform()).createSnapshot(type, this);
     }
 

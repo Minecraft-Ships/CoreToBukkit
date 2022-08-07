@@ -17,18 +17,6 @@ import java.util.function.Function;
 
 public class BAttachableKeyedData implements AttachableKeyedData {
 
-    public interface AttachableBlockWorkAround {
-
-        Function<BlockData, Direction> GET_DIRECTION_FROM_BLOCK_DATA = b -> DirectionUtils.toDirection(((org.bukkit.block.data.Directional) b).getFacing()).getOpposite();
-        Consumer<Map.Entry<BlockData, Direction>> SET_BLOCK_DATA_FROM_DIRECTION = e -> ((org.bukkit.block.data.Directional) e.getKey()).setFacing(DirectionUtils.toFace(e.getValue().getOpposite()));
-
-        Collection<BlockType> getTypes();
-
-        Direction getAttachedDirection(BlockData data);
-
-        org.bukkit.block.data.BlockData setAttachedDirection(org.bukkit.block.data.BlockData data, Direction direction);
-    }
-
     public static final Collection<AttachableBlockWorkAround> workArounds = new HashSet<>();
 
     static {
@@ -41,10 +29,17 @@ public class BAttachableKeyedData implements AttachableKeyedData {
 
     private final IBBlockDetails details;
     private final AttachableBlockWorkAround workAround;
-
     private BAttachableKeyedData(IBBlockDetails details, AttachableBlockWorkAround workAround) {
         this.details = details;
         this.workAround = workAround;
+    }
+
+    public static Optional<BAttachableKeyedData> getKeyedData(IBBlockDetails details) {
+        Optional<AttachableBlockWorkAround> opWork = workArounds
+                .stream()
+                .filter(w -> w.getTypes().stream().anyMatch(b -> details.getType().equals(b)))
+                .findAny();
+        return opWork.map(attachableBlockWorkAround -> new BAttachableKeyedData(details, attachableBlockWorkAround));
     }
 
     @Override
@@ -57,8 +52,19 @@ public class BAttachableKeyedData implements AttachableKeyedData {
         this.details.setBukkitData(this.workAround.setAttachedDirection(this.details.getBukkitData(), value));
     }
 
-    public static Optional<BAttachableKeyedData> getKeyedData(IBBlockDetails details) {
-        Optional<AttachableBlockWorkAround> opWork = workArounds.stream().filter(w -> w.getTypes().stream().anyMatch(b -> details.getType().equals(b))).findAny();
-        return opWork.map(attachableBlockWorkAround -> new BAttachableKeyedData(details, attachableBlockWorkAround));
+    public interface AttachableBlockWorkAround {
+
+        Function<BlockData, Direction> GET_DIRECTION_FROM_BLOCK_DATA = b -> DirectionUtils
+                .toDirection(((org.bukkit.block.data.Directional) b).getFacing())
+                .getOpposite();
+        Consumer<Map.Entry<BlockData, Direction>> SET_BLOCK_DATA_FROM_DIRECTION =
+                e -> ((org.bukkit.block.data.Directional) e.getKey()).setFacing(
+                DirectionUtils.toFace(e.getValue().getOpposite()));
+
+        Collection<BlockType> getTypes();
+
+        Direction getAttachedDirection(BlockData data);
+
+        org.bukkit.block.data.BlockData setAttachedDirection(org.bukkit.block.data.BlockData data, Direction direction);
     }
 }

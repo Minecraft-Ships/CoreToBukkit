@@ -6,12 +6,12 @@ import org.core.inventory.parts.snapshot.Grid3x3Snapshot;
 
 public class BDispenserInventorySnapshot extends DispenserInventorySnapshot {
 
-    public BDispenserInventorySnapshot(DispenserInventory dinv){
+    public BDispenserInventorySnapshot(DispenserInventory dinv) {
         this.grid = dinv.getItems().createSnapshot();
         this.position = dinv.getPosition();
     }
 
-    public BDispenserInventorySnapshot(){
+    public BDispenserInventorySnapshot() {
         this.grid = new Grid3x3Snapshot();
     }
 

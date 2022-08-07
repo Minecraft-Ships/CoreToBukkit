@@ -58,7 +58,8 @@ public class BAsyncBlockPosition extends BAbstractPosition<Integer> implements A
     }
 
     @Override
-    public FutureResult<SyncPosition<Integer>> scheduleBlock(Plugin plugin, BlockDetails details, PositionFlag.SetFlag... flags) {
+    public FutureResult<SyncPosition<Integer>> scheduleBlock(Plugin plugin, BlockDetails details,
+            PositionFlag.SetFlag... flags) {
         FutureResult<SyncPosition<Integer>> future = new FutureResult<>();
         Bukkit.getScheduler().runTask((org.bukkit.plugin.Plugin) plugin.getPlatformLauncher(), () -> {
             SyncPosition<Integer> position = new BBlockPosition(this.block);
@@ -69,7 +70,8 @@ public class BAsyncBlockPosition extends BAbstractPosition<Integer> implements A
     }
 
     @Override
-    public FutureResult<SyncPosition<Integer>> scheduleBlock(Plugin plugin, BlockDetails details, LivePlayer... player) {
+    public FutureResult<SyncPosition<Integer>> scheduleBlock(Plugin plugin, BlockDetails details,
+            LivePlayer... player) {
         FutureResult<SyncPosition<Integer>> future = new FutureResult<>();
         Bukkit.getScheduler().runTask((org.bukkit.plugin.Plugin) plugin.getPlatformLauncher(), () -> {
             SyncPosition<Integer> position = new BBlockPosition(this.block);

@@ -61,7 +61,10 @@ public class BItemFrameSnapshot extends BEntitySnapshot<LiveItemFrame> implement
             if (entities.isEmpty()) {
                 throw e;
             }
-            Optional<Entity> opItem = entities.stream().filter(le -> le instanceof org.bukkit.entity.ItemFrame).findAny();
+            Optional<Entity> opItem = entities
+                    .stream()
+                    .filter(le -> le instanceof org.bukkit.entity.ItemFrame)
+                    .findAny();
             if (opItem.isPresent()) {
                 frame = (org.bukkit.entity.ItemFrame) opItem.get();
             } else {

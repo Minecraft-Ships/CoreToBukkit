@@ -64,11 +64,13 @@ public enum CommonAttachableWorkAround implements BAttachableKeyedData.Attachabl
     private final Function<? super BlockData, ? extends Direction> functionDirection;
     private final Consumer<? super Map.Entry<BlockData, Direction>> consumer;
 
-    CommonAttachableWorkAround(Function<? super BlockData, ? extends Direction> getDir, Consumer<? super Map.Entry<BlockData, Direction>> setDir, BlockType... types) {
+    CommonAttachableWorkAround(Function<? super BlockData, ? extends Direction> getDir,
+            Consumer<? super Map.Entry<BlockData, Direction>> setDir, BlockType... types) {
         this(getDir, setDir, Arrays.asList(types));
     }
 
-    CommonAttachableWorkAround(Function<? super BlockData, ? extends Direction> getDir, Consumer<? super Map.Entry<BlockData, Direction>> setDir, Collection<BlockType> blockTypes) {
+    CommonAttachableWorkAround(Function<? super BlockData, ? extends Direction> getDir,
+            Consumer<? super Map.Entry<BlockData, Direction>> setDir, Collection<BlockType> blockTypes) {
         this.consumer = setDir;
         this.functionDirection = getDir;
         this.collection = blockTypes;

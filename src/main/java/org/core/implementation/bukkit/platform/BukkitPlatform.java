@@ -142,7 +142,11 @@ public class BukkitPlatform implements Platform {
         } else if (source instanceof org.bukkit.entity.Entity) {
             return (ProjectileSource) this.createEntityInstance((org.bukkit.entity.Entity) source);
         } else if (source instanceof org.bukkit.projectiles.BlockProjectileSource) {
-            return (ProjectileSource) this.createTileEntityInstance(((org.bukkit.projectiles.BlockProjectileSource) source).getBlock().getState()).orElseThrow(() -> new RuntimeException("Unknown projectile source of " + source.getClass().getSimpleName()));
+            return (ProjectileSource) this
+                    .createTileEntityInstance(
+                            ((org.bukkit.projectiles.BlockProjectileSource) source).getBlock().getState())
+                    .orElseThrow(() -> new RuntimeException(
+                            "Unknown projectile source of " + source.getClass().getSimpleName()));
         }
         throw new RuntimeException("Unknown projectile source of " + source.getClass().getSimpleName());
     }
@@ -178,13 +182,15 @@ public class BukkitPlatform implements Platform {
         throw new RuntimeException("Unknown command source of " + sender.getName());
     }
 
-    public <E extends LiveEntity, S extends EntitySnapshot<E>> Optional<S> createSnapshot(EntityType<E, ? extends S> type, SyncExactPosition position) {
+    public <E extends LiveEntity, S extends EntitySnapshot<E>> Optional<S> createSnapshot(
+            EntityType<E, ? extends S> type, SyncExactPosition position) {
         if (type.equals(EntityTypes.PLAYER.get()) || type.equals(EntityTypes.HUMAN.get())) {
             return Optional.empty();
         }
         try {
             return Optional.of(type.getSnapshotClass().getConstructor(SyncExactPosition.class).newInstance(position));
-        } catch (InstantiationException | IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {
+        } catch (InstantiationException | IllegalAccessException | InvocationTargetException |
+                 NoSuchMethodException e) {
             e.printStackTrace();
         }
         return Optional.empty();
@@ -199,14 +205,21 @@ public class BukkitPlatform implements Platform {
         Class<? extends LiveEntity> bdclass = opEntry.get().getValue();
         try {
             return bdclass.getConstructor(org.bukkit.entity.Entity.class).newInstance(entity);
-        } catch (InstantiationException | NoSuchMethodException | IllegalAccessException | InvocationTargetException e) {
+        } catch (InstantiationException | NoSuchMethodException | IllegalAccessException |
+                 InvocationTargetException e) {
             e.printStackTrace();
         }
-        throw new RuntimeException("Something went very wrong with entity " + entity.getName() + " | " + entity.getType().name());
+        throw new RuntimeException(
+                "Something went very wrong with entity " + entity.getName() + " | " + entity.getType().name());
     }
 
     public Optional<LiveTileEntity> createTileEntityInstance(org.bukkit.block.BlockState state) {
-        Optional<Map.Entry<Class<? extends org.bukkit.block.BlockState>, Class<? extends LiveTileEntity>>> opEntry = this.blockStateToTileEntity.entrySet().stream().filter(e -> e.getKey().isInstance(state)).findAny();
+        Optional<Map.Entry<Class<? extends org.bukkit.block.BlockState>, Class<? extends LiveTileEntity>>> opEntry =
+                this.blockStateToTileEntity
+                .entrySet()
+                .stream()
+                .filter(e -> e.getKey().isInstance(state))
+                .findAny();
         if (!opEntry.isPresent()) {
             if (state instanceof org.bukkit.block.Container) {
                 return Optional.of(new BLiveUnknownContainerTileEntity((org.bukkit.block.Container) state));
@@ -216,7 +229,8 @@ public class BukkitPlatform implements Platform {
         Class<? extends LiveTileEntity> bdclass = opEntry.get().getValue();
         try {
             return Optional.of(bdclass.getConstructor(org.bukkit.block.BlockState.class).newInstance(state));
-        } catch (InstantiationException | IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {
+        } catch (InstantiationException | IllegalAccessException | InvocationTargetException |
+                 NoSuchMethodException e) {
             e.printStackTrace();
         }
         return Optional.empty();
@@ -250,7 +264,9 @@ public class BukkitPlatform implements Platform {
     @Override
     @Deprecated
     public <T> UnspecificParser<T> get(UnspecificParsers<T> parsers) {
-        return (UnspecificParser<T>) this.getUnspecifiedParser(parsers.getId()).orElseThrow(() -> new IllegalStateException("Could not find " + parsers.getId()));
+        return (UnspecificParser<T>) this
+                .getUnspecifiedParser(parsers.getId())
+                .orElseThrow(() -> new IllegalStateException("Could not find " + parsers.getId()));
     }
 
     @Override
@@ -294,7 +310,8 @@ public class BukkitPlatform implements Platform {
     }
 
     @Override
-    public <E extends LiveEntity, S extends EntitySnapshot<E>> @NotNull Singleton<EntityType<E, S>> get(EntityTypes<E, S> entityId) {
+    public <E extends LiveEntity, S extends EntitySnapshot<E>> @NotNull Singleton<EntityType<E, S>> get(
+            EntityTypes<E, S> entityId) {
         return new Singleton<>(() -> this
                 .entityTypes
                 .stream()
@@ -306,9 +323,14 @@ public class BukkitPlatform implements Platform {
 
     @Override
     public <E extends LiveEntity> Optional<EntityType<E, ? extends EntitySnapshot<E>>> getEntityType(String id) {
-        Optional<EntityType<? extends LiveEntity, ? extends EntitySnapshot<? extends LiveEntity>>> opEntity = this.entityTypes.stream().filter(t -> t.getId().equals(id)).findAny();
+        Optional<EntityType<? extends LiveEntity, ? extends EntitySnapshot<? extends LiveEntity>>> opEntity =
+                this.entityTypes
+                .stream()
+                .filter(t -> t.getId().equals(id))
+                .findAny();
         if (opEntity.isPresent()) {
-            EntityType<? extends LiveEntity, ? extends EntitySnapshot<? extends LiveEntity>> entityType = opEntity.get();
+            EntityType<? extends LiveEntity, ? extends EntitySnapshot<? extends LiveEntity>> entityType =
+                    opEntity.get();
             return Optional.of((EntityType<E, ? extends EntitySnapshot<E>>) entityType);
         }
         return Optional.empty();
@@ -423,12 +445,18 @@ public class BukkitPlatform implements Platform {
 
     @Override
     public Collection<Permission> getPermissions() {
-        return Bukkit.getServer().getPluginManager().getPermissions().parallelStream().map(p -> new BukkitPermission(p.getName())).collect(Collectors.toList());
+        return Bukkit
+                .getServer()
+                .getPluginManager()
+                .getPermissions()
+                .parallelStream()
+                .map(p -> new BukkitPermission(p.getName()))
+                .collect(Collectors.toList());
     }
 
     @Override
     public Collection<Structure> getStructures() {
-        if (this.structurePlatform==null) {
+        if (this.structurePlatform == null) {
             return Collections.emptyList();
         }
         return this.structurePlatform.getStructure();
@@ -436,18 +464,20 @@ public class BukkitPlatform implements Platform {
 
     @Override
     public @NotNull Structure register(StructureBuilder builder) {
-        if (this.structurePlatform==null) {
-            throw new RuntimeException("Structure support requires Bukkit 1.17 that was build after the 5th Oct 2021. In " +
-                    "particular the commit of c01e2f07e99");
+        if (this.structurePlatform == null) {
+            throw new RuntimeException(
+                    "Structure support requires Bukkit 1.17 that was build after the 5th Oct 2021. In " +
+                            "particular the commit of c01e2f07e99");
         }
         return this.structurePlatform.register(builder);
     }
 
     @Override
     public @NotNull Structure register(StructureFileBuilder builder) throws IOException {
-        if (this.structurePlatform==null) {
-            throw new RuntimeException("Structure support requires Bukkit 1.17 that was build after the 5th Oct 2021. In " +
-                    "particular the commit of c01e2f07e99");
+        if (this.structurePlatform == null) {
+            throw new RuntimeException(
+                    "Structure support requires Bukkit 1.17 that was build after the 5th Oct 2021. In " +
+                            "particular the commit of c01e2f07e99");
         }
         return this.structurePlatform.register(builder);
     }
@@ -459,8 +489,11 @@ public class BukkitPlatform implements Platform {
 
     @Override
     public @NotNull CorePermission register(CorePermission permissionNode) {
-        if (Bukkit.getServer().getPluginManager().getPermission(permissionNode.getPermissionValue())==null) {
-            Bukkit.getServer().getPluginManager().addPermission(new org.bukkit.permissions.Permission(permissionNode.getPermissionValue()));
+        if (Bukkit.getServer().getPluginManager().getPermission(permissionNode.getPermissionValue()) == null) {
+            Bukkit
+                    .getServer()
+                    .getPluginManager()
+                    .addPermission(new org.bukkit.permissions.Permission(permissionNode.getPermissionValue()));
         }
         return permissionNode;
     }
@@ -498,7 +531,8 @@ public class BukkitPlatform implements Platform {
             //fix for Pukkit (Pocket Edition of Spigot)
             if (version.startsWith("v")) {
                 String[] versionString = version.substring(1).split(Pattern.quote("."));
-                return new CorePluginVersion(Integer.parseInt(versionString[0]), Integer.parseInt(versionString[1]), Integer.parseInt(versionString[2]));
+                return new CorePluginVersion(Integer.parseInt(versionString[0]), Integer.parseInt(versionString[1]),
+                        Integer.parseInt(versionString[2]));
             }
             throw e;
         }

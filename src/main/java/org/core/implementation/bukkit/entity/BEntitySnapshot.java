@@ -15,11 +15,11 @@ import java.util.Optional;
 
 public abstract class BEntitySnapshot<T extends LiveEntity> implements EntitySnapshot<T> {
 
+    protected final Collection<EntitySnapshot<? extends LiveEntity>> passengers = new HashSet<>();
     protected double pitch;
     protected double yaw;
     protected double roll;
     protected SyncExactPosition position;
-    protected final Collection<EntitySnapshot<? extends LiveEntity>> passengers = new HashSet<>();
     protected boolean hasGravity;
     protected boolean isOnGround;
     protected Vector3<Double> velocity;
@@ -59,7 +59,7 @@ public abstract class BEntitySnapshot<T extends LiveEntity> implements EntitySna
 
     protected <L extends LiveEntity> L applyDefaults(L entity) {
         entity.setCustomNameVisible(this.isCustomNameVisible);
-        if (this.customName!=null) {
+        if (this.customName != null) {
             entity.setCustomName(this.customName);
         }
         entity.setGravity(this.hasGravity);
@@ -96,7 +96,8 @@ public abstract class BEntitySnapshot<T extends LiveEntity> implements EntitySna
 
     @Override
     public EntitySnapshot<T> setPosition(Position<? extends Number> position) {
-        this.position = position instanceof SyncExactPosition ? (SyncExactPosition) position:((SyncBlockPosition) position).toExactPosition();
+        this.position = position instanceof SyncExactPosition ? (SyncExactPosition) position :
+                ((SyncBlockPosition) position).toExactPosition();
         return this;
     }
 

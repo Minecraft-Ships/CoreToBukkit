@@ -13,8 +13,8 @@ import org.core.implementation.bukkit.entity.BLiveEntity;
 public class BLiveCreeper extends BLiveEntity<Creeper> implements LiveCreeperEntity {
 
     @Deprecated
-    public BLiveCreeper(org.bukkit.entity.Entity entity){
-        super((org.bukkit.entity.Creeper)entity);
+    public BLiveCreeper(org.bukkit.entity.Entity entity) {
+        super((org.bukkit.entity.Creeper) entity);
     }
 
     public BLiveCreeper(org.bukkit.entity.Creeper entity) {

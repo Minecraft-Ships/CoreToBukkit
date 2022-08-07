@@ -30,7 +30,8 @@ public class CoreBukkitPluginLoader implements PluginLoader {
     }
 
     @Override
-    public @NotNull Map<Class<? extends Event>, Set<RegisteredListener>> createRegisteredListeners(@NotNull Listener listener, @NotNull Plugin plugin) {
+    public @NotNull Map<Class<? extends Event>, Set<RegisteredListener>> createRegisteredListeners(
+            @NotNull Listener listener, @NotNull Plugin plugin) {
         return new HashMap<>();
     }
 

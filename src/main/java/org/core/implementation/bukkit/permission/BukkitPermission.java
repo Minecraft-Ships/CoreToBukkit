@@ -6,7 +6,7 @@ public class BukkitPermission implements Permission {
 
     private final String permission;
 
-    public BukkitPermission(String permission){
+    public BukkitPermission(String permission) {
         this.permission = permission;
     }
 

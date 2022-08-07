@@ -14,7 +14,7 @@ public class BDirectionalData implements DirectionalData {
 
     protected final org.bukkit.block.data.Directional data;
 
-    public BDirectionalData(org.bukkit.block.data.Directional data){
+    public BDirectionalData(org.bukkit.block.data.Directional data) {
         this.data = data;
     }
 
@@ -27,7 +27,7 @@ public class BDirectionalData implements DirectionalData {
     public Direction[] getSupportedDirections() {
         List<BlockFace> set = new ArrayList<>(this.data.getFaces());
         Direction[] directions = new Direction[set.size()];
-        for(int A = 0; A < set.size(); A++){
+        for (int A = 0; A < set.size(); A++) {
             directions[A] = DirectionUtils.toDirection(set.get(A));
         }
         return directions;
@@ -35,7 +35,7 @@ public class BDirectionalData implements DirectionalData {
 
     @Override
     public DirectionalData setDirection(Direction direction) throws DirectionNotSupported {
-        if(Stream.of(this.getSupportedDirections()).noneMatch(d -> d.equals(direction))){
+        if (Stream.of(this.getSupportedDirections()).noneMatch(d -> d.equals(direction))) {
             throw new DirectionNotSupported(direction, this.data.getAsString());
         }
         this.data.setFacing(DirectionUtils.toFace(direction));

@@ -167,14 +167,16 @@ public class CoreBukkitPluginWrapper implements org.bukkit.plugin.Plugin {
 
     @Override
     @Deprecated
-    public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
+    public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label,
+            @NotNull String[] args) {
         return false;
     }
 
     @Nullable
     @Override
     @Deprecated
-    public List<String> onTabComplete(@NotNull CommandSender sender, @NotNull Command command, @NotNull String alias, @NotNull String[] args) {
+    public List<String> onTabComplete(@NotNull CommandSender sender, @NotNull Command command, @NotNull String alias,
+            @NotNull String[] args) {
         return Collections.emptyList();
     }
 }

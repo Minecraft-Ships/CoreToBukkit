@@ -85,7 +85,8 @@ public class YAMLConfigurationFile implements ConfigurationStream.ConfigurationF
     }
 
     @Override
-    public <T, C extends Collection<T>> C parseCollection(ConfigurationNode node, Parser<? super String, T> parser, C collection) {
+    public <T, C extends Collection<T>> C parseCollection(ConfigurationNode node, Parser<? super String, T> parser,
+            C collection) {
         List<String> list = this.yaml.getStringList(String.join(".", node.getPath()));
         for (String value : list) {
             parser.parse(value).ifPresent(collection::add);
@@ -94,7 +95,7 @@ public class YAMLConfigurationFile implements ConfigurationStream.ConfigurationF
     }
 
     public void setObject(ConfigurationNode node, Object value) {
-        if (node.getPath().length==0) {
+        if (node.getPath().length == 0) {
             throw new IllegalArgumentException("Node must have a path specified");
         }
         this.yaml.set(String.join(".", node.getPath()), value);

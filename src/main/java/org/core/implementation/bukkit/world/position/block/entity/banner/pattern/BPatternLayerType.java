@@ -8,7 +8,7 @@ public class BPatternLayerType implements PatternLayerType {
 
     final org.bukkit.block.banner.PatternType type;
 
-    public BPatternLayerType(org.bukkit.block.banner.PatternType type){
+    public BPatternLayerType(org.bukkit.block.banner.PatternType type) {
         this.type = type;
     }
 

@@ -40,7 +40,9 @@ public class BParrotSnapshot extends BEntitySnapshot<LiveParrot> implements Parr
         org.bukkit.Location loc = ((BAbstractPosition<Double>) this.position).toBukkitLocation();
         loc.setPitch((float) this.pitch);
         loc.setYaw((float) this.yaw);
-        org.bukkit.entity.Parrot parrot = (org.bukkit.entity.Parrot) loc.getWorld().spawnEntity(loc, org.bukkit.entity.EntityType.PARROT);
+        org.bukkit.entity.Parrot parrot = (org.bukkit.entity.Parrot) loc
+                .getWorld()
+                .spawnEntity(loc, org.bukkit.entity.EntityType.PARROT);
         BLiveParrot coreParrot = new BLiveParrot(parrot);
         this.applyDefaults(coreParrot);
         coreParrot.setAdult(this.adult);

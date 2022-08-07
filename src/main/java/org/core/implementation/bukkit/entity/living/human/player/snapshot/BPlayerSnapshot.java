@@ -15,8 +15,8 @@ import java.util.UUID;
 
 public class BPlayerSnapshot extends BEntitySnapshot<LivePlayer> implements PlayerSnapshot {
 
-    protected String name;
     protected final PlayerInventorySnapshot inventorySnapshot;
+    protected String name;
     protected int foodLevel;
     protected double exhaustionLevel;
     protected double saturationLevel;
@@ -115,7 +115,7 @@ public class BPlayerSnapshot extends BEntitySnapshot<LivePlayer> implements Play
     }
 
     @Override
-    public PlayerSnapshot setExhaustionLevel(double value){
+    public PlayerSnapshot setExhaustionLevel(double value) {
         this.exhaustionLevel = value;
         return this;
     }
@@ -139,7 +139,8 @@ public class BPlayerSnapshot extends BEntitySnapshot<LivePlayer> implements Play
 
     @Override
     public BigDecimal getBalance() {
-        return BigDecimal.valueOf(VaultService.getBalance(((BLiveEntity<Player>) this.createdFrom).getBukkitEntity()).orElse(0.0));
+        return BigDecimal.valueOf(
+                VaultService.getBalance(((BLiveEntity<Player>) this.createdFrom).getBukkitEntity()).orElse(0.0));
     }
 
     @Override

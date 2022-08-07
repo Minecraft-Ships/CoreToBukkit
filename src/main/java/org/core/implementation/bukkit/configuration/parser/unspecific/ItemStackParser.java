@@ -1,6 +1,5 @@
 package org.core.implementation.bukkit.configuration.parser.unspecific;
 
-import org.array.utils.ArrayUtils;
 import org.core.config.ConfigurationNode;
 import org.core.config.ConfigurationStream;
 import org.core.config.parser.unspecific.UnspecificParser;
@@ -8,7 +7,6 @@ import org.core.implementation.bukkit.configuration.YAMLConfigurationFile;
 import org.core.implementation.bukkit.inventory.item.stack.BAbstractItemStack;
 import org.core.implementation.bukkit.inventory.item.stack.BLiveItemStack;
 import org.core.inventory.item.stack.ItemStack;
-import org.jetbrains.annotations.Nullable;
 
 import java.util.Optional;
 

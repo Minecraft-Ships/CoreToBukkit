@@ -14,7 +14,7 @@ public class BFurnaceEntity extends AbstractLiveTileEntity implements LiveFurnac
         super(state);
     }
 
-    public org.bukkit.block.Furnace getBukkitFurnace(){
+    public org.bukkit.block.Furnace getBukkitFurnace() {
         return (Furnace) this.state;
     }
 

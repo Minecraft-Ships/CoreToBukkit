@@ -7,7 +7,7 @@ public class BJoinedEvent implements ClientConnectionEvent.Incoming.Joined {
 
     private final LivePlayer player;
 
-    public BJoinedEvent(LivePlayer player){
+    public BJoinedEvent(LivePlayer player) {
         this.player = player;
     }
 

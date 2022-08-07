@@ -24,13 +24,13 @@ public class BItemType implements ItemType {
     public boolean equals(Object object) {
         if (object instanceof BBlockType) {
             BBlockType type = (BBlockType) object;
-            if (type.getBukkitMaterial()==this.material) {
+            if (type.getBukkitMaterial() == this.material) {
                 return true;
             }
         }
         if (object instanceof BItemType) {
             BItemType type = (BItemType) object;
-            return type.getBukkitMaterial()==this.material;
+            return type.getBukkitMaterial() == this.material;
         }
         return false;
     }

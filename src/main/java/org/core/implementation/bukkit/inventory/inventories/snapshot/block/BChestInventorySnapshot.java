@@ -29,7 +29,7 @@ public class BChestInventorySnapshot extends ChestInventorySnapshot {
                 .getSlots()
                 .stream()
                 .filter(s -> s.getPosition().isPresent())
-                .filter(s -> s.getPosition().get()==slotPos)
+                .filter(s -> s.getPosition().get() == slotPos)
                 .findAny();
     }
 

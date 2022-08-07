@@ -6,7 +6,8 @@ import org.core.entity.EntityType;
 import org.core.entity.LiveEntity;
 import org.core.entity.scene.minecart.type.rideable.LiveRideableMinecart;
 
-public class BLiveRideableMinecart extends BLiveMinecart<org.bukkit.entity.minecart.RideableMinecart> implements LiveRideableMinecart {
+public class BLiveRideableMinecart extends BLiveMinecart<org.bukkit.entity.minecart.RideableMinecart>
+        implements LiveRideableMinecart {
 
     public BLiveRideableMinecart(Entity entity) {
         super(entity);

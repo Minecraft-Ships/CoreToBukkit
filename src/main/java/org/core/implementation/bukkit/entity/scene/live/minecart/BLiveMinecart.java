@@ -6,13 +6,14 @@ import org.core.entity.scene.minecart.LiveMinecart;
 import org.core.entity.scene.minecart.Minecart;
 import org.core.implementation.bukkit.entity.BLiveEntity;
 
-public abstract class BLiveMinecart<M extends org.bukkit.entity.Minecart> extends BLiveEntity<M> implements LiveMinecart {
+public abstract class BLiveMinecart<M extends org.bukkit.entity.Minecart> extends BLiveEntity<M>
+        implements LiveMinecart {
 
     public BLiveMinecart(Entity entity) {
-        this((M)entity);
+        this((M) entity);
     }
 
-    public BLiveMinecart(M minecart){
+    public BLiveMinecart(M minecart) {
         super(minecart);
     }
 

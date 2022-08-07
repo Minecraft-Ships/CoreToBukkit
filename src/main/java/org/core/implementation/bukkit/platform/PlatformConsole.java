@@ -25,7 +25,8 @@ public class PlatformConsole implements ConsoleSource {
             Class<?> clazz = Class.forName(AText.COMPONENT_CLASS_PATH);
             Method method = Bukkit.getConsoleSender().getClass().getMethod("sendMessage", clazz);
             method.invoke(Bukkit.getConsoleSender(), ((AdventureText) message).getComponent());
-        } catch (ClassNotFoundException | NoSuchMethodException | ClassCastException | IllegalAccessException | InvocationTargetException e) {
+        } catch (ClassNotFoundException | NoSuchMethodException | ClassCastException | IllegalAccessException |
+                 InvocationTargetException e) {
             String legacy = message.toLegacy();
             Bukkit.getConsoleSender().sendMessage(legacy);
         }

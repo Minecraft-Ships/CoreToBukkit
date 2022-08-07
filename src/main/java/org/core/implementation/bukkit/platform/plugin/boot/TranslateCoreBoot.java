@@ -62,7 +62,8 @@ public class TranslateCoreBoot extends JavaPlugin {
                     lookup.put(plugin.getPluginName(), (Plugin) plugin.getPlatformLauncher());
 
 
-                    map.register("TranslateCore", new BCommandWrapper(new BCommand(new TranslateCoreCommands(new TimingsCommand()))));
+                    map.register("TranslateCore",
+                            new BCommandWrapper(new BCommand(new TranslateCoreCommands(new TimingsCommand()))));
 
 
                     CommandRegister cmdReg = new CommandRegister();
@@ -113,7 +114,10 @@ public class TranslateCoreBoot extends JavaPlugin {
         List<CorePlugin> plugins = CommonLoad.loadPlugin(this.getClassLoader(), files);
         PluginManager pluginManager = Bukkit.getPluginManager();
         if (pluginManager instanceof SimplePluginManager spm) {
-            Set<CoreBukkitPluginWrapper> bukkitPlugins = plugins.parallelStream().map(CoreBukkitPluginWrapper::new).collect(Collectors.toSet());
+            Set<CoreBukkitPluginWrapper> bukkitPlugins = plugins
+                    .parallelStream()
+                    .map(CoreBukkitPluginWrapper::new)
+                    .collect(Collectors.toSet());
             try {
                 CommandMap map = this.getFromField(spm, "commandMap");
                 List<Plugin> spmPlugins = this.getFromField(spm, "plugins");
@@ -138,7 +142,11 @@ public class TranslateCoreBoot extends JavaPlugin {
             }
         }
 
-        TranslateCore.getConsole().sendMessage(AText.ofPlain("SimplePluginManager was not used or a error occurred above. Plugins will not be treated as first party -> this may break compatibility"));
+        TranslateCore
+                .getConsole()
+                .sendMessage(AText.ofPlain(
+                        "SimplePluginManager was not used or a error occurred above. Plugins will not be treated as " +
+                                "first party -> this may break compatibility"));
         plugins.parallelStream().forEach(plugin -> plugin.onConstruct(TranslateCoreBoot.this));
         return plugins;
     }

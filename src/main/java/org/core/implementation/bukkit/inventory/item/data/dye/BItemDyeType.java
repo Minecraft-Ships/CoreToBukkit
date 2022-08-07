@@ -6,11 +6,11 @@ public class BItemDyeType implements DyeType {
 
     protected final org.bukkit.DyeColor dye;
 
-    public BItemDyeType(org.bukkit.DyeColor dye){
+    public BItemDyeType(org.bukkit.DyeColor dye) {
         this.dye = dye;
     }
 
-    public org.bukkit.DyeColor getBukkitDye(){
+    public org.bukkit.DyeColor getBukkitDye() {
         return this.dye;
     }
 

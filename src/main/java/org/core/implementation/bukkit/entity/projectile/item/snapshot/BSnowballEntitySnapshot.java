@@ -36,7 +36,9 @@ public class BSnowballEntitySnapshot extends BEntitySnapshot<LiveSnowballEntity>
         org.bukkit.Location loc = ((BAbstractPosition<Double>) this.position).toBukkitLocation();
         loc.setPitch((float) this.pitch);
         loc.setYaw((float) this.yaw);
-        org.bukkit.entity.Snowball snowball = (org.bukkit.entity.Snowball) loc.getWorld().spawnEntity(loc, org.bukkit.entity.EntityType.SNOWBALL);
+        org.bukkit.entity.Snowball snowball = (org.bukkit.entity.Snowball) loc
+                .getWorld()
+                .spawnEntity(loc, org.bukkit.entity.EntityType.SNOWBALL);
         BLiveSnowballEntity coreSnowball = new BLiveSnowballEntity(snowball);
         this.applyDefaults(coreSnowball);
         coreSnowball.setSource(this.source);

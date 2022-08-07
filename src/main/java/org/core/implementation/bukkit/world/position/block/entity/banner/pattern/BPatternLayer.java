@@ -35,6 +35,7 @@ public class BPatternLayer implements PatternLayer {
 
     @Override
     public PatternLayer setPattern(PatternLayerType type) {
-        return new BPatternLayer(new org.bukkit.block.banner.Pattern(this.pattern.getColor(), ((BPatternLayerType) type).type));
+        return new BPatternLayer(
+                new org.bukkit.block.banner.Pattern(this.pattern.getColor(), ((BPatternLayerType) type).type));
     }
 }

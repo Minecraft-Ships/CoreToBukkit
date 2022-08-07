@@ -3,6 +3,11 @@ package org.core.implementation.bukkit.world;
 import org.bukkit.Chunk;
 import org.core.TranslateCore;
 import org.core.entity.LiveEntity;
+import org.core.implementation.bukkit.platform.BukkitPlatform;
+import org.core.implementation.bukkit.world.position.impl.async.BAsyncBlockPosition;
+import org.core.implementation.bukkit.world.position.impl.async.BAsyncExactPosition;
+import org.core.implementation.bukkit.world.position.impl.sync.BBlockPosition;
+import org.core.implementation.bukkit.world.position.impl.sync.BExactPosition;
 import org.core.world.ChunkExtent;
 import org.core.world.WorldExtent;
 import org.core.world.position.block.entity.LiveTileEntity;
@@ -10,11 +15,6 @@ import org.core.world.position.impl.async.ASyncBlockPosition;
 import org.core.world.position.impl.async.ASyncExactPosition;
 import org.core.world.position.impl.sync.SyncBlockPosition;
 import org.core.world.position.impl.sync.SyncExactPosition;
-import org.core.implementation.bukkit.platform.BukkitPlatform;
-import org.core.implementation.bukkit.world.position.impl.async.BAsyncBlockPosition;
-import org.core.implementation.bukkit.world.position.impl.async.BAsyncExactPosition;
-import org.core.implementation.bukkit.world.position.impl.sync.BBlockPosition;
-import org.core.implementation.bukkit.world.position.impl.sync.BExactPosition;
 
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -24,7 +24,7 @@ public class BChunkExtent implements ChunkExtent {
 
     private final Chunk chunk;
 
-    public BChunkExtent(Chunk chunk){
+    public BChunkExtent(Chunk chunk) {
         this.chunk = chunk;
     }
 
@@ -63,7 +63,9 @@ public class BChunkExtent implements ChunkExtent {
     @Override
     public Set<LiveTileEntity> getTileEntities() {
         return Stream.of(this.chunk.getTileEntities())
-                .map(entity -> ((BukkitPlatform) TranslateCore.getPlatform()).createTileEntityInstance(entity).orElse(null))
+                .map(entity -> ((BukkitPlatform) TranslateCore.getPlatform())
+                        .createTileEntityInstance(entity)
+                        .orElse(null))
                 .collect(Collectors.toSet());
     }
 
@@ -73,8 +75,8 @@ public class BChunkExtent implements ChunkExtent {
     }
 
     @Override
-    public boolean equals(Object obj){
-        if(!(obj instanceof BChunkExtent)){
+    public boolean equals(Object obj) {
+        if (!(obj instanceof BChunkExtent)) {
             return false;
         }
         BChunkExtent chunk = (BChunkExtent) obj;

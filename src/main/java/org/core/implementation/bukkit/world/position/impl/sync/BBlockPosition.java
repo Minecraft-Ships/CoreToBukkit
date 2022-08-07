@@ -64,7 +64,11 @@ public class BBlockPosition extends BAbstractPosition<Integer> implements SyncBl
 
     @Override
     public BBlockPosition setBlock(BlockDetails details, PositionFlag.SetFlag... flags) {
-        BApplyPhysicsFlag physicsFlag = (BApplyPhysicsFlag) Stream.of(flags).filter(b -> b instanceof ApplyPhysicsFlag).findAny().orElse(ApplyPhysicsFlags.NONE.get());
+        BApplyPhysicsFlag physicsFlag = (BApplyPhysicsFlag) Stream
+                .of(flags)
+                .filter(b -> b instanceof ApplyPhysicsFlag)
+                .findAny()
+                .orElse(ApplyPhysicsFlags.NONE.get());
 
         this.block.setBlockData(((IBBlockDetails) details).getBukkitData(), physicsFlag.getBukkitValue());
         Optional<TileEntitySnapshot<? extends TileEntity>> opTile = details.get(KeyedData.TILED_ENTITY);
@@ -80,7 +84,11 @@ public class BBlockPosition extends BAbstractPosition<Integer> implements SyncBl
 
     @Override
     public BBlockPosition setBlock(BlockDetails details, LivePlayer... player) {
-        Stream.of(player).forEach(lp -> ((BLiveEntity<Player>) lp).getBukkitEntity().sendBlockChange(this.block.getLocation(), ((IBBlockDetails) details).getBukkitData()));
+        Stream
+                .of(player)
+                .forEach(lp -> ((BLiveEntity<Player>) lp)
+                        .getBukkitEntity()
+                        .sendBlockChange(this.block.getLocation(), ((IBBlockDetails) details).getBukkitData()));
         Optional<TileEntitySnapshot<? extends TileEntity>> opTile = details.get(KeyedData.TILED_ENTITY);
         if (opTile.isPresent()) {
             TileEntitySnapshot<? extends TileEntity> tile = opTile.get();
@@ -88,7 +96,11 @@ public class BBlockPosition extends BAbstractPosition<Integer> implements SyncBl
                 SignTileEntity stes = (SignTileEntity) tile;
                 List<AText> lines = stes.getText();
                 String[] linesArray = lines.parallelStream().map(AText::toLegacy).toArray(String[]::new);
-                Stream.of(player).forEach(lp -> ((BLiveEntity<Player>) lp).getBukkitEntity().sendSignChange(this.block.getLocation(), linesArray));
+                Stream
+                        .of(player)
+                        .forEach(lp -> ((BLiveEntity<Player>) lp)
+                                .getBukkitEntity()
+                                .sendSignChange(this.block.getLocation(), linesArray));
             }
         }
         return this;
@@ -112,7 +124,8 @@ public class BBlockPosition extends BAbstractPosition<Integer> implements SyncBl
     }
 
     @Override
-    public <E extends LiveEntity, S extends EntitySnapshot<E>> Optional<S> createEntity(EntityType<E, ? extends S> type) {
+    public <E extends LiveEntity, S extends EntitySnapshot<E>> Optional<S> createEntity(
+            EntityType<E, ? extends S> type) {
         return ((BukkitPlatform) TranslateCore.getPlatform()).createSnapshot(type, this.toExactPosition());
     }
 

@@ -46,8 +46,9 @@ public class BukkitStructurePlatform {
     public Structure register(StructureFileBuilder builder) throws IOException {
         org.bukkit.structure.Structure structure = this.manager.loadStructure(builder.getFile());
         Structure bStructure = new BStructure(structure, builder.getName(), builder.getPlugin(), builder.getKey());
-        if (builder.getPlugin()!=null && builder.getKey()!=null) {
-            this.manager.registerStructure(new NamespacedKey(((org.bukkit.plugin.Plugin) builder.getPlugin().getPlatformLauncher()),
+        if (builder.getPlugin() != null && builder.getKey() != null) {
+            this.manager.registerStructure(
+                    new NamespacedKey(((org.bukkit.plugin.Plugin) builder.getPlugin().getPlatformLauncher()),
                             builder.getKey()),
                     structure);
         }
@@ -57,19 +58,19 @@ public class BukkitStructurePlatform {
 
     public Structure register(StructureBuilder builder) {
         String key = builder.getId();
-        if (key==null) {
+        if (key == null) {
             throw new IllegalArgumentException("Key cannot be null");
         }
-        if (builder.getPlugin()==null) {
+        if (builder.getPlugin() == null) {
             throw new IllegalArgumentException("Plugin cannot be null");
         }
         org.bukkit.plugin.Plugin plugin = (org.bukkit.plugin.Plugin) builder.getPlugin().getPlatformLauncher();
         NamespacedKey namespaceKey = NamespacedKey.fromString(key, plugin);
-        if (namespaceKey==null) {
+        if (namespaceKey == null) {
             throw new IllegalStateException("Namespace created was null");
         }
 
-        if (builder.getMax()==null || builder.getMin()==null) {
+        if (builder.getMax() == null || builder.getMin() == null) {
             throw new IllegalArgumentException("Min and Max cannot be null");
         }
         World world = ((BWorldExtent) builder.getWorld()).getBukkitWorld();

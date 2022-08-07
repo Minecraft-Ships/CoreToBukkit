@@ -12,11 +12,11 @@ public class BLiveDispenserTileEntity implements LiveDispenserTileEntity {
     protected final org.bukkit.block.Dispenser dispenser;
 
     @Deprecated
-    public BLiveDispenserTileEntity(org.bukkit.block.BlockState state){
-        this((org.bukkit.block.Dispenser)state);
+    public BLiveDispenserTileEntity(org.bukkit.block.BlockState state) {
+        this((org.bukkit.block.Dispenser) state);
     }
 
-    public BLiveDispenserTileEntity(org.bukkit.block.Dispenser dispenser){
+    public BLiveDispenserTileEntity(org.bukkit.block.Dispenser dispenser) {
         this.dispenser = dispenser;
     }
 

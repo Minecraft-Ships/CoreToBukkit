@@ -67,7 +67,7 @@ public class BWorldExtent implements WorldExtent {
         Set<LiveEntity> entities = new HashSet<>();
         this.world.getEntities().forEach(e -> {
             LiveEntity entity = ((BukkitPlatform) TranslateCore.getPlatform()).createEntityInstance(e);
-            if (entity==null) {
+            if (entity == null) {
                 System.err.println("Entity could not be converted: " + e.getType().name() + " | " + e.getName());
                 return;
             }
@@ -110,7 +110,7 @@ public class BWorldExtent implements WorldExtent {
     @Override
     public Optional<ChunkExtent> getChunk(Vector3<Integer> vector) {
         Chunk chunk = this.world.getChunkAt(vector.getX(), vector.getZ());
-        if (chunk==null) {
+        if (chunk == null) {
             return Optional.empty();
         }
         return Optional.of(new BChunkExtent(chunk));

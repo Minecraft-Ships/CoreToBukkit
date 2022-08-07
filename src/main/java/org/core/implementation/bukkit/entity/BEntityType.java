@@ -390,7 +390,8 @@ public interface BEntityType<E extends LiveEntity, S extends EntitySnapshot<E>> 
         }
     }
 
-    class UnknownType<T extends org.bukkit.entity.Entity> implements BEntityType<UnknownLiveEntity<T>, UnknownEntitySnapshot<T>> {
+    class UnknownType<T extends org.bukkit.entity.Entity>
+            implements BEntityType<UnknownLiveEntity<T>, UnknownEntitySnapshot<T>> {
 
         protected final org.bukkit.entity.EntityType type;
 
@@ -405,12 +406,12 @@ public interface BEntityType<E extends LiveEntity, S extends EntitySnapshot<E>> 
 
         @Override
         public Class<UnknownLiveEntity<T>> getEntityClass() {
-            return (Class<UnknownLiveEntity<T>>)(Object)UnknownLiveEntity.class;
+            return (Class<UnknownLiveEntity<T>>) (Object) UnknownLiveEntity.class;
         }
 
         @Override
         public Class<UnknownEntitySnapshot<T>> getSnapshotClass() {
-            return (Class<UnknownEntitySnapshot<T>>)(Object) UnknownEntitySnapshot.class;
+            return (Class<UnknownEntitySnapshot<T>>) (Object) UnknownEntitySnapshot.class;
         }
 
         @Override

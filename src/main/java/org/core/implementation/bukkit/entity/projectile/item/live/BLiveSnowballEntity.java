@@ -28,7 +28,7 @@ public class BLiveSnowballEntity extends BLiveEntity<Snowball> implements LiveSn
     @Override
     public Optional<ProjectileSource> getSource() {
         org.bukkit.projectiles.ProjectileSource source = this.getBukkitEntity().getShooter();
-        if (source==null) {
+        if (source == null) {
             return Optional.empty();
         }
         return Optional.of(((BukkitPlatform) TranslateCore.getPlatform()).getCoreProjectileSource(source));
@@ -36,7 +36,9 @@ public class BLiveSnowballEntity extends BLiveEntity<Snowball> implements LiveSn
 
     @Override
     public BLiveSnowballEntity setSource(ProjectileSource source) {
-        this.getBukkitEntity().setShooter(((BukkitPlatform) TranslateCore.getPlatform()).getBukkitProjectileSource(source));
+        this
+                .getBukkitEntity()
+                .setShooter(((BukkitPlatform) TranslateCore.getPlatform()).getBukkitProjectileSource(source));
         return this;
     }
 

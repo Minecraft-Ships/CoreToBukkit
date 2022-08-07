@@ -16,11 +16,11 @@ public class BUnknownContainerTileEntitySnapshot implements UnknownContainerTile
 
     protected final UnknownBlockAttachedInventorySnapshot inventory;
 
-    public BUnknownContainerTileEntitySnapshot(SyncBlockPosition position, BlockType... types){
+    public BUnknownContainerTileEntitySnapshot(SyncBlockPosition position, BlockType... types) {
         this.inventory = new BUnknownBlockAttachedInventorySnapshot(position, types);
     }
 
-    public BUnknownContainerTileEntitySnapshot(UnknownContainerTiledEntity entity){
+    public BUnknownContainerTileEntitySnapshot(UnknownContainerTiledEntity entity) {
         this.inventory = entity.getInventory().createSnapshot();
     }
 

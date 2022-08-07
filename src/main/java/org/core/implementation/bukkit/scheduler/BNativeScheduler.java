@@ -15,46 +15,7 @@ import java.util.function.Consumer;
 
 public class BNativeScheduler implements Scheduler.Native {
 
-    private class RunAfterScheduler implements Runnable {
-
-        @Override
-        public void run() {
-            BNativeScheduler.this.startRunner = LocalTime.now();
-            try {
-                BNativeScheduler.this.taskToRun.accept(BNativeScheduler.this);
-            } catch (Throwable e) {
-                e.printStackTrace();
-            }
-            ((BScheduleManager) TranslateCore.getScheduleManager()).unregister(BNativeScheduler.this);
-            Scheduler scheduler = BNativeScheduler.this.runAfter;
-            if (scheduler != null) {
-                if (scheduler instanceof BNativeScheduler) {
-                    ((BNativeScheduler) scheduler).parent = BNativeScheduler.this.parent;
-                }
-                scheduler.run();
-            }
-            Bukkit.getScheduler().cancelTask(BNativeScheduler.this.task);
-            BNativeScheduler.this.endTime = LocalTime.now();
-        }
-
-        @Override
-        public String toString() {
-            String str =
-                    BNativeScheduler.this.displayName + ": Delay(Time: " + BNativeScheduler.this.delayCount + " Unit: " + BNativeScheduler.this.delayTimeUnit +
-                            ") Iteration: (Time: " + BNativeScheduler.this.iteration + " Unit: " + BNativeScheduler.this.iterationTimeUnit + ") Plugin: " + BNativeScheduler.this.plugin.getPluginId() + " ID:" + BNativeScheduler.this.task;
-            if (BNativeScheduler.this.runAfter == null) {
-                return str + " ToRunAfter: None";
-            } else if (BNativeScheduler.this.runAfter instanceof BNativeScheduler) {
-                return str + " ToRunAfter: " + ((BNativeScheduler) BNativeScheduler.this.runAfter).task;
-            }
-            return str + " ToRunAfter: Unknown";
-
-        }
-
-    }
-
     protected final @NotNull Consumer<Scheduler> taskToRun;
-    protected @Nullable Scheduler runAfter;
     protected final int delayCount;
     protected final @NotNull TimeUnit delayTimeUnit;
     protected final @Nullable Integer iteration;
@@ -62,13 +23,13 @@ public class BNativeScheduler implements Scheduler.Native {
     protected final @NotNull String displayName;
     protected final boolean async;
     protected final @NotNull Plugin plugin;
+    protected @Nullable Scheduler runAfter;
+    protected int task;
     private @Nullable String parent;
 
     private LocalTime endTime;
     private LocalTime startSchedule;
     private LocalTime startRunner;
-
-    protected int task;
 
     public BNativeScheduler(@NotNull SchedulerBuilder builder, @NotNull Plugin plugin) {
         this.taskToRun = builder.getRunner();
@@ -180,13 +141,56 @@ public class BNativeScheduler implements Scheduler.Native {
 
     @Override
     public String toString() {
-        String str = this.displayName + ": Delay(Time: " + this.delayCount + " Unit: " + this.delayTimeUnit + ") Iteration: (Time: " + this.iteration + " Unit: " + this.iterationTimeUnit + ") Plugin: " + this.plugin.getPluginId() + " ID:" + this.task;
+        String str = this.displayName + ": Delay(Time: " + this.delayCount + " Unit: " + this.delayTimeUnit +
+                ") Iteration: (Time: " + this.iteration + " Unit: " + this.iterationTimeUnit + ") Plugin: " +
+                this.plugin.getPluginId() + " ID:" + this.task;
         if (this.runAfter == null) {
             return str + " ToRunAfter: None";
         } else if (this.runAfter instanceof BNativeScheduler) {
             return str + " ToRunAfter: " + ((BNativeScheduler) this.runAfter).task;
         }
         return str + " ToRunAfter: Unknown";
+
+    }
+
+    private class RunAfterScheduler implements Runnable {
+
+        @Override
+        public void run() {
+            BNativeScheduler.this.startRunner = LocalTime.now();
+            try {
+                BNativeScheduler.this.taskToRun.accept(BNativeScheduler.this);
+            } catch (Throwable e) {
+                e.printStackTrace();
+            }
+            ((BScheduleManager) TranslateCore.getScheduleManager()).unregister(BNativeScheduler.this);
+            Scheduler scheduler = BNativeScheduler.this.runAfter;
+            if (scheduler != null) {
+                if (scheduler instanceof BNativeScheduler) {
+                    ((BNativeScheduler) scheduler).parent = BNativeScheduler.this.parent;
+                }
+                scheduler.run();
+            }
+            Bukkit.getScheduler().cancelTask(BNativeScheduler.this.task);
+            BNativeScheduler.this.endTime = LocalTime.now();
+        }
+
+        @Override
+        public String toString() {
+            String str =
+                    BNativeScheduler.this.displayName + ": Delay(Time: " + BNativeScheduler.this.delayCount +
+                            " Unit: " + BNativeScheduler.this.delayTimeUnit +
+                            ") Iteration: (Time: " + BNativeScheduler.this.iteration + " Unit: " +
+                            BNativeScheduler.this.iterationTimeUnit + ") Plugin: " +
+                            BNativeScheduler.this.plugin.getPluginId() + " ID:" + BNativeScheduler.this.task;
+            if (BNativeScheduler.this.runAfter == null) {
+                return str + " ToRunAfter: None";
+            } else if (BNativeScheduler.this.runAfter instanceof BNativeScheduler) {
+                return str + " ToRunAfter: " + ((BNativeScheduler) BNativeScheduler.this.runAfter).task;
+            }
+            return str + " ToRunAfter: Unknown";
+
+        }
 
     }
 }

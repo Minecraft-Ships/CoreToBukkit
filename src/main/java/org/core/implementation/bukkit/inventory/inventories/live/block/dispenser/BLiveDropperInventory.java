@@ -9,7 +9,7 @@ public class BLiveDropperInventory extends BLiveDispenserBasedInventory implemen
 
     final org.bukkit.block.Dropper dropper;
 
-    public BLiveDropperInventory(org.bukkit.block.Dropper dropper){
+    public BLiveDropperInventory(org.bukkit.block.Dropper dropper) {
         this.dropper = dropper;
     }
 

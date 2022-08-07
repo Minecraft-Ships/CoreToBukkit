@@ -33,7 +33,9 @@ public class BCowSnapshot extends BEntitySnapshot<LiveCow> implements CowSnapsho
         org.bukkit.Location loc = ((BAbstractPosition<Double>) this.position).toBukkitLocation();
         loc.setPitch((float) this.pitch);
         loc.setYaw((float) this.yaw);
-        org.bukkit.entity.Cow cow = (org.bukkit.entity.Cow) loc.getWorld().spawnEntity(loc, org.bukkit.entity.EntityType.COW);
+        org.bukkit.entity.Cow cow = (org.bukkit.entity.Cow) loc
+                .getWorld()
+                .spawnEntity(loc, org.bukkit.entity.EntityType.COW);
         BLiveCow coreCow = new BLiveCow(cow);
         this.applyDefaults(coreCow);
         coreCow.setAdult(this.adult);

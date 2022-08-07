@@ -16,8 +16,8 @@ import org.core.implementation.bukkit.entity.living.animal.type.BParrotType;
 public class BLiveParrot extends BLiveEntity<org.bukkit.entity.Parrot> implements LiveParrot {
 
     @Deprecated
-    public BLiveParrot(org.bukkit.entity.Entity entity){
-        this((org.bukkit.entity.Parrot)entity);
+    public BLiveParrot(org.bukkit.entity.Entity entity) {
+        this((org.bukkit.entity.Parrot) entity);
     }
 
     public BLiveParrot(org.bukkit.entity.Parrot entity) {
@@ -31,7 +31,7 @@ public class BLiveParrot extends BLiveEntity<org.bukkit.entity.Parrot> implement
 
     @Override
     public Parrot<LiveEntity> setVariant(ParrotType type) {
-        BParrotType type2 = (BParrotType)type;
+        BParrotType type2 = (BParrotType) type;
         this.entity.setVariant(type2.getType());
         return this;
     }
@@ -43,9 +43,9 @@ public class BLiveParrot extends BLiveEntity<org.bukkit.entity.Parrot> implement
 
     @Override
     public AgeableEntity<LiveEntity> setAdult(boolean check) {
-        if(check){
+        if (check) {
             this.entity.setAdult();
-        }else{
+        } else {
             this.entity.setBaby();
         }
         return this;

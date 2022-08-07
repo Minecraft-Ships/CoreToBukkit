@@ -11,7 +11,7 @@ public class BLiveDroppedItemSlot implements Slot {
 
     protected final org.bukkit.entity.Item item;
 
-    public BLiveDroppedItemSlot(org.bukkit.entity.Item item){
+    public BLiveDroppedItemSlot(org.bukkit.entity.Item item) {
         this.item = item;
     }
 
@@ -23,7 +23,7 @@ public class BLiveDroppedItemSlot implements Slot {
     @Override
     public Optional<ItemStack> getItem() {
         org.bukkit.inventory.ItemStack stack = this.item.getItemStack();
-        if(stack == null){
+        if (stack == null) {
             return Optional.empty();
         }
         return Optional.of(new BLiveItemStack(stack));
@@ -31,10 +31,10 @@ public class BLiveDroppedItemSlot implements Slot {
 
     @Override
     public Slot setItem(ItemStack stack) {
-        if(stack == null){
+        if (stack == null) {
             return this;
         }
-        org.bukkit.inventory.ItemStack stack2 = ((BAbstractItemStack)stack).getBukkitItem();
+        org.bukkit.inventory.ItemStack stack2 = ((BAbstractItemStack) stack).getBukkitItem();
         this.item.setItemStack(stack2);
         return this;
     }

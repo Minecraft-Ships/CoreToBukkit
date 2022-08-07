@@ -14,7 +14,7 @@ public class EntityExplosionSnapshot implements Explosion.ExplosionSnapshot, Exp
     private final Collection<BlockSnapshot.SyncBlockSnapshot> blocks;
     private final SyncExactPosition position;
     private final Entity<?> source;
-    
+
     public EntityExplosionSnapshot(Explosion.EntityExplosion explosion) {
         this.source = explosion.getSource();
         this.position = explosion.getPosition();

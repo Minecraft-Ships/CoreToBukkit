@@ -12,12 +12,12 @@ public class BLiveDropperTileEntity implements LiveDropperTileEntity {
     protected final org.bukkit.block.Dropper dropper;
 
     @Deprecated
-    public BLiveDropperTileEntity(org.bukkit.block.BlockState state){
-        this((org.bukkit.block.Dropper)state);
+    public BLiveDropperTileEntity(org.bukkit.block.BlockState state) {
+        this((org.bukkit.block.Dropper) state);
     }
 
-    public BLiveDropperTileEntity(org.bukkit.block.Dropper dropper){
-       this.dropper = dropper;
+    public BLiveDropperTileEntity(org.bukkit.block.Dropper dropper) {
+        this.dropper = dropper;
     }
 
     @Override

@@ -13,11 +13,11 @@ import java.util.Collections;
 
 public class BSignChangeEvent implements SignChangeEvent.ByPlayer {
 
-    protected boolean isCancelled;
     protected final SignTileEntitySnapshot original;
-    protected SignTileEntitySnapshot to;
     protected final SyncBlockPosition position;
     protected final LivePlayer player;
+    protected boolean isCancelled;
+    protected SignTileEntitySnapshot to;
 
     public BSignChangeEvent(LivePlayer player, SyncBlockPosition position, AText... text) {
         this(player, position, Arrays.asList(text));

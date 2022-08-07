@@ -16,11 +16,11 @@ public class BDispenserTileEntitySnapshot implements DispenserTileEntitySnapshot
 
     protected final DispenserInventorySnapshot dis;
 
-    public BDispenserTileEntitySnapshot(){
+    public BDispenserTileEntitySnapshot() {
         this.dis = new BDispenserInventorySnapshot();
     }
 
-    public BDispenserTileEntitySnapshot(DispenserTileEntity dte){
+    public BDispenserTileEntitySnapshot(DispenserTileEntity dte) {
         this.dis = dte.getInventory().createSnapshot();
     }
 

@@ -7,7 +7,7 @@ import org.core.world.position.impl.sync.SyncBlockPosition;
 
 public interface PBlockChangeEvent {
 
-    class BlockBreakEvent extends AbstractBlockChangeEvent implements BlockChangeEvent.Break.Pre{
+    class BlockBreakEvent extends AbstractBlockChangeEvent implements BlockChangeEvent.Break.Pre {
 
         private boolean cancelled;
 

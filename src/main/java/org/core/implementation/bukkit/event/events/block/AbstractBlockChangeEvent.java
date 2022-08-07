@@ -39,13 +39,15 @@ public class AbstractBlockChangeEvent implements BlockChangeEvent {
         return this.position;
     }
 
-    public static class PlaceBlockPlayerPostEvent extends AbstractBlockChangeEvent implements BlockChangeEvent.Place.Post.ByPlayer {
+    public static class PlaceBlockPlayerPostEvent extends AbstractBlockChangeEvent
+            implements BlockChangeEvent.Place.Post.ByPlayer {
 
         protected final LivePlayer player;
-        protected boolean cancelled;
         protected final Collection<BlockSnapshot<SyncBlockPosition>> collection;
+        protected boolean cancelled;
 
-        public PlaceBlockPlayerPostEvent(SyncBlockPosition pos, BlockDetails before, BlockDetails after, LivePlayer player, Collection<BlockSnapshot<SyncBlockPosition>> affected) {
+        public PlaceBlockPlayerPostEvent(SyncBlockPosition pos, BlockDetails before, BlockDetails after,
+                LivePlayer player, Collection<BlockSnapshot<SyncBlockPosition>> affected) {
             super(pos, before, after);
             this.player = player;
             this.collection = affected;
@@ -73,13 +75,15 @@ public class AbstractBlockChangeEvent implements BlockChangeEvent {
         }
     }
 
-    public static class BreakBlockPostEvent extends AbstractBlockChangeEvent implements BlockChangeEvent.Break.Post.ByPlayer {
+    public static class BreakBlockPostEvent extends AbstractBlockChangeEvent
+            implements BlockChangeEvent.Break.Post.ByPlayer {
 
         final Collection<DroppedItemSnapshot> items;
         final Collection<DroppedItemSnapshot> toRemove = new ArrayList<>();
         final LivePlayer player;
 
-        public BreakBlockPostEvent(BlockDetails pre, SyncBlockPosition pos, LivePlayer player, Collection<DroppedItemSnapshot> items) {
+        public BreakBlockPostEvent(BlockDetails pre, SyncBlockPosition pos, LivePlayer player,
+                Collection<DroppedItemSnapshot> items) {
             super(pos, pre, pos.getBlockDetails());
             this.items = items;
             this.player = player;
@@ -102,10 +106,11 @@ public class AbstractBlockChangeEvent implements BlockChangeEvent {
         }
     }
 
-    public static class BreakBlockChangeExplode extends AbstractBlockChangeEvent implements BlockChangeEvent.Break.Pre.ByExplosion {
+    public static class BreakBlockChangeExplode extends AbstractBlockChangeEvent
+            implements BlockChangeEvent.Break.Pre.ByExplosion {
 
-        protected boolean cancelled;
         protected final Explosion explosion;
+        protected boolean cancelled;
 
         public BreakBlockChangeExplode(SyncBlockPosition pos, Explosion explosion) {
             super(pos, pos.getBlockDetails(), BlockTypes.AIR.getDefaultBlockDetails());
@@ -128,7 +133,8 @@ public class AbstractBlockChangeEvent implements BlockChangeEvent {
         }
     }
 
-    public static class BreakBlockChangeEventPlayer extends AbstractBlockChangeEvent implements BlockChangeEvent.Break.Pre.ByPlayer {
+    public static class BreakBlockChangeEventPlayer extends AbstractBlockChangeEvent
+            implements BlockChangeEvent.Break.Pre.ByPlayer {
 
         protected final LivePlayer player;
         protected boolean isCancelled;

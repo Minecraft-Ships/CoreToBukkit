@@ -7,11 +7,11 @@ public class BBossColour implements BossColour {
 
     private final BarColor colour;
 
-    public BBossColour(BarColor colour){
+    public BBossColour(BarColor colour) {
         this.colour = colour;
     }
 
-    public BarColor getBukkitColor(){
+    public BarColor getBukkitColor() {
         return this.colour;
     }
 

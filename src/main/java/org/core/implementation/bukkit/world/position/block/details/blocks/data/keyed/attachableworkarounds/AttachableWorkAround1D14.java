@@ -19,7 +19,10 @@ public enum AttachableWorkAround1D14 implements BAttachableKeyedData.AttachableB
 
     LANTERN(d -> {
         try {
-            return ((boolean) d.getClass().getMethod("isHanging").invoke(d)) ? FourFacingDirection.UP:FourFacingDirection.DOWN;
+            return ((boolean) d
+                    .getClass()
+                    .getMethod("isHanging")
+                    .invoke(d)) ? FourFacingDirection.UP : FourFacingDirection.DOWN;
         } catch (IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {
             throw new RuntimeException(e);
         }
@@ -36,11 +39,13 @@ public enum AttachableWorkAround1D14 implements BAttachableKeyedData.AttachableB
     private final Function<? super BlockData, ? extends Direction> functionDirection;
     private final Consumer<? super Map.Entry<BlockData, Direction>> consumer;
 
-    AttachableWorkAround1D14(Function<? super BlockData, ? extends Direction> getDir, Consumer<? super Map.Entry<BlockData, Direction>> setDir, BlockType... types) {
+    AttachableWorkAround1D14(Function<? super BlockData, ? extends Direction> getDir,
+            Consumer<? super Map.Entry<BlockData, Direction>> setDir, BlockType... types) {
         this(getDir, setDir, Arrays.asList(types));
     }
 
-    AttachableWorkAround1D14(Function<? super BlockData, ? extends Direction> getDir, Consumer<? super Map.Entry<BlockData, Direction>> setDir, Collection<BlockType> blockTypes) {
+    AttachableWorkAround1D14(Function<? super BlockData, ? extends Direction> getDir,
+            Consumer<? super Map.Entry<BlockData, Direction>> setDir, Collection<BlockType> blockTypes) {
         this.consumer = setDir;
         this.functionDirection = getDir;
         this.collection = blockTypes;

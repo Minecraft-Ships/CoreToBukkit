@@ -46,11 +46,21 @@ public abstract class BLiveEntity<T extends org.bukkit.entity.Entity> implements
     }
 
     @Override
+    public double getPitch() {
+        return this.entity.getLocation().getPitch();
+    }
+
+    @Override
     public BLiveEntity<T> setPitch(double value) {
         org.bukkit.Location loc = this.entity.getLocation();
         loc.setPitch((float) value);
         this.entity.teleport(loc);
         return this;
+    }
+
+    @Override
+    public double getYaw() {
+        return this.entity.getLocation().getYaw();
     }
 
     @Override
@@ -62,30 +72,13 @@ public abstract class BLiveEntity<T extends org.bukkit.entity.Entity> implements
     }
 
     @Override
-    public BLiveEntity<T> setRoll(double value) {
-        return this;
-    }
-
-    @Override
-    public BLiveEntity<T> setPosition(Position<? extends Number> position) {
-        BExactPosition position1 = position instanceof BExactPosition ? (BExactPosition) position:(BExactPosition) ((BlockPosition) position).toExactPosition();
-        this.entity.teleport(position1.toBukkitLocation());
-        return this;
-    }
-
-    @Override
-    public double getPitch() {
-        return this.entity.getLocation().getPitch();
-    }
-
-    @Override
-    public double getYaw() {
-        return this.entity.getLocation().getYaw();
-    }
-
-    @Override
     public double getRoll() {
         return 0;
+    }
+
+    @Override
+    public BLiveEntity<T> setRoll(double value) {
+        return this;
     }
 
     @Override
@@ -108,7 +101,16 @@ public abstract class BLiveEntity<T extends org.bukkit.entity.Entity> implements
 
     @Override
     public SyncExactPosition getPosition() {
-        return new BExactPosition(this.entity.getLocation().getX(), this.entity.getLocation().getY(), this.entity.getLocation().getZ(), this.entity.getWorld());
+        return new BExactPosition(this.entity.getLocation().getX(), this.entity.getLocation().getY(),
+                this.entity.getLocation().getZ(), this.entity.getWorld());
+    }
+
+    @Override
+    public BLiveEntity<T> setPosition(Position<? extends Number> position) {
+        BExactPosition position1 = position instanceof BExactPosition ? (BExactPosition) position :
+                (BExactPosition) ((BlockPosition) position).toExactPosition();
+        this.entity.teleport(position1.toBukkitLocation());
+        return this;
     }
 
     @Override
@@ -126,7 +128,7 @@ public abstract class BLiveEntity<T extends org.bukkit.entity.Entity> implements
     @Override
     public Optional<AText> getCustomName() {
         String customName = this.entity.getCustomName();
-        if (customName==null) {
+        if (customName == null) {
             return Optional.empty();
         }
         return Optional.of(AText.ofLegacy(customName));
@@ -134,7 +136,7 @@ public abstract class BLiveEntity<T extends org.bukkit.entity.Entity> implements
 
     @Override
     public Entity<LiveEntity> setCustomName(@Nullable AText text) {
-        if (text==null) {
+        if (text == null) {
             this.entity.setCustomName(null);
             return this;
         }

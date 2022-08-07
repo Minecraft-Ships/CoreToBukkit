@@ -14,6 +14,28 @@ import java.util.Set;
 
 public interface BukkitSpecificPlatform {
 
+    static Set<BukkitSpecificPlatform> getPlatforms() {
+        Set<BukkitSpecificPlatform> set = new HashSet<>();
+        CorePluginVersion version = TranslateCore.getPlatform().getMinecraftVersion();
+        if (version.getMajor() == 1) {
+            if (version.getMinor() >= 13) {
+                set.add(new Specific1V13Platform());
+            }
+            if (version.getMinor() >= 14) {
+                set.add(new Specific1V14Platform());
+            }
+        }
+        return set;
+    }
+
+    static Optional<BukkitSpecificPlatform> getSpecificPlatform() {
+        CorePluginVersion version = TranslateCore.getPlatform().getMinecraftVersion();
+        return getPlatforms()
+                .stream()
+                .filter(p -> version.getMajor() == p.getVersion()[0] && version.getMinor() == p.getVersion()[1])
+                .findAny();
+    }
+
     int[] getVersion();
 
     Set<EntityType<? extends LiveEntity, ? extends EntitySnapshot<? extends LiveEntity>>> getSpecificEntityTypes();
@@ -27,23 +49,4 @@ public interface BukkitSpecificPlatform {
     Map<Class<? extends org.bukkit.block.BlockState>, Class<? extends LiveTileEntity>> getSpecificStateToTile();
 
     Map<Class<? extends org.bukkit.block.BlockState>, Class<? extends LiveTileEntity>> getGeneralStateToTile();
-
-    static Set<BukkitSpecificPlatform> getPlatforms() {
-        Set<BukkitSpecificPlatform> set = new HashSet<>();
-        CorePluginVersion version = TranslateCore.getPlatform().getMinecraftVersion();
-        if (version.getMajor()==1) {
-            if (version.getMinor() >= 13) {
-                set.add(new Specific1V13Platform());
-            }
-            if (version.getMinor() >= 14) {
-                set.add(new Specific1V14Platform());
-            }
-        }
-        return set;
-    }
-
-    static Optional<BukkitSpecificPlatform> getSpecificPlatform() {
-        CorePluginVersion version = TranslateCore.getPlatform().getMinecraftVersion();
-        return getPlatforms().stream().filter(p -> version.getMajor()==p.getVersion()[0] && version.getMinor()==p.getVersion()[1]).findAny();
-    }
 }

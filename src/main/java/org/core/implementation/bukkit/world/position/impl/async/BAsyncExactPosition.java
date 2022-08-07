@@ -55,7 +55,8 @@ public class BAsyncExactPosition extends BAbstractPosition<Double> implements AS
     }
 
     @Override
-    public FutureResult<SyncPosition<Double>> scheduleBlock(Plugin plugin, BlockDetails details, PositionFlag.SetFlag... flags) {
+    public FutureResult<SyncPosition<Double>> scheduleBlock(Plugin plugin, BlockDetails details,
+            PositionFlag.SetFlag... flags) {
         FutureResult<SyncPosition<Double>> future = new FutureResult<>();
         Bukkit.getScheduler().runTask((org.bukkit.plugin.Plugin) plugin.getPlatformLauncher(), () -> {
             SyncPosition<Double> position = new BExactPosition(this.location);

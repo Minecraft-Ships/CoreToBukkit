@@ -39,11 +39,11 @@ public abstract class BAbstractItemStack implements ItemStack {
     @Override
     public List<AText> getLoreText() {
         ItemMeta meta = this.stack.getItemMeta();
-        if (meta==null) {
+        if (meta == null) {
             return Collections.emptyList();
         }
         List<String> lore = meta.getLore();
-        if (lore==null) {
+        if (lore == null) {
             return Collections.emptyList();
         }
         return lore.stream().map(AText::ofLegacy).collect(Collectors.toList());
@@ -52,9 +52,9 @@ public abstract class BAbstractItemStack implements ItemStack {
     @Override
     public org.core.inventory.item.stack.ItemStack setLoreText(Collection<? extends AText> lore) {
         ItemMeta meta = this.stack.getItemMeta();
-        if (meta==null) {
+        if (meta == null) {
             meta = Bukkit.getItemFactory().getItemMeta(this.stack.getType());
-            if (meta==null) {
+            if (meta == null) {
                 throw new IllegalStateException("Could not create ItemMeta for " + this.stack.getType().name());
             }
         }
