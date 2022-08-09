@@ -1,6 +1,7 @@
 package org.core.implementation.bukkit.platform.plugin.boot;
 
 import org.bukkit.Bukkit;
+import org.bukkit.command.Command;
 import org.bukkit.command.CommandMap;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.PluginManager;
@@ -18,6 +19,7 @@ import org.core.implementation.bukkit.platform.plugin.loader.CoreBukkitPluginWra
 import org.core.implementation.paper.CoreToPaper;
 import org.core.platform.plugin.CorePlugin;
 import org.core.platform.plugin.loader.CommonLoad;
+import org.core.schedule.Scheduler;
 
 import java.io.File;
 import java.io.IOException;
@@ -45,6 +47,13 @@ public class TranslateCoreBoot extends JavaPlugin {
     @Override
     public void onDisable() {
         this.plugins.forEach(CorePlugin::onShutdown);
+        TranslateCore
+                .getScheduleManager()
+                .getSchedules()
+                .parallelStream()
+                .filter(sch -> sch instanceof Scheduler.Native)
+                .forEach(sch -> ((Scheduler.Native) sch).cancel());
+
     }
 
     @Override
@@ -69,7 +78,7 @@ public class TranslateCoreBoot extends JavaPlugin {
                     CommandRegister cmdReg = new CommandRegister();
                     plugin.onRegisterCommands(cmdReg);
                     cmdReg.getCommands().forEach(commandLauncher -> {
-                        BCommandWrapper command = new BCommandWrapper(new BCommand(commandLauncher));
+                        Command command = new BCommandWrapper(new BCommand(commandLauncher));
                         map.register(commandLauncher.getName(), command);
                     });
                 } catch (IllegalAccessException | NoSuchFieldException e) {
@@ -95,7 +104,6 @@ public class TranslateCoreBoot extends JavaPlugin {
     private <T> T getFromField(Object from, String field) throws NoSuchFieldException, IllegalAccessException {
         Field jField = from.getClass().getDeclaredField(field);
         jField.setAccessible(true);
-        //noinspection unchecked
         return (T) jField.get(from);
     }
 
@@ -129,7 +137,7 @@ public class TranslateCoreBoot extends JavaPlugin {
                     CommandRegister cmdReg = new CommandRegister();
                     plugin.getPlugin().onRegisterCommands(cmdReg);
                     cmdReg.getCommands().forEach(commandLauncher -> {
-                        BCommandWrapper command = new BCommandWrapper(new BCommand(commandLauncher));
+                        Command command = new BCommandWrapper(new BCommand(commandLauncher));
                         map.register(commandLauncher.getName(), command);
                     });
                 });
