@@ -28,12 +28,16 @@ public class BBlockType implements BlockType {
     }
 
     @Override
-    public boolean equals(Object object) {
-        if (object instanceof Identifiable) {
-            Identifiable type = (Identifiable) object;
+    public boolean equals(Object obj) {
+        if (obj instanceof Identifiable type) {
             return type.getId().equals(this.getId());
         }
         return false;
+    }
+
+    @Override
+    public int hashCode() {
+        return this.getId().hashCode();
     }
 
     @Override

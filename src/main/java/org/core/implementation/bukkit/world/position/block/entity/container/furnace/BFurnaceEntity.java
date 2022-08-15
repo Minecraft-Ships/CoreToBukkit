@@ -19,7 +19,7 @@ public class BFurnaceEntity extends AbstractLiveTileEntity implements LiveFurnac
     }
 
     @Override
-    public FurnaceInventory getInventory() {
+    public BLiveFurnaceInventory getInventory() {
         return new BLiveFurnaceInventory(this.getBukkitFurnace());
     }
 

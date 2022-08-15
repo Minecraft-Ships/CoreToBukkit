@@ -21,15 +21,18 @@ public class BItemType implements ItemType {
     }
 
     @Override
+    public int hashCode() {
+        return this.getId().hashCode();
+    }
+
+    @Override
     public boolean equals(Object object) {
-        if (object instanceof BBlockType) {
-            BBlockType type = (BBlockType) object;
+        if (object instanceof BBlockType type) {
             if (type.getBukkitMaterial() == this.material) {
                 return true;
             }
         }
-        if (object instanceof BItemType) {
-            BItemType type = (BItemType) object;
+        if (object instanceof BItemType type) {
             return type.getBukkitMaterial() == this.material;
         }
         return false;
