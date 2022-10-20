@@ -58,7 +58,7 @@ public class BLiveFurnaceInventory implements LiveFurnaceInventory {
         return new BBlockPosition(this.block.getBlock());
     }
 
-    private class FurnaceItemSlot implements Slot {
+    private final class FurnaceItemSlot implements Slot {
 
         private final int position;
 
@@ -88,7 +88,7 @@ public class BLiveFurnaceInventory implements LiveFurnaceInventory {
         public Slot setItem(ItemStack stack) {
             Furnace furnace = BLiveFurnaceInventory.this.getFurnace();
             org.bukkit.inventory.ItemStack is = stack == null ? null : ((BAbstractItemStack) stack).getBukkitItem();
-            furnace.getSnapshotInventory().setItem(this.position, is);
+            furnace.getInventory().setItem(this.position, is);
             furnace.update();
             return this;
         }
