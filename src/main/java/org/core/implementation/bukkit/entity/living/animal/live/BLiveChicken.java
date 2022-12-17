@@ -17,11 +17,6 @@ public class BLiveChicken extends BLiveEntity<Chicken> implements LiveChicken {
         super(entity);
     }
 
-    /*@Deprecated
-    public BLiveChicken(ChickenSnapshot snapshot){
-        super(snapshot);
-    }*/
-
     @Override
     public boolean isAdult() {
         return this.getBukkitEntity().isAdult();

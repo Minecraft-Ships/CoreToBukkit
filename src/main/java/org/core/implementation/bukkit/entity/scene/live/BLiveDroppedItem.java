@@ -21,11 +21,6 @@ public class BLiveDroppedItem extends BLiveEntity<Item> implements LiveDroppedIt
         super(entity);
     }
 
-    /*@Deprecated
-    public BLiveDroppedItem(DroppedItemSnapshot snapshot){
-        super(snapshot);
-    }*/
-
     @Override
     public int getPickupDelayTicks() {
         return this.getBukkitEntity().getPickupDelay();

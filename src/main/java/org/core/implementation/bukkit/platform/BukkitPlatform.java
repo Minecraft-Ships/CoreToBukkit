@@ -90,7 +90,7 @@ public class BukkitPlatform implements Platform {
     protected final Set<BlockType> blockTypes = new HashSet<>();
     protected final Set<ItemType> itemTypes = new HashSet<>();
     private final BukkitStructurePlatform structurePlatform;
-    private final Set<PlatformUpdate> updateServices = new HashSet<>();
+    private final Collection<PlatformUpdate<?>> updateServices = new HashSet<>();
 
     public BukkitPlatform() {
         BukkitStructurePlatform structurePlatform1;
@@ -253,7 +253,7 @@ public class BukkitPlatform implements Platform {
 
 
     @Override
-    public @NotNull Collection<PlatformUpdate> getUpdateCheckers() {
+    public @NotNull Collection<PlatformUpdate<?>> getUpdateCheckers() {
         return this.updateServices;
     }
 

@@ -28,11 +28,6 @@ public class BLiveItemFrame extends BLiveEntity<ItemFrame> implements LiveItemFr
         super(entity);
     }
 
-    /*@Deprecated
-    public BLiveItemFrame(ItemFrameSnapshot snapshot){
-        super(snapshot);
-    }*/
-
     @Override
     public void setItem(ItemStack stack) {
         this.getBukkitEntity().setItem(((BAbstractItemStack) stack).getBukkitItem());

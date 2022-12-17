@@ -20,11 +20,6 @@ public class BLiveSnowballEntity extends BLiveEntity<Snowball> implements LiveSn
         super(entity);
     }
 
-    /*@Deprecated
-    public BLiveSnowballEntity(SnowballEntitySnapshot entity){
-        super(entity);
-    }*/
-
     @Override
     public Optional<ProjectileSource> getSource() {
         org.bukkit.projectiles.ProjectileSource source = this.getBukkitEntity().getShooter();

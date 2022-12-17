@@ -10,7 +10,7 @@ import java.util.concurrent.LinkedTransferQueue;
 
 public class BScheduleManager implements ScheduleManager {
 
-    private Collection<Scheduler> schedules = new LinkedTransferQueue<>();
+    private final Collection<Scheduler> schedules = new LinkedTransferQueue<>();
 
     void register(Scheduler scheduler) {
         this.schedules.add(scheduler);

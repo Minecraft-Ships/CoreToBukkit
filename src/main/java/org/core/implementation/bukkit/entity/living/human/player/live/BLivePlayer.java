@@ -107,30 +107,6 @@ public class BLivePlayer extends BLiveEntity<Player> implements LivePlayer {
     }
 
     @Override
-    @Deprecated(forRemoval = true)
-    public boolean hasPermission(String name) {
-        org.bukkit.entity.Player player = this.getBukkitEntity();
-        boolean truePerm = player.hasPermission(name);
-        if (truePerm) {
-            return true;
-        }
-        String[] blocks = name.split("\\.");
-        StringBuilder buffer = null;
-        for (String block : blocks) {
-            if (buffer == null) {
-                buffer = new StringBuilder(block);
-            } else {
-                buffer.append(".").append(block);
-            }
-            if (player.hasPermission(buffer + ".*")) {
-                return true;
-            }
-
-        }
-        return false;
-    }
-
-    @Override
     public Optional<BlockPosition> getBlockLookingAt(int scanLength) {
         Block block = this.getBukkitEntity().getTargetBlockExact(scanLength);
         if (block == null) {

@@ -52,8 +52,9 @@ public class BServer implements PlatformServer {
     }
 
     @Override
-    public void applyBlockSnapshots(Collection<? extends BlockSnapshot.AsyncBlockSnapshot> collection, Plugin plugin,
-            Runnable onComplete) {
+    public void applyBlockSnapshots(Collection<? extends BlockSnapshot.AsyncBlockSnapshot> collection,
+                                    Plugin plugin,
+                                    Runnable onComplete) {
         Set<BlockSnapshot<ASyncBlockPosition>> withTileEntities = collection
                 .stream()
                 .filter(bs -> bs.get(TileEntityKeyedData.class).isPresent())
@@ -64,17 +65,14 @@ public class BServer implements PlatformServer {
                 .setDelay(0)
                 .setDelayUnit(TimeUnit.MINECRAFT_TICKS)
                 .setDisplayName("BlockSnapshotApplyEntities")
-                .setExecutor(() -> {
-                    withTileEntities
-                            .forEach(bs -> bs
-                                    .get(TileEntityKeyedData.class)
-                                    .ifPresent(tileEntity -> {
-                                        try {
-                                            tileEntity.apply(Position.toSync(bs.getPosition()));
-                                        } catch (BlockNotSupported e) {
-                                            throw new RuntimeException(e);
-                                        }
-                                    }));
+                .setRunner((sch) -> {
+                    withTileEntities.forEach(bs -> bs.get(TileEntityKeyedData.class).ifPresent(tileEntity -> {
+                        try {
+                            tileEntity.apply(Position.toSync(bs.getPosition()));
+                        } catch (BlockNotSupported e) {
+                            throw new RuntimeException(e);
+                        }
+                    }));
                     onComplete.run();
                 })
                 .build(plugin);
@@ -94,8 +92,10 @@ public class BServer implements PlatformServer {
                             TranslateCore
                                     .getConsole()
                                     .sendMessage(AText
-                                            .ofPlain("Failed to set block type of " + blockSnapshot.getType().getId())
-                                            .withColour(NamedTextColours.RED));
+                                                         .ofPlain("Failed to set block type of " + blockSnapshot
+                                                                 .getType()
+                                                                 .getId())
+                                                         .withColour(NamedTextColours.RED));
                             throw e;
                         }
                     }

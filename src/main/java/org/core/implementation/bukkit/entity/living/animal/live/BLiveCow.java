@@ -17,11 +17,6 @@ public class BLiveCow extends BLiveEntity<Cow> implements LiveCow {
         super(entity);
     }
 
-    /*@Deprecated
-    public BLiveCow(CowSnapshot snapshot){
-        super(snapshot);
-    }*/
-
     @Override
     public boolean isAdult() {
         return this.getBukkitEntity().isAdult();
