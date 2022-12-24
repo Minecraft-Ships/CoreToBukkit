@@ -15,8 +15,11 @@ import org.core.command.commands.timings.TimingsCommand;
 import org.core.implementation.bukkit.CoreToBukkit;
 import org.core.implementation.bukkit.command.BCommand;
 import org.core.implementation.bukkit.command.BCommandWrapper;
+import org.core.implementation.bukkit.logger.BJavaLogger;
+import org.core.implementation.bukkit.logger.BSLF4JLogger;
 import org.core.implementation.bukkit.platform.plugin.loader.CoreBukkitPluginWrapper;
 import org.core.implementation.paper.CoreToPaper;
+import org.core.logger.Logger;
 import org.core.platform.plugin.CorePlugin;
 import org.core.platform.plugin.loader.CommonLoad;
 import org.core.schedule.Scheduler;
@@ -24,6 +27,8 @@ import org.core.schedule.Scheduler;
 import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.nio.file.Files;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -62,7 +67,16 @@ public class TranslateCoreBoot extends JavaPlugin {
         if (opLauncher.isPresent()) {
             Class<? extends CorePlugin> pluginClass = opLauncher.get();
             CorePlugin plugin = CommonLoad.loadStandAlonePlugin(pluginClass);
-            plugin.onConstruct(this);
+
+            Logger logger = new BJavaLogger(this.getLogger());
+            try {
+                Method method = JavaPlugin.class.getMethod("getSLF4JLogger");
+                logger = new BSLF4JLogger(method.invoke(this));
+            } catch (NoSuchMethodException | InvocationTargetException | IllegalAccessException e) {
+                throw new RuntimeException(e);
+            }
+
+            plugin.onConstruct(this, logger);
             PluginManager pluginManager = Bukkit.getPluginManager();
             if (pluginManager instanceof SimplePluginManager spm) {
                 try {
@@ -72,7 +86,7 @@ public class TranslateCoreBoot extends JavaPlugin {
 
 
                     map.register("TranslateCore",
-                            new BCommandWrapper(new BCommand(new TranslateCoreCommands(new TimingsCommand()))));
+                                 new BCommandWrapper(new BCommand(new TranslateCoreCommands(new TimingsCommand()))));
 
 
                     CommandRegister cmdReg = new CommandRegister();
@@ -141,9 +155,9 @@ public class TranslateCoreBoot extends JavaPlugin {
                         map.register(commandLauncher.getName(), command);
                     });
                 });
-                bukkitPlugins.parallelStream().forEach(plugin ->
-                        plugin.getPlugin().onConstruct(plugin)
-                );
+                bukkitPlugins
+                        .parallelStream()
+                        .forEach(plugin -> plugin.getPlugin().onConstruct(plugin, new BJavaLogger(plugin.getLogger())));
                 return plugins;
             } catch (IllegalAccessException | NoSuchFieldException e) {
                 e.printStackTrace();
@@ -153,8 +167,8 @@ public class TranslateCoreBoot extends JavaPlugin {
         TranslateCore
                 .getConsole()
                 .sendMessage(AText.ofPlain(
-                        "SimplePluginManager was not used or a error occurred above. Plugins will not be treated as " +
-                                "first party -> this may break compatibility"));
+                        "SimplePluginManager was not used or a error occurred above. Plugins will not be treated as "
+                                + "first party -> this may break compatibility"));
         plugins.parallelStream().forEach(plugin -> plugin.onConstruct(TranslateCoreBoot.this));
         return plugins;
     }
