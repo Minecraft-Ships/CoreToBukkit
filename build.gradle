@@ -22,7 +22,12 @@ jar {
 }
 
 dependencies {
-    compileOnly 'io.papermc.paper:paper-api:1.18.2-R0.1-SNAPSHOT'
+    if (project.hasProperty("paper-api-version")) {
+        compileOnly 'io.papermc.paper:paper-api:' + project.property("paper-api-version") + "-R0.1-SNAPSHOT"
+    } else {
+        compileOnly 'io.papermc.paper:paper-api:1.18.2-R0.1-SNAPSHOT'
+        System.out.println("To specify a paper build, use ' -P paper-api-version=1.18.2")
+    }
     compileOnly 'com.github.MilkBowl:VaultAPI:1.7', { exclude group: 'org.bukkit', module: 'bukkit' }
     api project(":TranslateCore")
     compileOnly group: 'net.kyori', name: 'examination-api', version: '1.1.0'
