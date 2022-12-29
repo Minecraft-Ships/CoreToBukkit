@@ -5,6 +5,7 @@ import org.bukkit.boss.BarColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Parrot;
+import org.bukkit.permissions.PermissionDefault;
 import org.core.TranslateCore;
 import org.core.config.ConfigurationFormat;
 import org.core.config.parser.unspecific.UnspecificParser;
@@ -492,10 +493,12 @@ public class BukkitPlatform implements Platform {
     @Override
     public @NotNull CorePermission register(CorePermission permissionNode) {
         if (Bukkit.getServer().getPluginManager().getPermission(permissionNode.getPermissionValue()) == null) {
+            org.bukkit.permissions.Permission permission = new org.bukkit.permissions.Permission(permissionNode.getPermissionValue());
+            permission.setDefault(permissionNode.shouldDefaultHave() ? PermissionDefault.TRUE : PermissionDefault.OP);
             Bukkit
                     .getServer()
                     .getPluginManager()
-                    .addPermission(new org.bukkit.permissions.Permission(permissionNode.getPermissionValue()));
+                    .addPermission(permission);
         }
         return permissionNode;
     }
