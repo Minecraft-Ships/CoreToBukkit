@@ -43,8 +43,8 @@ public class YAMLConfigurationFile implements ConfigurationStream.ConfigurationF
         if (!this.yaml.contains(String.join(".", node.getPath()))) {
             return Optional.empty();
         }
-        if (!(this.yaml.isDouble(String.join(".", node.getPath())) || this.yaml.isInt(String.join(".",
-                node.getPath())))) {
+        if (!(this.yaml.isDouble(String.join(".", node.getPath())) || this.yaml.isInt(
+                String.join(".", node.getPath())))) {
             return Optional.empty();
         }
         return Optional.of(this.yaml.getDouble(String.join(".", node.getPath())));
@@ -85,9 +85,16 @@ public class YAMLConfigurationFile implements ConfigurationStream.ConfigurationF
     }
 
     @Override
-    public <T, C extends Collection<T>> C parseCollection(ConfigurationNode node, Parser<? super String, T> parser,
-            C collection) {
-        List<String> list = this.yaml.getStringList(String.join(".", node.getPath()));
+    public <T, C extends Collection<T>> C parseCollection(ConfigurationNode node,
+                                                          Parser<? super String, T> parser,
+                                                          C collection,
+                                                          C defaultValue) {
+        String path = String.join(".", node.getPath());
+        if (!this.yaml.isList(path)) {
+            return defaultValue;
+        }
+
+        List<String> list = this.yaml.getStringList(path);
         for (String value : list) {
             parser.parse(value).ifPresent(collection::add);
         }

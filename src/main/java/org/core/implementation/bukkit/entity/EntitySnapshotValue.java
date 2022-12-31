@@ -27,7 +27,7 @@ public class EntitySnapshotValue<E, O> extends AbstractSnapshotValue<E, O> imple
     public static final EntitySnapshotValue<Entity, Boolean> GRAVITY = new EntitySnapshotValue<>(Entity::hasGravity,
                                                                                                  Entity::setGravity);
     public static final EntitySnapshotValue<MushroomCow, MushroomCow.Variant> MOOSHROOM_VARIANT = new EntitySnapshotValue<>(
-            MushroomCow::getVariant, MushroomCow::setVariant);
+            MushroomCow.class, MushroomCow::getVariant, MushroomCow::setVariant);
 
     public static final EntitySnapshotValue<Entity, String> CUSTOM_NAME = new EntitySnapshotValue<>(
             Nameable::getCustomName, Nameable::setCustomName);
