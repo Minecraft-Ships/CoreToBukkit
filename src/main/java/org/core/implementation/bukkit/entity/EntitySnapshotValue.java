@@ -2,6 +2,8 @@ package org.core.implementation.bukkit.entity;
 
 import org.bukkit.*;
 import org.bukkit.entity.*;
+import org.bukkit.inventory.EquipmentSlot;
+import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.FireworkMeta;
 import org.bukkit.potion.PotionData;
 import org.bukkit.projectiles.ProjectileSource;
@@ -28,6 +30,10 @@ public class EntitySnapshotValue<E, O> extends AbstractSnapshotValue<E, O> imple
                                                                                                  Entity::setGravity);
     public static final EntitySnapshotValue<MushroomCow, MushroomCow.Variant> MOOSHROOM_VARIANT = new EntitySnapshotValue<>(
             MushroomCow.class, MushroomCow::getVariant, MushroomCow::setVariant);
+
+    public static final EntitySnapshotValue<Sheep, DyeColor> SHEEP_COLOUR = new EntitySnapshotValue<>(Sheep.class,
+                                                                                                      Sheep::getColor,
+                                                                                                      Sheep::setColor);
 
     public static final EntitySnapshotValue<Entity, String> CUSTOM_NAME = new EntitySnapshotValue<>(
             Nameable::getCustomName, Nameable::setCustomName);
@@ -160,6 +166,26 @@ public class EntitySnapshotValue<E, O> extends AbstractSnapshotValue<E, O> imple
             ArmorStand.class, ArmorStand::getRightLegPose, ArmorStand::setRightLegPose);
     public static final EntitySnapshotValue<ArmorStand, EulerAngle> RIGHT_ARM_POSE = new EntitySnapshotValue<>(
             ArmorStand.class, ArmorStand::getRightArmPose, ArmorStand::setRightArmPose);
+
+    public static final EntitySnapshotValue<ArmorStand, ItemStack> ARMOR_CHEST_EQUIPMENT = new EntitySnapshotValue<>(
+            ArmorStand.class, stand -> stand.getItem(EquipmentSlot.CHEST),
+            (stand, item) -> stand.setItem(EquipmentSlot.CHEST, item));
+
+    public static final EntitySnapshotValue<ArmorStand, ItemStack> ARMOR_FEET_EQUIPMENT = new EntitySnapshotValue<>(
+            ArmorStand.class, stand -> stand.getItem(EquipmentSlot.FEET),
+            (stand, item) -> stand.setItem(EquipmentSlot.FEET, item));
+
+    public static final EntitySnapshotValue<ArmorStand, ItemStack> ARMOR_MAIN_HAND_EQUIPMENT = new EntitySnapshotValue<>(
+            ArmorStand.class, stand -> stand.getItem(EquipmentSlot.HAND),
+            (stand, item) -> stand.setItem(EquipmentSlot.HAND, item));
+
+    public static final EntitySnapshotValue<ArmorStand, ItemStack> ARMOR_OFF_MAIN_HAND_EQUIPMENT = new EntitySnapshotValue<>(
+            ArmorStand.class, stand -> stand.getItem(EquipmentSlot.OFF_HAND),
+            (stand, item) -> stand.setItem(EquipmentSlot.OFF_HAND, item));
+
+    public static final EntitySnapshotValue<ArmorStand, ItemStack> ARMOR_HEAD_EQUIPMENT = new EntitySnapshotValue<>(
+            ArmorStand.class, stand -> stand.getItem(EquipmentSlot.HEAD),
+            (stand, item) -> stand.setItem(EquipmentSlot.HEAD, item));
     public static final EntitySnapshotValue<ArmorStand, Boolean> MARKER = new EntitySnapshotValue<>(ArmorStand.class,
                                                                                                     ArmorStand::isMarker,
                                                                                                     ArmorStand::setMarker);
