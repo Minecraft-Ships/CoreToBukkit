@@ -18,10 +18,12 @@ import org.core.world.position.impl.async.ASyncExactPosition;
 import org.core.world.position.impl.sync.SyncBlockPosition;
 import org.core.world.position.impl.sync.SyncExactPosition;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
 import java.util.UUID;
+import java.util.concurrent.CompletableFuture;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -118,9 +120,26 @@ public class BWorldExtent implements WorldExtent {
 
     @Override
     public ChunkExtent loadChunk(Vector3<Integer> vector) {
-        this.world.loadChunk(vector.getX(), vector.getZ());
         Chunk chunk = this.world.getChunkAt(vector.getX(), vector.getZ());
         return new BChunkExtent(chunk);
+    }
+
+    @Override
+    public CompletableFuture<ChunkExtent> loadChunkAsynced(Vector3<Integer> vector) {
+        try {
+            //paper specific method
+            CompletableFuture<Chunk> future = (CompletableFuture<Chunk>) this.world
+                    .getClass()
+                    .getMethod("getChunkAtAsync", int.class, int.class)
+                    .invoke(this.world, vector.getX(), vector.getZ());
+            return future.thenApply(BChunkExtent::new);
+        } catch (IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {
+            //fallback to bukkit
+            CompletableFuture<ChunkExtent> future = new CompletableFuture<>();
+            ChunkExtent extent = this.loadChunk(vector);
+            future.complete(extent);
+            return future;
+        }
     }
 
     @Override
