@@ -68,12 +68,12 @@ public class TranslateCoreBoot extends JavaPlugin {
             Class<? extends CorePlugin> pluginClass = opLauncher.get();
             CorePlugin plugin = CommonLoad.loadStandAlonePlugin(pluginClass);
 
-            Logger logger = new BJavaLogger(this.getLogger());
+            Logger logger;
             try {
                 Method method = JavaPlugin.class.getMethod("getSLF4JLogger");
                 logger = new BSLF4JLogger(method.invoke(this));
             } catch (NoSuchMethodException | InvocationTargetException | IllegalAccessException e) {
-                throw new RuntimeException(e);
+                logger = new BJavaLogger(this.getLogger());
             }
 
             plugin.onConstruct(this, logger);
