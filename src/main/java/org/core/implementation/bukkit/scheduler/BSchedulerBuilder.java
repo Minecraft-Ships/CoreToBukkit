@@ -116,7 +116,12 @@ public class BSchedulerBuilder implements SchedulerBuilder {
         if (this.delay != null && this.delayUnit == null) {
             throw new IllegalArgumentException("Invalid delayUnit in build");
         }
-        Scheduler scheduler = new BNativeScheduler(this, plugin);
+        Scheduler scheduler;
+        if ((this.delay == null || this.delay == 0) && this.iteration == null && this.async) {
+            scheduler = new BInstanceThreadScheduler(this, plugin);
+        } else {
+            scheduler = new BNativeScheduler(this, plugin);
+        }
         ((BScheduleManager) TranslateCore.getScheduleManager()).register(scheduler);
         return scheduler;
     }
