@@ -22,6 +22,13 @@ import java.util.stream.Stream;
 @SuppressWarnings("unused")
 public class EntitySnapshotValue<E, O> extends AbstractSnapshotValue<E, O> implements Cloneable {
 
+    public static final EntitySnapshotValue<Entity, Boolean> IS_REMOVED = new EntitySnapshotValue<>(Entity::isDead,
+                                                                                                    (entity, aBoolean) -> {
+                                                                                                        if (aBoolean) {
+                                                                                                            entity.remove();
+                                                                                                        }
+                                                                                                    });
+
     public static final EntitySnapshotValue<Entity, Location> LOCATION = new EntitySnapshotValue<>(Entity::getLocation,
                                                                                                    Entity::teleport);
     public static final EntitySnapshotValue<Entity, Vector> VELOCITY = new EntitySnapshotValue<>(Entity::getVelocity,

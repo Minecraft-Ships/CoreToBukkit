@@ -15,6 +15,7 @@ import java.util.Optional;
 
 public abstract class BEntitySnapshot<T extends LiveEntity> implements EntitySnapshot<T> {
 
+    protected boolean isRemoved;
     protected final Collection<EntitySnapshot<? extends LiveEntity>> passengers = new HashSet<>();
     protected double pitch;
     protected double yaw;
@@ -68,7 +69,15 @@ public abstract class BEntitySnapshot<T extends LiveEntity> implements EntitySna
         entity.setPitch(this.pitch);
         entity.setRoll(this.roll);
         entity.setYaw(this.yaw);
+        if (this.isRemoved) {
+            entity.remove();
+        }
         return entity;
+    }
+
+    @Override
+    public boolean isRemoved() {
+        return this.isRemoved;
     }
 
     @Override
@@ -96,8 +105,7 @@ public abstract class BEntitySnapshot<T extends LiveEntity> implements EntitySna
 
     @Override
     public EntitySnapshot<T> setPosition(Position<? extends Number> position) {
-        this.position = position instanceof SyncExactPosition ? (SyncExactPosition) position :
-                ((SyncBlockPosition) position).toExactPosition();
+        this.position = position instanceof SyncExactPosition ? (SyncExactPosition) position : ((SyncBlockPosition) position).toExactPosition();
         return this;
     }
 

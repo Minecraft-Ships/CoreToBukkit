@@ -11,6 +11,7 @@ import org.core.entity.LiveEntity;
 import org.core.implementation.bukkit.platform.BukkitPlatform;
 import org.core.implementation.bukkit.world.BWorldExtent;
 import org.core.implementation.bukkit.world.position.impl.sync.BExactPosition;
+import org.core.utils.entry.AbstractSnapshotValue;
 import org.core.vector.type.Vector3;
 import org.core.world.position.impl.Position;
 import org.core.world.position.impl.sync.SyncExactPosition;
@@ -84,7 +85,8 @@ public class BSnapshotValueEntity<BE extends org.bukkit.entity.Entity, E extends
         EntitySnapshotValue<?, Location> locValue = this.<Location>getSnapshotValue("LOCATION").get();
         Location oldLoc = locValue.getValue();
         Location loc = new Location(((BWorldExtent) position.getWorld()).getBukkitWorld(),
-                position.getX().doubleValue(), position.getY().doubleValue(), position.getZ().doubleValue());
+                                    position.getX().doubleValue(), position.getY().doubleValue(),
+                                    position.getZ().doubleValue());
         loc.setPitch(oldLoc.getPitch());
         loc.setYaw(oldLoc.getYaw());
         locValue.setValue(loc);
@@ -165,20 +167,23 @@ public class BSnapshotValueEntity<BE extends org.bukkit.entity.Entity, E extends
     }
 
     @Override
-    public Entity<EntitySnapshot<? extends LiveEntity>> addPassengers(
-            Collection<? extends EntitySnapshot<? extends LiveEntity>> entities) {
+    public Entity<EntitySnapshot<? extends LiveEntity>> addPassengers(Collection<? extends EntitySnapshot<? extends LiveEntity>> entities) {
         return this;
     }
 
     @Override
-    public Entity<EntitySnapshot<? extends LiveEntity>> removePassengers(
-            Collection<EntitySnapshot<? extends LiveEntity>> entities) {
+    public Entity<EntitySnapshot<? extends LiveEntity>> removePassengers(Collection<EntitySnapshot<? extends LiveEntity>> entities) {
         return this;
     }
 
     @Override
     public boolean isOnGround() {
         return this.<Boolean>getSnapshotValue("IS_ON_GROUND").get().getValue();
+    }
+
+    @Override
+    public boolean isRemoved() {
+        return this.<Boolean>getSnapshotValue("IS_REMOVED").map(AbstractSnapshotValue::getValue).orElse(false);
     }
 
     @Override

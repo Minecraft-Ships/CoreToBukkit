@@ -30,6 +30,11 @@ public abstract class BLiveEntity<T extends org.bukkit.entity.Entity> implements
     }
 
     @Override
+    public boolean isRemoved() {
+        return this.entity.isDead();
+    }
+
+    @Override
     public BLiveEntity<T> setGravity(boolean check) {
         this.entity.setGravity(check);
         return this;

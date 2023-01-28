@@ -26,6 +26,7 @@ import org.core.implementation.bukkit.event.BukkitListener;
 import org.core.implementation.bukkit.inventory.item.BItemType;
 import org.core.implementation.bukkit.inventory.item.data.dye.BItemDyeType;
 import org.core.implementation.bukkit.permission.BukkitPermission;
+import org.core.implementation.bukkit.platform.details.BukkitTranslatePlatformDetails;
 import org.core.implementation.bukkit.platform.plugin.BPlugin;
 import org.core.implementation.bukkit.platform.structure.BukkitStructurePlatform;
 import org.core.implementation.bukkit.platform.version.BukkitSpecificPlatform;
@@ -252,6 +253,10 @@ public class BukkitPlatform implements Platform {
                         "Unknown material with id of '" + id + "' is your plugin too " + "new?"));
     }
 
+    @Override
+    public @NotNull PlatformDetails getImplementationDetails() {
+        return new BukkitTranslatePlatformDetails();
+    }
 
     @Override
     public @NotNull Collection<PlatformUpdate<?>> getUpdateCheckers() {
@@ -493,12 +498,10 @@ public class BukkitPlatform implements Platform {
     @Override
     public @NotNull CorePermission register(CorePermission permissionNode) {
         if (Bukkit.getServer().getPluginManager().getPermission(permissionNode.getPermissionValue()) == null) {
-            org.bukkit.permissions.Permission permission = new org.bukkit.permissions.Permission(permissionNode.getPermissionValue());
+            org.bukkit.permissions.Permission permission = new org.bukkit.permissions.Permission(
+                    permissionNode.getPermissionValue());
             permission.setDefault(permissionNode.shouldDefaultHave() ? PermissionDefault.TRUE : PermissionDefault.OP);
-            Bukkit
-                    .getServer()
-                    .getPluginManager()
-                    .addPermission(permission);
+            Bukkit.getServer().getPluginManager().addPermission(permission);
         }
         return permissionNode;
     }
