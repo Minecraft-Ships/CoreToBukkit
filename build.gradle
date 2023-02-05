@@ -17,10 +17,6 @@ repositories {
     }
 }
 
-jar {
-    dependsOn(':ShipsForCore:jar')
-}
-
 dependencies {
     if (project.hasProperty("paper-api-version")) {
         compileOnly 'io.papermc.paper:paper-api:' + project.property("paper-api-version") + "-R0.1-SNAPSHOT"
