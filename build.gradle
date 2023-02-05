@@ -17,19 +17,20 @@ repositories {
     }
 }
 
-jar {
-    dependsOn(':ShipsForCore:jar')
-}
-
 dependencies {
     if (project.hasProperty("paper-api-version")) {
         compileOnly 'io.papermc.paper:paper-api:' + project.property("paper-api-version") + "-R0.1-SNAPSHOT"
     } else {
         compileOnly 'io.papermc.paper:paper-api:1.18.2-R0.1-SNAPSHOT'
-        System.out.println("To specify a paper build, use ' -P paper-api-version=1.18.2")
+        System.out.println("To specify a paper build, use ' -P paper-api-version=1.17.1")
     }
     compileOnly 'com.github.MilkBowl:VaultAPI:1.7', { exclude group: 'org.bukkit', module: 'bukkit' }
-    api project(":TranslateCore")
+        try {
+        api project(":TranslateCore")
+    } catch (UnknownProjectException ignored) {
+        System.out.println("Could not find subModule of ShipsCore, using jit instead")
+        api 'com.github.Minecraft-Ships:TranslateCore:master-SNAPSHOT'
+    }
     compileOnly group: 'net.kyori', name: 'examination-api', version: '1.1.0'
     compileOnly group: 'net.kyori', name: 'adventure-api', version: '4.7.0'
     compileOnly 'net.kyori:adventure-text-serializer-legacy:4.7.0'
@@ -39,7 +40,7 @@ dependencies {
 group = 'org.ships'
 version = '1.0-SNAPSHOT'
 description = 'CoreToBukkit'
-java.sourceCompatibility = JavaVersion.VERSION_17
+java.sourceCompatibility = (project.hasProperty('paper-api-version') && project.property('paper-api-version')!='1.17.1') ? JavaVersion.VERSION_16 : JavaVersion.VERSION_17
 
 compileJava.options.encoding = 'UTF-8'
 
