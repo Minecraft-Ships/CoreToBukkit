@@ -40,7 +40,11 @@ dependencies {
 group = 'org.ships'
 version = '1.0-SNAPSHOT'
 description = 'CoreToBukkit'
-java.sourceCompatibility = (project.hasProperty('paper-api-version') && project.property('paper-api-version')!='1.17.1') ? JavaVersion.VERSION_16 : JavaVersion.VERSION_17
+if(project.hasProperty('paper-api-version') && project.property('paper-api-version')!='1.17.1'){
+   java.sourceCompatibility = JavaVersion.VERSION_16
+}else{
+    java.sourceCompatibility =  JavaVersion.VERSION_17
+}
 
 compileJava.options.encoding = 'UTF-8'
 
