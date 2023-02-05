@@ -26,7 +26,7 @@ dependencies {
         compileOnly 'io.papermc.paper:paper-api:' + project.property("paper-api-version") + "-R0.1-SNAPSHOT"
     } else {
         compileOnly 'io.papermc.paper:paper-api:1.18.2-R0.1-SNAPSHOT'
-        System.out.println("To specify a paper build, use ' -P paper-api-version=1.18.2")
+        System.out.println("To specify a paper build, use ' -P paper-api-version=1.17.1")
     }
     compileOnly 'com.github.MilkBowl:VaultAPI:1.7', { exclude group: 'org.bukkit', module: 'bukkit' }
     api project(":TranslateCore")
@@ -39,7 +39,7 @@ dependencies {
 group = 'org.ships'
 version = '1.0-SNAPSHOT'
 description = 'CoreToBukkit'
-java.sourceCompatibility = JavaVersion.VERSION_16
+java.sourceCompatibility = (project.hasProperty('paper-api-version') && project.property('paper-api-version')!='1.17.1') ? JavaVersion.VERSION_16 : JavaVersion.VERSION_17
 
 compileJava.options.encoding = 'UTF-8'
 
