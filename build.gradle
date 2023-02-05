@@ -25,7 +25,7 @@ dependencies {
         System.out.println("To specify a paper build, use ' -P paper-api-version=1.17.1")
     }
     compileOnly 'com.github.MilkBowl:VaultAPI:1.7', { exclude group: 'org.bukkit', module: 'bukkit' }
-        try {
+    try {
         api project(":TranslateCore")
     } catch (UnknownProjectException ignored) {
         System.out.println("Could not find subModule of ShipsCore, using jit instead")
@@ -40,10 +40,13 @@ dependencies {
 group = 'org.ships'
 version = '1.0-SNAPSHOT'
 description = 'CoreToBukkit'
-if(project.hasProperty('paper-api-version') && project.property('paper-api-version')!='1.17.1'){
-   java.sourceCompatibility = JavaVersion.VERSION_16
-}else{
-    java.sourceCompatibility =  JavaVersion.VERSION_17
+if (project.hasProperty('paper-api-version') && project.property('paper-api-version') != '1.17.1') {
+    java.sourceCompatibility = JavaVersion.VERSION_16
+    java.targetCompatibility = JavaVersion.VERSION_16
+} else {
+    java.sourceCompatibility = JavaVersion.VERSION_17
+    java.sourceCompatibility = JavaVersion.VERSION_16
+
 }
 
 compileJava.options.encoding = 'UTF-8'
