@@ -45,6 +45,9 @@ public class TranslateCoreBoot extends JavaPlugin {
             core = new CoreToPaper();
         } catch (ClassNotFoundException e) {
             core = new CoreToBukkit();
+            this.getLogger().warning("Paper was not detected. ");
+            this.getLogger().warning("Translate Core will be dropping support for none Paper servers due to Paper's hard-fork.");
+            this.getLogger().warning("While the Paper hard-fork is not yet out, signs are showing of it coming soon.");
         }
         this.core = core;
     }
