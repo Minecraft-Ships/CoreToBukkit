@@ -50,18 +50,6 @@ public class TranslateCoreBoot extends JavaPlugin {
     }
 
     @Override
-    public void onDisable() {
-        this.plugins.forEach(CorePlugin::onShutdown);
-        TranslateCore
-                .getScheduleManager()
-                .getSchedules()
-                .parallelStream()
-                .filter(sch -> sch instanceof Scheduler.Native)
-                .forEach(sch -> ((Scheduler.Native) sch).cancel());
-
-    }
-
-    @Override
     public void onLoad() {
         Optional<Class<? extends CorePlugin>> opLauncher = TranslateCore.getStandAloneLauncher();
         if (opLauncher.isPresent()) {
@@ -104,6 +92,18 @@ public class TranslateCoreBoot extends JavaPlugin {
         }
         File folder = this.core.getRawPlatform().getTranslatePluginsFolder();
         this.plugins.addAll(this.loadPlugins(folder));
+    }
+
+    @Override
+    public void onDisable() {
+        this.plugins.forEach(CorePlugin::onShutdown);
+        TranslateCore
+                .getScheduleManager()
+                .getSchedules()
+                .parallelStream()
+                .filter(sch -> sch instanceof Scheduler.Native)
+                .forEach(sch -> ((Scheduler.Native) sch).cancel());
+
     }
 
     @Override

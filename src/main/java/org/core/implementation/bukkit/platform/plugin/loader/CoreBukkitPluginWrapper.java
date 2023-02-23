@@ -41,15 +41,20 @@ public class CoreBukkitPluginWrapper implements org.bukkit.plugin.Plugin {
     @NotNull
     @Override
     public PluginDescriptionFile getDescription() {
-        String yamlMap = "name: " + this.getPlugin().getPluginName() + "\n" +
-                "version: " + this.getPlugin().getPluginVersion().asString() + "\n" +
-                "main: " + this.getPlugin().getPlatformLauncher().getClass().getName();
+        String yamlMap = "name: " + this.getPlugin().getPluginName() + "\n" + "version: " + this
+                .getPlugin()
+                .getPluginVersion()
+                .asString() + "\n" + "main: " + this.getPlugin().getPlatformLauncher().getClass().getName();
         StringReader reader = new StringReader(yamlMap);
         try {
             return new PluginDescriptionFile(reader);
         } catch (InvalidDescriptionException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    public @NotNull PluginDescriptionFile getPluginMeta() {
+        return this.getDescription();
     }
 
     @NotNull
@@ -92,7 +97,6 @@ public class CoreBukkitPluginWrapper implements org.bukkit.plugin.Plugin {
 
     @NotNull
     @Override
-    @Deprecated
     public CoreBukkitPluginLoader getPluginLoader() {
         return new CoreBukkitPluginLoader();
     }
@@ -167,16 +171,20 @@ public class CoreBukkitPluginWrapper implements org.bukkit.plugin.Plugin {
 
     @Override
     @Deprecated
-    public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label,
-            @NotNull String[] args) {
+    public boolean onCommand(@NotNull CommandSender sender,
+                             @NotNull Command command,
+                             @NotNull String label,
+                             @NotNull String[] args) {
         return false;
     }
 
     @Nullable
     @Override
     @Deprecated
-    public List<String> onTabComplete(@NotNull CommandSender sender, @NotNull Command command, @NotNull String alias,
-            @NotNull String[] args) {
+    public List<String> onTabComplete(@NotNull CommandSender sender,
+                                      @NotNull Command command,
+                                      @NotNull String alias,
+                                      @NotNull String[] args) {
         return Collections.emptyList();
     }
 }
