@@ -179,20 +179,20 @@ public class EntitySnapshotValue<E, O> extends AbstractSnapshotValue<E, O> imple
             (stand, item) -> stand.getEquipment().setItem(EquipmentSlot.CHEST, item));
 
     public static final EntitySnapshotValue<ArmorStand, ItemStack> ARMOR_FEET_EQUIPMENT = new EntitySnapshotValue<>(
-            ArmorStand.class, stand -> stand.getItem(EquipmentSlot.FEET),
-            (stand, item) -> stand.setItem(EquipmentSlot.FEET, item));
+            ArmorStand.class, stand -> stand.getEquipment().getItem(EquipmentSlot.FEET),
+            (stand, item) -> stand.getEquipment().setItem(EquipmentSlot.FEET, item));
 
     public static final EntitySnapshotValue<ArmorStand, ItemStack> ARMOR_MAIN_HAND_EQUIPMENT = new EntitySnapshotValue<>(
-            ArmorStand.class, stand -> stand.getItem(EquipmentSlot.HAND),
-            (stand, item) -> stand.setItem(EquipmentSlot.HAND, item));
+            ArmorStand.class, stand -> stand.getEquipment().getItem(EquipmentSlot.HAND),
+            (stand, item) -> stand.getEquipment().setItem(EquipmentSlot.HAND, item));
 
     public static final EntitySnapshotValue<ArmorStand, ItemStack> ARMOR_OFF_MAIN_HAND_EQUIPMENT = new EntitySnapshotValue<>(
-            ArmorStand.class, stand -> stand.getItem(EquipmentSlot.OFF_HAND),
-            (stand, item) -> stand.setItem(EquipmentSlot.OFF_HAND, item));
+            ArmorStand.class, stand -> stand.getEquipment().getItem(EquipmentSlot.OFF_HAND),
+            (stand, item) -> stand.getEquipment().setItem(EquipmentSlot.OFF_HAND, item));
 
     public static final EntitySnapshotValue<ArmorStand, ItemStack> ARMOR_HEAD_EQUIPMENT = new EntitySnapshotValue<>(
-            ArmorStand.class, stand -> stand.getItem(EquipmentSlot.HEAD),
-            (stand, item) -> stand.setItem(EquipmentSlot.HEAD, item));
+            ArmorStand.class, stand -> stand.getEquipment().getItem(EquipmentSlot.HEAD),
+            (stand, item) -> stand.getEquipment().setItem(EquipmentSlot.HEAD, item));
     public static final EntitySnapshotValue<ArmorStand, Boolean> MARKER = new EntitySnapshotValue<>(ArmorStand.class,
                                                                                                     ArmorStand::isMarker,
                                                                                                     ArmorStand::setMarker);
