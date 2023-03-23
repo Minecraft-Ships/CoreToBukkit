@@ -175,8 +175,8 @@ public class EntitySnapshotValue<E, O> extends AbstractSnapshotValue<E, O> imple
             ArmorStand.class, ArmorStand::getRightArmPose, ArmorStand::setRightArmPose);
 
     public static final EntitySnapshotValue<ArmorStand, ItemStack> ARMOR_CHEST_EQUIPMENT = new EntitySnapshotValue<>(
-            ArmorStand.class, stand -> stand.getItem(EquipmentSlot.CHEST),
-            (stand, item) -> stand.setItem(EquipmentSlot.CHEST, item));
+            ArmorStand.class, stand -> stand.getEquipment().getItem(EquipmentSlot.CHEST),
+            (stand, item) -> stand.getEquipment().setItem(EquipmentSlot.CHEST, item));
 
     public static final EntitySnapshotValue<ArmorStand, ItemStack> ARMOR_FEET_EQUIPMENT = new EntitySnapshotValue<>(
             ArmorStand.class, stand -> stand.getItem(EquipmentSlot.FEET),
@@ -316,6 +316,24 @@ public class EntitySnapshotValue<E, O> extends AbstractSnapshotValue<E, O> imple
         this((Class<E>) Entity.class, null, getter, setter);
     }
 
+    public String getId() {
+        return this.id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    @Override
+    public boolean canApplyTo(Object obj) {
+        return this.clazz.isInstance(obj);
+    }
+
+    @Override
+    public EntitySnapshotValue<E, O> clone() {
+        return new EntitySnapshotValue<>(this.clazz, this.value, this.getter, this.setter);
+    }
+
     public static <E extends Entity> Set<EntitySnapshotValue<? super E, ?>> getSnapshotValues(E entity) {
         Set<EntitySnapshotValue<?, ?>> values = Stream
                 .of(EntitySnapshotValue.class.getDeclaredFields())
@@ -337,23 +355,5 @@ public class EntitySnapshotValue<E, O> extends AbstractSnapshotValue<E, O> imple
                 .filter(v -> v.canApplyTo(entity))
                 .map(e -> (EntitySnapshotValue<? super E, ?>) e)
                 .collect(Collectors.toSet());
-    }
-
-    public String getId() {
-        return this.id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
-    }
-
-    @Override
-    public boolean canApplyTo(Object obj) {
-        return this.clazz.isInstance(obj);
-    }
-
-    @Override
-    public EntitySnapshotValue<E, O> clone() {
-        return new EntitySnapshotValue<>(this.clazz, this.value, this.getter, this.setter);
     }
 }
