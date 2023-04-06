@@ -157,7 +157,14 @@ public class EntitySnapshotValue<E, O> extends AbstractSnapshotValue<E, O> imple
             AreaEffectCloud.class, AreaEffectCloud::getSource, AreaEffectCloud::setSource);
     public static final EntitySnapshotValue<AreaEffectCloud, Integer> WAIT_TIME = new EntitySnapshotValue<>(
             AreaEffectCloud.class, AreaEffectCloud::getWaitTime, AreaEffectCloud::setWaitTime);
-
+    public static final EntitySnapshotValue<ArmorStand, Boolean> ARMOR_STAND_VISIBLE = new EntitySnapshotValue<>(
+            ArmorStand.class, ArmorStand::isVisible, ArmorStand::setVisible);
+    public static final EntitySnapshotValue<ArmorStand, Boolean> ARMOR_STAND_MARKER = new EntitySnapshotValue<>(
+            ArmorStand.class, ArmorStand::isMarker, ArmorStand::setMarker);
+    public static final EntitySnapshotValue<ArmorStand, Boolean> ARMOR_STAND_SMALL = new EntitySnapshotValue<>(
+            ArmorStand.class, ArmorStand::isSmall, ArmorStand::setSmall);
+    public static final EntitySnapshotValue<ArmorStand, EulerAngle> BODY_POSE = new EntitySnapshotValue<>(
+            ArmorStand.class, ArmorStand::getBodyPose, ArmorStand::setBodyPose);
     public static final EntitySnapshotValue<ArmorStand, Boolean> HAS_ARMS = new EntitySnapshotValue<>(ArmorStand.class,
                                                                                                       ArmorStand::hasArms,
                                                                                                       ArmorStand::setArms);
