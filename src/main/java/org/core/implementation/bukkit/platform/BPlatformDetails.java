@@ -18,16 +18,16 @@ public class BPlatformDetails implements PlatformDetails {
         String versionString = Bukkit.getVersion();
         String[] versionSplit = versionString.split("-");
         this.type = versionSplit[1];
-        if (this.type.equals("Paper")) {
-            this.version = Integer.parseInt(versionSplit[2].substring(0, versionSplit[2].indexOf(" ")));
-            return;
-        }
         try {
+            if (this.type.equals("Paper")) {
+                this.version = Integer.parseInt(versionSplit[2].substring(0, versionSplit[2].indexOf(" ")));
+                return;
+            }
             this.version = Integer.parseInt(versionSplit[0]);
         } catch (Throwable e) {
             System.err.println(
                     "Unknown version number for implementation: Report this on dev.bukkit asking for support for "
-                            + this.type);
+                            + this.type + ". Version code: " + versionString);
         }
     }
 
