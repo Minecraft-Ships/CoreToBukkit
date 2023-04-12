@@ -32,18 +32,36 @@ if (!project.hasProperty('paper-api-version') || project.property('paper-api-ver
 }
 
 compileJava.options.encoding = 'UTF-8'
+def excludePluginYaml = false
+
 
 tasks.withType(JavaCompile) {
     options.encoding = 'UTF-8'
 }
 
-tasks.register("buildPlugin", Jar) {
-    def path = project.rootDir.path + "\\build\\"
+task plugin {
+    excludePluginYaml = true
+
+    if (excludePluginYaml) {
+        def pluginFile = file(project.buildDir.path + '/resources/main/plugin.yml')
+        def ex = pluginFile.exists()
+        pluginFile.delete()
+    }
+
+    finalizedBy build
+}
+
+jar {
+    def path = project.buildDir.path + "/libs/"
+    def fileName = 'TranslateCoreBukkit.jar'
     file(path).mkdirs()
     archiveClassifier = 'uber'
-    archiveFileName = 'TranslateCoreBukkit.jar'
+    archiveFileName = fileName
     destinationDirectory = file(path)
 
+    if (excludePluginYaml) {
+        exclude("plugin.yml")
+    }
 
     from sourceSets.main.output
     dependsOn configurations.runtimeClasspath
@@ -56,7 +74,7 @@ tasks.register("buildPlugin", Jar) {
             }
         }
     }
-    println("Creating file in '" + path + "TranslateCore.jar'")
+    println("Creating file in '" + path + fileName + "'")
 }
 
 dependencies {
