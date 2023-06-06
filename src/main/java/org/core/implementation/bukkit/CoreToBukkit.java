@@ -79,7 +79,8 @@ public class CoreToBukkit extends TranslateCore.CoreImplementation {
             }
         }
         if (!check) {
-            throw new IllegalStateException("Unknown file type");
+            throw new IllegalStateException(
+                    "Unknown file type ( " + String.join(", ", type.getFileType()) + ") for " + file.getPath());
         }
         if (type.equals(ConfigurationFormat.FORMAT_YAML)) {
             return new YAMLConfigurationFile(file);
