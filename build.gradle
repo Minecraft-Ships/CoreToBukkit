@@ -40,7 +40,7 @@ tasks.withType(JavaCompile) {
 }
 
 task plugin {
-    excludePluginYaml = false
+    excludePluginYaml = true
 
     if (excludePluginYaml) {
         def pluginFile = file(project.buildDir.path + '/resources/main/plugin.yml')
