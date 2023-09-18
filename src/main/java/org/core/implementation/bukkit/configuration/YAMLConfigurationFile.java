@@ -1,14 +1,17 @@
 package org.core.implementation.bukkit.configuration;
 
+import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.core.config.ConfigurationFormat;
 import org.core.config.ConfigurationNode;
 import org.core.config.ConfigurationStream;
 import org.core.config.parser.Parser;
+import org.jetbrains.annotations.Nullable;
 
 import java.io.File;
 import java.io.IOException;
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class YAMLConfigurationFile implements ConfigurationStream.ConfigurationFile {
 
@@ -146,9 +149,9 @@ public class YAMLConfigurationFile implements ConfigurationStream.ConfigurationF
 
     @Override
     public Set<ConfigurationNode> getChildren(ConfigurationNode node) {
-        Set<ConfigurationNode> value = new HashSet<>();
-        this.yaml.getKeys(true).forEach(p -> value.add(new ConfigurationNode(p.split("\\."))));
-        return value;
+        String path = String.join(".", node.getPath());
+        return this.yaml.createSection(path).getKeys(true).stream().map(p -> new ConfigurationNode(p.split("\\."))).collect(
+                Collectors.toSet());
     }
 
     @Override
@@ -163,5 +166,34 @@ public class YAMLConfigurationFile implements ConfigurationStream.ConfigurationF
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    //this may damage
+    @Override
+    public Optional<Object> get(ConfigurationNode node) {
+        String path = String.join(".", node.getPath());
+        return Optional.ofNullable(this.yaml.get(path));
+    }
+
+    @Override
+    public boolean isList(ConfigurationNode node) {
+        String path = String.join(".", node.getPath());
+        return this.yaml.isList(path);
+    }
+
+    @Override
+    public boolean isMap(ConfigurationNode node) {
+        String path = String.join(".", node.getPath());
+        return this.yaml.isConfigurationSection(path);
+    }
+
+    @Override
+    public Map<Object, Object> getMap(ConfigurationNode node) {
+        String path = String.join(".", node.getPath());
+        @Nullable ConfigurationSection section = this.yaml.getConfigurationSection(path);
+        if(section == null){
+            return Collections.emptyMap();
+        }
+        return section.getValues(true).entrySet().stream().collect(Collectors.toMap(entry -> entry.getKey(), entry -> entry.getValue()));
     }
 }
