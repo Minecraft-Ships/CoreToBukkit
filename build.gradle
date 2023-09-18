@@ -40,41 +40,46 @@ tasks.withType(JavaCompile) {
 }
 
 task plugin {
-    excludePluginYaml = true
+    doFirst {
+        excludePluginYaml = true
 
-    if (excludePluginYaml) {
-        def pluginFile = file(project.buildDir.path + '/resources/main/plugin.yml')
-        def ex = pluginFile.exists()
-        pluginFile.delete()
+        if (excludePluginYaml) {
+            def pluginFile = file(project.buildDir.path + '/resources/main/plugin.yml')
+            def ex = pluginFile.exists()
+            pluginFile.delete()
+        }
     }
 
     finalizedBy build
 }
 
 jar {
-    def path = project.buildDir.path + "/libs/"
-    def fileName = 'TranslateCoreBukkit.jar'
-    file(path).mkdirs()
-    archiveClassifier = 'uber'
-    archiveFileName = fileName
-    destinationDirectory = file(path)
-
-    if (excludePluginYaml) {
-        exclude("plugin.yml")
-    }
-
-    from sourceSets.main.output
     dependsOn configurations.runtimeClasspath
-    from {
-        configurations.runtimeClasspath.findAll {
-            it.name.endsWith('jar') && !it.name.contains("junit") && !it.name.contains("hamcrest")
-        }.collect {
-            zipTree(it).matching {
-                exclude "*.txt"
+
+    doLast {
+        def path = project.buildDir.path + "/libs/"
+        def fileName = 'TranslateCoreBukkit.jar'
+        file(path).mkdirs()
+        archiveClassifier = 'uber'
+        archiveFileName = fileName
+        destinationDirectory = file(path)
+
+        if (excludePluginYaml) {
+            exclude("plugin.yml")
+        }
+
+        from sourceSets.main.output
+        from {
+            configurations.runtimeClasspath.findAll {
+                it.name.endsWith('jar') && !it.name.contains("junit") && !it.name.contains("hamcrest")
+            }.collect {
+                zipTree(it).matching {
+                    exclude "*.txt"
+                }
             }
         }
+        println("Creating file in '" + path + fileName + "'")
     }
-    println("Creating file in '" + path + fileName + "'")
 }
 
 dependencies {
