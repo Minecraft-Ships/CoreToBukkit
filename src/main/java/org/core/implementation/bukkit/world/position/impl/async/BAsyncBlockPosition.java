@@ -15,8 +15,10 @@ import org.core.world.WorldExtent;
 import org.core.world.position.block.details.BlockDetails;
 import org.core.world.position.block.entity.LiveTileEntity;
 import org.core.world.position.flags.PositionFlag;
+import org.core.world.position.impl.BlockPosition;
 import org.core.world.position.impl.async.ASyncBlockPosition;
 import org.core.world.position.impl.async.ASyncExactPosition;
+import org.core.world.position.impl.sync.SyncBlockPosition;
 import org.core.world.position.impl.sync.SyncPosition;
 
 import java.util.Optional;
@@ -47,6 +49,7 @@ public class BAsyncBlockPosition extends BAbstractPosition<Integer> implements A
         return new AsyncBlockStateSnapshot(this);
     }
 
+
     @Override
     public ASyncExactPosition toExactPosition() {
         return new BAsyncExactPosition(this.block.getLocation());
@@ -58,8 +61,9 @@ public class BAsyncBlockPosition extends BAbstractPosition<Integer> implements A
     }
 
     @Override
-    public FutureResult<SyncPosition<Integer>> scheduleBlock(Plugin plugin, BlockDetails details,
-            PositionFlag.SetFlag... flags) {
+    public FutureResult<SyncPosition<Integer>> scheduleBlock(Plugin plugin,
+                                                             BlockDetails details,
+                                                             PositionFlag.SetFlag... flags) {
         FutureResult<SyncPosition<Integer>> future = new FutureResult<>();
         Bukkit.getScheduler().runTask((org.bukkit.plugin.Plugin) plugin.getPlatformLauncher(), () -> {
             SyncPosition<Integer> position = new BBlockPosition(this.block);
@@ -70,8 +74,9 @@ public class BAsyncBlockPosition extends BAbstractPosition<Integer> implements A
     }
 
     @Override
-    public FutureResult<SyncPosition<Integer>> scheduleBlock(Plugin plugin, BlockDetails details,
-            LivePlayer... player) {
+    public FutureResult<SyncPosition<Integer>> scheduleBlock(Plugin plugin,
+                                                             BlockDetails details,
+                                                             LivePlayer... player) {
         FutureResult<SyncPosition<Integer>> future = new FutureResult<>();
         Bukkit.getScheduler().runTask((org.bukkit.plugin.Plugin) plugin.getPlatformLauncher(), () -> {
             SyncPosition<Integer> position = new BBlockPosition(this.block);

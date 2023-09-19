@@ -28,6 +28,7 @@ import org.core.world.position.flags.PositionFlag;
 import org.core.world.position.flags.physics.ApplyPhysicsFlag;
 import org.core.world.position.flags.physics.ApplyPhysicsFlags;
 import org.core.world.position.impl.Position;
+import org.core.world.position.impl.async.ASyncBlockPosition;
 import org.core.world.position.impl.sync.SyncBlockPosition;
 import org.jetbrains.annotations.NotNull;
 
@@ -124,8 +125,7 @@ public class BBlockPosition extends BAbstractPosition<Integer> implements SyncBl
     }
 
     @Override
-    public <E extends LiveEntity, S extends EntitySnapshot<E>> Optional<S> createEntity(
-            EntityType<E, ? extends S> type) {
+    public <E extends LiveEntity, S extends EntitySnapshot<E>> Optional<S> createEntity(EntityType<E, ? extends S> type) {
         return ((BukkitPlatform) TranslateCore.getPlatform()).createSnapshot(type, this.toExactPosition());
     }
 
@@ -137,4 +137,5 @@ public class BBlockPosition extends BAbstractPosition<Integer> implements SyncBl
         Position<? extends Number> pos = (Position<? extends Number>) value;
         return pos.getPosition().equals(this.getPosition());
     }
+
 }
